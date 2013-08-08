@@ -1,0 +1,1 @@
+var socket=io.connect("http://localhost");socket.on("tweet",function(a){$("<p>").text(a.text).appendTo("body"),console.log(a)}),socket.on("all",function(a){console.log(a)}),socket.on("visual",function(a){console.log(a)}),socket.on("noVisual",function(a){console.log(a)}),socket.on("user connected",function(){console.log("user connected")});

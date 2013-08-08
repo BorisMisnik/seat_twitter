@@ -1,0 +1,74 @@
+[
+	{
+		"type" : "visual",
+		"name" : "Окно",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "visual",
+		"name" : "Бампер",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "гайка",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "скрепка",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "болт",
+		"share" : false,
+		"date" : ""
+	},
+	{
+		"type" : "visual",
+		"name" : "a2",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "visual",
+		"name" : "a3",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "a4",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "a5",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "a6",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"lastTweet" : "null"
+	}
+]
