@@ -29,5 +29,8 @@ app.get('/', function (req, res) {
 // connect socket io
 io.set('log level', 1); // reduce logging
 io.sockets.on('connection', function (socket) {
-	model.getLastTweet('user connect');
+	socket.on('getDetails', function(){
+		model.getDetail(socket);
+		// console.log( 'user connect and load DOM');
+	});
 });

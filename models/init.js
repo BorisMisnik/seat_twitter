@@ -3,7 +3,9 @@ var MongoClient = require('mongodb').MongoClient
   , format = util.format
   , details = require('../details.json')
   , twitter = require('twitter')
-  , async = require('async')
+  , server = require('../server')
+  , events = require('events')
+  , emiter = new events.EventEmitter();
 	require('date-utils'); 
 
 var twit = new twitter({
@@ -14,113 +16,79 @@ var twit = new twitter({
 });
 
 var model = {
-
 	visual : 0,
 	noVisual : 0,
-	lastTweetId : 'null',
 	tweetsCount : 0,
-	dateTomorrow : Date.tomorrow(),
+	dateTomorrow : Date.tomorrow().toFormat('YYYY-MM-DD'),
 	today : Date.today().toFormat('YYYY-MM-DD'),
 
-	// if tweetsCount % 20 call this method
-	shareDetail : function(tweet){	
-		// console.log( tweet );
-		var info = this.formatTweet(tweet);
+	// search shared detail today
+	search : function(startServer){
+		var _this = this;
+		// find shared detail today
+		this.collection.find().toArray(function(err, result){
+			if( err ) throw err;
+			result.forEach(function(item, index){
+				//  get share details today
+				if( item.share && item.date === _this.today )
+					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
+				// get id last record and get 100 tweets
+				if( result.length - 1 === index )
+					_this.searchTweets({since_id : item.id, count : 100}); 	
 
-		if( this.visual === 0 && this.noVisual === 3){
+			});
+			// run server
+			startServer();
+		});
+	},
+	// search latest tweets
+	searchTweets : function(option){
+		var _this = this;
+		// search tweets by hashtag and parametrs
+		twit.search('#wottak',option,function(data){
+			// amount tweets 
+			_this.tweetsCount = data.statuses.length;
+			// console.log('missed tweets amount', _this.tweetsCount );
+			// search for every 20 tweets 
+			data.statuses.forEach(function(item, index){
+				if( index !== 0 && index % 20 === 0 && ( _this.visual < 3 || _this.noVisual < 7))
+					_this.shareDetail(item);
+			})
+		});
+	},
+	// share detail
+	shareDetail : function(item){
+		var tweet = this.adaptationTweet(item);
+		this.updateModel();
+		if( this.visual < 3 && this.noVisual === 3 ){
 			this.visual++;
-			this.updateDetailInDb('visual', info);  
+			// update visual detail in db;
+			this.updateDetailInDb('visual', tweet);
 		}
-		else if( this.visual === 1 && this.noVisual === 6 ){
+		else if( this.visual < 3 && this.noVisual === 6 ){
 			this.visual++;
-			this.updateDetailInDb('visual', info);  
+			// update visual detail in db;
+			this.updateDetailInDb('visual', tweet);
 		}
 		else if( this.noVisual < 7 ){
 			this.noVisual++;
-			this.updateDetailInDb('noVisual', info);
+			// update no-visual detail in db;
+			this.updateDetailInDb('noVisual', tweet);
 		}
 
 	},
-
-	formatTweet : function(tweet){
+	adaptationTweet : function(tweet){
 		var d = new Date().toFormat('YYYY-MM-DD-HH24-MI');
 		return {
 			time : d,
-			userId : tweet.id_str,
+			id : tweet.id_str,
 			text : tweet.text,
 			name : tweet.user.name,
 			screen_name : tweet.user.screen_name,
-			avatart : tweet.user.profile_image_url_https
+			avatar : tweet.user.profile_image_url_https
 		}
 	},
-
-	updateDetailInDb : function(category, tweet){
-		var _this = this;
-		this.collection.update({
-			share : false,
-			type : category 
-		}, {$set : {
-			share : true,
-			user : tweet,
-			date : _this.today
-		}}, {}, function(err, object){
-			if( err ) console.warn(err.message);
-			else if( object )
-				// sending detail to the client
-				_this.sendDetails(category);
-		});
-	},
-
-	sendDetails : function(category){
-		// search open details 
-		var result = searchDetailsInDb(category);
-
-		// sendting details to client
-		console.log( result );
-	},
-
-	searchDetailsInDb : function(category, callback){
-		var resultFind;
-		var _this = this;
-		if( !callback ){
-			this.collection.find({share : true, type : category}).toArray(function(err, result){
-				if( err ) throw err;
-				else if( result.length ) return resultFind = result;
-
-			});
-		}
-		else{
-			this.collection.find({date:_this.today, type:category, share:true}).toArray(function(err, result){
-				if( err ) throw err;
-				callback(null, result.length);
-			});
-		}
-	},
-	// method call when sent a tweet 
-	tweet : function(tweet){
-		// get info about tweet
-		var info = this.formatTweet(tweet);
-		// updateModel
-		this.updateModel(tweet);
-		// send tweet to client 
-		console.log( info );
-		// share detail
-		if( this.tweetsCount % 2 === 0 && ( this.visual != 2 || this.noVisual != 6 ) ){
-			this.shareDetail( tweet );
-		}
-	},
-
 	updateModel : function(data){
-		if( !data.id ) return;
-
-		var id = data.id_str;
-		this.tweetsCount++;
-		// update lastTweetId
-		this.update({'lastTweet' : model.lastTweetId}, {$set: {'lastTweet' : id}}, {}, function(err, object) {
-			if( err ) console.warn(err.message);
-			else model.lastTweetId = id;
-		});
-
 		if( this.dateTomorrow === Date.today() ){
 			// reset amount details
 			this.visual = 0;
@@ -129,55 +97,26 @@ var model = {
 			this.dateTomorrow = Date.tomorrow();
 		}
 	},
-	// Search shared detail in the current day
-	searchDetails : function(){
+	updateDetailInDb : function(category, tweet, scoket){
 		var _this = this;
-		async.parallel([
-			// search visual details shared today
-			function(callback){ 
-				model.searchDetailsInDb('visual', callback);
-			},
-			// search noVisual details shared today
-			function(callback){
-			   model.searchDetailsInDb('noVisual', callback);
-			},
-			// get id of the last tweet
-			function(callback){
-				model.collection.find({'lastTweet' : /\w+/}).toArray(function(err, result){
-					callback(null, result[0].lastTweet);
-				});
+		var query = {share:false, type:category};
+		var set = {id:tweet.id, date:_this.today, user:tweet, share:true}
+		this.collection.update(query, {$set : set},function(err, object){
+			if( err ) console.warn(err.message);
+			else if( object ){
+				console.log( object )
+				// sending detail to the client
+				_this.sendDetails(category);
 			}
-		],
-		// callback
-		function(err, results){
-			_this.visual = results[0]; // shared visual details today
-			_this.noVisual = results[1]; // shared no-visual details today
-			_this.lastTweetId = results[2]; // id last tweet
 		});
 	},
-
-	searchTweets : function(option){
-		var _this = this;
-		twit.search('#wottak',option,function(data){
-			if( data.statuses ){
-				console.log( data.statuses.length );
-				for (var i = 0; i < data.statuses.length; i++) {
-					console.log( i );
-					console.log( 'ok' ); 
-					// share details if she % 20
-					if( i != 0 && i % 20 === 0 && ( _this.visual != 2 || _this.noVisual != 6 ) )
-						_this.shareDetail( item );
-					// render last 10 tweets
-					if( option.count === 10 ){
-						console.log( 'ok' );
-						_this.tweet( item );
-					}
-				};
-			}
-		});
+	tweet : function(item){
+		this.tweetsCount++;
+		console.log( tweetsCount );
+		if( this.tweetsCount % 2 === 0 )
+			this.shareDetail(item);
 	}
 };
-
 // Connect to db
 exports.connect = function(callback){
 	var host = process.env['MONGO_NODE_DRIVER_HOST'] != null ? 
@@ -188,26 +127,25 @@ exports.connect = function(callback){
 
 	MongoClient.connect(format("mongodb://%s:%s/test", host, port), function(err, db) {
 		console.log( 'DB connect to ' + format("mongodb://%s:%s/test", host, port ) );
-
 		model.collection = db.collection('seat_twitter');
 		// Count the number of records
 		model.collection.count(function(err, count) {
 			// if db empty insert records
-			if( count !== 0 ){
-				// start server
-				callback();
-				// search shared details
-				model.searchDetails();
-				return;
-			} 
-			// Insert records
-			model.collection.insert(details, function(docs) {
-				console.log( 'Details insert to db' );
-				// start server
-				callback(); 
-				model.searchDetails();
-			});
-		});
+			if( count === 0 ){
+				// Insert records
+				model.collection.insert(details, function(docs) {
+					console.log( 'Details insert to db' );
+					// start server
+					callback(); 
+				});
+			}
+			// if server restrat search shared details today and missed tweets
+			else{
+				// search
+				model.search(callback);
+				
+			}
+		});	
 	});
 };
 
@@ -219,13 +157,7 @@ exports.startStriming = function(){
 	console.log( 'stream started' );
 };
 
-// search last posted tweet
-exports.getLastTweet = function(type){
-	// if user connect
-	if ( type )
-		model.searchTweets({count : 10});
-	// if server restart 
-	else if( model.lastTweetId !== 'null' )
-		model.searchTweets({since_id : model.lastTweetId, count : 100});
-}
-
+// events
+exports.getDetails = function(socket){
+	model.
+};

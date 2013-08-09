@@ -2,16 +2,16 @@
 	{
 		"type" : "visual",
 		"name" : "Окно",
-		"share" : false,
+		"share" : true,
 		"user" : "",
-		"date" : ""
+		"date" : "2013-08-09"
 	},
 	{
 		"type" : "visual",
 		"name" : "Бампер",
-		"share" : false,
+		"share" : true,
 		"user" : "",
-		"date" : ""
+		"date" : "2013-08-09"
 	},
 	{
 		"type" : "noVisual",
@@ -30,27 +30,28 @@
 	{
 		"type" : "noVisual",
 		"name" : "болт",
-		"share" : false,
-		"date" : ""
+		"share" : true,
+		"date" : "2013-08-09"
 	},
 	{
 		"type" : "visual",
 		"name" : "a2",
 		"share" : false,
 		"user" : "",
-		"date" : ""
+		"date" : "",
+		"hellow" : "world"
 	},
 	{
 		"type" : "visual",
 		"name" : "a3",
-		"share" : false,
+		"share" : true,
 		"user" : "",
-		"date" : ""
+		"date" : "2013-08-09"
 	},
 	{
 		"type" : "noVisual",
 		"name" : "a4",
-		"share" : false,
+		"share" : true,
 		"user" : "",
 		"date" : ""
 	},
@@ -59,16 +60,14 @@
 		"name" : "a5",
 		"share" : false,
 		"user" : "",
-		"date" : ""
+		"date" : "2013-08-09"
 	},
 	{
 		"type" : "noVisual",
 		"name" : "a6",
-		"share" : false,
+		"share" : true,
 		"user" : "",
-		"date" : ""
-	},
-	{
-		"lastTweet" : "null"
+		"date" : "2013-08-09",
+		"id" : "365381263558844400"
 	}
 ]
