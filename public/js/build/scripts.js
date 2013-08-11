@@ -1,7 +1,9 @@
 $(document).ready(function(){
 	var socket = io.connect(window.location.href);
-	socket.emit('getDetails');
-	socket.on('tweet', function (data) {
-	  console.log( data );
-	});
+	socket.on('connect', function () { 
+		socket.emit('getDetails')
+		socket.on('detail', function(data){
+			console.log( data ); 
+		});
+  	});
 });

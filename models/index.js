@@ -2,17 +2,15 @@ var MongoClient = require('mongodb').MongoClient
   , util = require('util')
   , format = util.format
   , details = require('../details.json')
-  , twitter = require('twitter')
+  , twitter = require('twitter') 
   , server = require('../server')
-  , events = require('events')
-  , emiter = new events.EventEmitter();
-	require('date-utils'); 
+	require('date-utils');  
 
 var twit = new twitter({
-	consumer_key: 'BWx1ScD4tPkCpbQVwktcQ',
-	consumer_secret: 'KsRK97iq4DLndeBd3mNkYbwFoDo2uBnqbffxi7UMJo',
-	access_token_key: '536480495-OeGqKHheElDaYgB6QFwun8H0EmsZvjyzMTwqwHQA',
-	access_token_secret: 'URIt1V2lq6l7HQW13qPP2OnOEusJ6V9Whh89i2g5Kg0' 
+	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
+	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
+	access_token_key: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
+	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE'
 });
 
 var model = {
@@ -33,7 +31,7 @@ var model = {
 				if( item.share && item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 				// get id last record and get 100 tweets
-				if( result.length - 1 === index )
+				if( result.length - 1 === index && item.id !== '' ) 
 					_this.searchTweets({since_id : item.id, count : 100}); 	
 
 			});
@@ -44,16 +42,16 @@ var model = {
 	// search latest tweets
 	searchTweets : function(option){
 		var _this = this;
-		// search tweets by hashtag and parametrs
+		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
 			// amount tweets 
 			_this.tweetsCount = data.statuses.length;
 			// console.log('missed tweets amount', _this.tweetsCount );
-			// search for every 20 tweets 
+			// search % 20
 			data.statuses.forEach(function(item, index){
 				if( index !== 0 && index % 20 === 0 && ( _this.visual < 3 || _this.noVisual < 7))
 					_this.shareDetail(item);
-			})
+			});
 		});
 	},
 	// share detail
@@ -89,30 +87,41 @@ var model = {
 		}
 	},
 	updateModel : function(data){
-		if( this.dateTomorrow === Date.today() ){
+		// if today is tomorrow's update counters
+		if( this.dateTomorrow === this.today ){
 			// reset amount details
 			this.visual = 0;
 			this.noVisual = 0;
-			// update date
-			this.dateTomorrow = Date.tomorrow();
+			// update date tomorrow
+			this.dateTomorrow = Date.tomorrow().toFormat('YYYY-MM-DD');
 		}
 	},
-	updateDetailInDb : function(category, tweet, scoket){
+	updateDetailInDb : function(category, tweet){
 		var _this = this;
 		var query = {share:false, type:category};
 		var set = {id:tweet.id, date:_this.today, user:tweet, share:true}
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
-				console.log( object )
+				// console.log( object )
 				// sending detail to the client
 				_this.sendDetails(category);
 			}
 		});
 	},
-	tweet : function(item){
+	sendDetails : function(category){
+		var query = category === 'all' ? {share:true} : {share:true,type:category};
+		this.collection.find(query).toArray(function(err, result){
+			if( err ) throw err;
+			else
+				server.sendDetails(result);
+		});
+	},
+	tweet : function(item){  
+		var _this = this;
+		console.log( 'ok go' )
 		this.tweetsCount++;
-		console.log( tweetsCount );
+		console.log( _this.tweetsCount );
 		if( this.tweetsCount % 2 === 0 )
 			this.shareDetail(item);
 	}
@@ -151,13 +160,16 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	twit.stream('user', {track:'#wottak'}, function(stream) {
-		stream.on('data', model.tweet);
-	});
-	console.log( 'stream started' );
+		twit.stream('statuses/filter', {track:'#ok'}, function(stream) {
+			stream.on('data', model.tweet);
+			stream.on('error', function(error, code) {
+				console.log("My error: " + error + ": " + code);
+			});
+		});
 };
 
 // events
-exports.getDetails = function(socket){
-	model.
+exports.getDetails = function(category, callback){
+	// get all share details and send to client
+	model.sendDetails(category);
 };

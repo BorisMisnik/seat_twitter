@@ -1,1 +1,1 @@
-$(document).ready(function(){var a=io.connect(window.location.href);a.emit("getDetails"),a.on("tweet",function(a){console.log(a)})});
+$(document).ready(function(){var a=io.connect(window.location.href);a.on("connect",function(){a.emit("getDetails"),a.on("detail",function(a){console.log(a)})})});
