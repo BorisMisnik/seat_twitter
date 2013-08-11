@@ -2,7 +2,7 @@ var MongoClient = require('mongodb').MongoClient
   , util = require('util')
   , format = util.format
   , details = require('../details.json')
-  , twitter = require('twitter') 
+  , twitter = require('ntwitter') 
   , server = require('../server')
 	require('date-utils');  
 
