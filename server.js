@@ -17,12 +17,12 @@ app.configure(function(){
 
 // connect to mongodb and start server
 model.connect(function(){
-	var port = process.env.PORT || 5000;  
-	server.listen(port, function(){
-		console.log( 'Server listen on port ' + port );
-		// start stream;
-		model.startStriming() 
-	});
+	var port = process.env.PORT || 3000;  
+	// server.listen(port, function(){
+	// 	console.log( 'Server listen on port ' + port );
+	// 	// start stream;
+	// 	model.startStriming() 
+	// });
 });
 
 app.get('/', function (req, res) {
@@ -34,11 +34,11 @@ exports.sendDetails = function(data){
 	socketIO.emit('detail', data);
 }
 // connect socket io
-io.set('log level', 1); // reduce logging
-io.sockets.on('connection', function (socket) {
-	socketIO = socket;
-	socket.on('getDetails', function(){
-		// get all share details
-		model.getDetails('all');
-	});
-});
+// io.set('log level', 1); // reduce logging
+// io.sockets.on('connection', function (socket) {
+// 	socketIO = socket;
+// 	socket.on('getDetails', function(){
+// 		// get all share details
+// 		model.getDetails('all');
+// 	});
+// });
