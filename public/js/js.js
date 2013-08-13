@@ -1,9 +1,10 @@
 $(document).ready(function(){
 	var socket = io.connect(window.location.href);
-	socket.on('connect', function () { 
-		socket.emit('getDetails')
-		socket.on('detail', function(data){
-			console.log( data ); 
-		});
-  	});
+	socket.emit('get', function(data){
+		console.log( data )
+	})
+
+    socket.on('message', function (data) {
+    	console.log( data )
+    });
 });

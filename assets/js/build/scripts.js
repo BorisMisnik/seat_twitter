@@ -1,1 +1,1 @@
-$(document).ready(function(){var a=io.connect(window.location.href);a.on("connect",function(){a.emit("getDetails"),a.on("detail",function(a){console.log(a)})})});
+$(document).ready(function(){var a=io.connect(window.location.href);a.emit("get",function(a){console.log(a)}),a.on("message",function(a){console.log(a)})});

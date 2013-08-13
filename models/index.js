@@ -4,15 +4,13 @@ var MongoClient = require('mongodb').MongoClient
   , details = require('../details.json')
   , twitter = require('twitter') 
   , server = require('../server')
-  , stream = require('../models/stream')
-	require('date-utils'); 
-	stream.run(); 
+	require('date-utils');  
 
 var twit = new twitter({
-	 consumer_key: 'obwKjvxnkD3Cm16cwwQ5kw',
-	consumer_secret: 'M1U4weI9SJnUQAFj86wHCJ7JwmWKgVl45Mus0nVE',
-	access_token_key: '302831975-wJ66dYFM4I4d6X7O6lsNLkmEd42HVJGXtCFCte5s',
-	access_token_secret: 'aFZonCrfXfkCpwNAzQr9M3nUDqPCHaz60YpGuElGJpA'
+	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
+	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
+	access_token_key: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
+	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE'
 });
 
 var model = {
@@ -162,8 +160,13 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	// console.log(t)
-	// t.getTweets();
+	twit.stream('user', {track:'#ok'}, function(stream) {
+		console.log( 'Stream started' ); 
+		stream.on('data', model.tweet.bind(model));
+		stream.on('error', function(error, code) {
+			console.log("My error: " + error + ": " + code);
+		});
+	});
 };
 
 // events
