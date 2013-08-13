@@ -1,5 +1,56 @@
+// width, height
+.size (@w, @h){
+	width: @w;
+	height: @h;
+}
+
+html,
 body{
-	margin: 20px; 
-	border-color:orange;
-	border-width: 1; 
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+body{
+	background:url('../img/body_bg.jpg') no-repeat top #fff;
+}
+header{
+	.size(960px, 95px);
+	background:url('../img/header_bg.png') no-repeat right top;
+	margin: auto;
+	position: relative;
+}
+#logo{
+	display: block;
+	position: absolute;
+	left: 25px;
+	top: 29px;
+	.size(159px, 36px);
+	background:url('../img/logo_seat_big.png') no-repeat; 
+}
+#seat_menu{
+	padding:0;
+	position: absolute;
+	top:0;
+	right:0;
+	list-style:none;
+	li{
+		float: left;
+		margin: 7px 11px 0 0;
+		a{
+			color: #FFF;
+			text-decoration: none;
+			font-family: Arial,sans-serif;
+			font-weight: bold;
+			padding: 0 11px 0 0;
+			margin: 0;
+			border-right: 1px #FFF solid;
+			font-size: 9px;
+		}
+		&:last-child a{
+			border:0;
+			padding-right: 0;
+		}
+	}
 }

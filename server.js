@@ -6,11 +6,7 @@ var app = require('express')()
 
 //  configuration node
 app.configure(function(){
-	if( app.get('env') === 'development' )
-		app.use(express.static( __dirname + '/public' ));
-	else
-		app.use(express.static( __dirname + '/assets' ));
-
+	app.use(express.static( __dirname + '/public' ));
 	app.set('view engine', 'jade');
 	app.set('views', __dirname + '/views');
 });

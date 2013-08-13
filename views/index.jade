@@ -2,19 +2,23 @@ doctype 5
 html(lang="en")
 	head
 	title Seat
+	link(rel="stylesheet", href="css/index.css")
 	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
 	script(src="/socket.io/socket.io.js")
-	script(src="js/build/scripts.js")
+	script(src="js/scripts.js")
 	body
-		h1 Jade - node template engine
-		#container.col
-		p.
-			Jade is a terse and simple
-			templating language with a
-			strong focus on performance
-			and powerful features.
-		a(href="https://twitter.com/share", class="twitter-share-button", data-lang="ru") Твитнуть
-		script
-			!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);
-			js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}
-			(document,"script","twitter-wjs");
+		header
+			a(href="http://www.seat.ru/", id="logo")
+			ul#seat_menu
+				li
+					a(href="http://www.seat.ru/content/ru/brand/ru/company/we-are-seat.html") КОМПАНИЯ
+				li
+					a(href="http://www.seat.ru/content/ru/brand/ru/contact/dealersmaps.html") ДИЛЕРЫ SEAT
+				li
+					a(href="http://www.seat.ru/content/ru/brand/ru/news-and-events/seat-world.html") МИР SEAT
+				li
+					a(href="http://www.seat.ru/content/ru/brand/ru/finance/about-finance.html") SEAT ФИНАНС
+				li
+					a(href="http://www.seat.ru/content/ru/brand/ru/service/home.html") SEAT SERVICE
+				li
+					a(href="http://www.seat.ru/content/ru/brand/ru/contact/contacts.html") КОНТАКТЫ

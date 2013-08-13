@@ -2,7 +2,7 @@ var MongoClient = require('mongodb').MongoClient
   , util = require('util')
   , format = util.format
   , details = require('../details.json')
-  , twitter = require('ntwitter') 
+  , twitter = require('twitter') 
   , server = require('../server')
 	require('date-utils');  
 
@@ -119,7 +119,6 @@ var model = {
 	},
 	tweet : function(item){  
 		var _this = this;
-		console.log( 'ok go' )
 		this.tweetsCount++;
 		console.log( _this.tweetsCount );
 		if( this.tweetsCount % 2 === 0 )
@@ -160,8 +159,8 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-		twit.stream('statuses/filter', {track:'#ok'}, function(stream) {
-			stream.on('data', model.tweet);
+		twit.stream('statuses/filter', {track:'#wottak'}, function(stream) {
+			stream.on('data', model.tweet.bind(model));
 			stream.on('error', function(error, code) {
 				console.log("My error: " + error + ": " + code);
 			});
