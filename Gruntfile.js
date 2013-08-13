@@ -3,13 +3,13 @@ module.exports = function(grunt){
 		concat : {
 			build : {
 				src:  'public/js/*.js',
-        		dest: 'public/js/build/scripts.js'
+        		dest: 'public/js/scripts.js'
 			}
 		},
 		uglify: {
 		    build: {
-		     	src: ['public/js/build/scripts.js'],
-        		dest: 'assets/js/build/scripts.js'
+		     	src: ['public/js/scripts.js'],
+        		dest: 'public/js/scripts.js'
 		    }
  		},
 		less : {
@@ -21,7 +21,7 @@ module.exports = function(grunt){
 				expand: true,
 				flatten : true,
 				src : ['./public/css/*.less'],
-				dest : './assets/css/',
+				dest : './public/css/',
 				ext : '.css' 
 			}
 		},
@@ -29,11 +29,11 @@ module.exports = function(grunt){
 			style : {
 				files : './public/css/*.less',
 				tasks : 'less'
-			},
-			js: {
-		        files: '<%= concat.build.src %>',
-		        tasks: ['concat', 'uglify']
-      		}
+			}
+			// js: {
+		 //        files: '<%= concat.build.src %>',
+		 //        tasks: ['concat', 'uglify']
+   //    		}
 		}
 	});
 

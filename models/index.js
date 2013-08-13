@@ -119,7 +119,6 @@ var model = {
 	},
 	tweet : function(item){  
 		var _this = this;
-		console.log( 'ok go' )
 		this.tweetsCount++;
 		console.log( _this.tweetsCount );
 		if( this.tweetsCount % 2 === 0 )
@@ -160,8 +159,7 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	twit.stream('user', {track:'#ok'}, function(stream) {
-		console.log( 'Stream started' ); 
+	twit.stream('statuses/filter', {track:'#wottak'}, function(stream) {
 		stream.on('data', model.tweet.bind(model));
 		stream.on('error', function(error, code) {
 			console.log("My error: " + error + ": " + code);
