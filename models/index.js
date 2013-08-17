@@ -10,7 +10,7 @@ var twit = new twitter({
 	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
 	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
 	access_token_key: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
-	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE'
+	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE' 
 });
 
 var model = {
@@ -58,21 +58,22 @@ var model = {
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
 		this.updateModel();
-		if( this.visual < 3 && this.noVisual === 3 ){
-			this.visual++;
-			// update visual detail in db;
-			this.updateDetailInDb('visual', tweet);
-		}
-		else if( this.visual < 3 && this.noVisual === 6 ){
-			this.visual++;
-			// update visual detail in db;
-			this.updateDetailInDb('visual', tweet);
-		}
-		else if( this.noVisual < 7 ){
-			this.noVisual++;
-			// update no-visual detail in db;
-			this.updateDetailInDb('noVisual', tweet);
-		}
+		this.updateDetailInDb('visual', tweet);
+		// if( this.visual < 3 && this.noVisual === 3 ){
+		// 	this.visual++;
+		// 	// update visual detail in db;
+		// 	this.updateDetailInDb('visual', tweet);
+		// }
+		// else if( this.visual < 3 && this.noVisual === 6 ){
+		// 	this.visual++;
+		// 	// update visual detail in db;
+		// 	this.updateDetailInDb('visual', tweet);
+		// }
+		// else if( this.noVisual < 7 ){
+		// 	this.noVisual++;
+		// 	// update no-visual detail in db;
+		// 	this.updateDetailInDb('noVisual', tweet);
+		// }
 
 	},
 	adaptationTweet : function(tweet){
@@ -103,18 +104,24 @@ var model = {
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
-				// console.log( object )
+				console.log( object );
 				// sending detail to the client
-				_this.sendDetails(category);
+				_this.sendDetails();
 			}
 		});
 	},
-	sendDetails : function(category){
-		var query = category === 'all' ? {share:true} : {share:true,type:category};
-		this.collection.find(query).toArray(function(err, result){
+	sendDetails : function(callback){
+		this.collection.find({share:true}).toArray(function(err, result){
 			if( err ) throw err;
-			else
-				server.sendDetails(result);
+			else{
+				// send items with socket
+				if( !callback )
+					server.sendDetails(result);
+				// sending items through the post
+				else
+					callback(result);
+			}
+				
 		});
 	},
 	tweet : function(item){  
@@ -151,15 +158,16 @@ exports.connect = function(callback){
 			else{
 				// search
 				model.search(callback);
-				
 			}
 		});	
+		exports.startStriming();
 	});
 };
 
 // start stream tweets
 exports.startStriming = function(){
 	twit.stream('statuses/filter', {track:'#wottak'}, function(stream) {
+		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 		stream.on('error', function(error, code) {
 			console.log("My error: " + error + ": " + code);
@@ -168,7 +176,7 @@ exports.startStriming = function(){
 };
 
 // events
-exports.getDetails = function(category, callback){
+exports.getDetails = function(callback){
 	// get all share details and send to client
-	model.sendDetails(category);
+	model.sendDetails(callback);
 };

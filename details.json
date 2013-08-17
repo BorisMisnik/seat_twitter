@@ -1,73 +1,162 @@
 [
 	{
 		"type" : "visual",
-		"name" : "Окно",
-		"share" : false,
-		"user" : "",
-		"date" : "2013-08-09"
-	},
-	{
-		"type" : "visual",
-		"name" : "Бампер",
-		"share" : false,
-		"user" : "",
-		"date" : "2013-08-09"
-	},
-	{
-		"type" : "noVisual",
-		"name" : "гайка",
-		"share" : false,
-		"user" : "",
-		"date" : ""
-	},
-	{
-		"type" : "noVisual",
-		"name" : "скрепка",
-		"share" : false,
-		"user" : "",
-		"date" : ""
-	},
-	{
-		"type" : "noVisual",
-		"name" : "болт",
-		"share" : false,
-		"date" : "2013-08-09"
-	},
-	{
-		"type" : "visual",
-		"name" : "a2",
+		"name" : "v1",
 		"share" : false,
 		"user" : "",
 		"date" : "",
-		"hellow" : "world"
+		"news-text" : "Проснувшись однажды утром после беспокойного сна,"
 	},
 	{
 		"type" : "visual",
-		"name" : "a3",
+		"name" : "v2",
 		"share" : false,
 		"user" : "",
-		"date" : "2013-08-09"
+		"date" : "",
+		"news-text" : "Грегор Замза обнаружил, что он у себя в постели"
 	},
 	{
-		"type" : "noVisual",
-		"name" : "a4",
+		"type" : "visual",
+		"name" : "v3",
 		"share" : false,
 		"user" : "",
-		"date" : ""
+		"date" : "",
+		"news-text" : "панцирнотвердой спине, он видел, стоило ему приподнять "
 	},
 	{
-		"type" : "noVisual",
-		"name" : "a5",
+		"type" : "visual",
+		"name" : "v4",
 		"share" : false,
 		"user" : "",
-		"date" : "2013-08-09"
+		"date" : "",
+		"news-text" : "голову, свой коричневый, выпуклый, разделенный"
 	},
 	{
-		"type" : "noVisual",
-		"name" : "a6",
+		"type" : "visual",
+		"name" : "v5",
 		"share" : false,
 		"user" : "",
-		"date" : "2013-08-09",
-		"id" : ""
+		"date" : "",
+		"news-text" : "дугообразными чешуйками живот, на верхушке которого и"
+	},
+	{
+		"type" : "visual",
+		"name" : "v6",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "еле держалось готовое вот-вот окончательно сползти"
+	},
+	{
+		"type" : "visual",
+		"name" : "v7",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "одеяло. Его многочисленные, убого тонкие по сравнению с"
+	},
+	{
+		"type" : "visual",
+		"name" : "v8",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "остальным телом ножки беспомощно копошились у него "
+	},
+	{
+		"type" : "visual",
+		"name" : "v9",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "перед глазами. «Что со мной случилось?» – подумал он. Это "
+	},
+	{
+		"type" : "visual",
+		"name" : "v10",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "не было сном. Его комната, настоящая, разве что слишком "
+	},
+	{
+		"type" : "visual",
+		"name" : "v11",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "маленькая, но обычная комната, мирно покоилась в своих "
+	},
+	{
+		"type" : "visual",
+		"name" : "v12",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "четырех хорошо знакомых стенах. Над столом, где были "
+	},
+	{
+		"type" : "visual",
+		"name" : "v13",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "разложены распакованные образцы сукон – Замза был "
+	},
+	{
+		"type" : "visual",
+		"name" : "v14",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "коммивояжером, – висел портрет, который он недавно "
+	},
+	{
+		"type" : "visual",
+		"name" : "v15",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "коммивояжером, – висел портрет, который он недавно "
+	},
+	{
+		"type" : "visual",
+		"name" : "v16",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "вырезал из иллюстрированного журнала и вставил в "
+	},
+	{
+		"type" : "visual",
+		"name" : "v17",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "дама в меховой шляпе и боа, она сидела очень прямо и "
+	},
+	{
+		"type" : "visual",
+		"name" : "v18",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "Грегор Замза обнаружил, что он у себя в постели"
+	},
+	{
+		"type" : "visual",
+		"name" : "v19",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "красивую золоченую рамку. На портрете была изображена"
+	},
+	{
+		"type" : "visual",
+		"name" : "v20",
+		"share" : false,
+		"user" : "",
+		"date" : "",
+		"news-text" : "в окно, и пасмурная погода – слышно было, как по жести "
 	}
 ]

@@ -17,18 +17,23 @@ model.connect(function(){
 	io.set('log level', 1); // reduce logging
 	io.sockets.on('connection', function (socket){
 		socketIO = socket;
-		// get share details when user connected
-		model.getDetails('all')
 	});
+	console.log( 'server listen on port: ' + port );
 });
 
 var socketIO;
 exports.sendDetails = function(data){
-	console.log(data)
-	socketIO.emit('details', data);
+	console.log(data);
+	socketIO.broadcast.emit('details', data);
 };
 
 app.get('/', function (req, res) {
 	res.render('index');
+});
+
+app.post('/', function(req, res){
+	model.getDetails(function(data){
+		res.send(data);
+	});
 });
 

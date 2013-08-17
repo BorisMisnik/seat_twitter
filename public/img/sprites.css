@@ -1,0 +1,130 @@
+.arrow-l, .arrow-l-a, .arrow-r, .arrow-r-a, .twitter, .youtube_icon, .facebook_icon, .odnoklassniki, .twitter21x21, .vk_icon, .diller, .diller-a, .drive, .drive-a, .broshura, .broshura-a, .config, .config-a, .price, .price-a, .arrow-toltip{
+	background: url(sprites.png) no-repeat;
+}
+
+.arrow-l{
+	background-position: 0 0;
+	width: 27px;
+	height: 85px;
+}
+
+.arrow-l-a{
+	background-position: 0 -100px ;
+	width: 27px;
+	height: 85px;
+}
+
+.arrow-r{
+	background-position: -50px -100px ;
+	width: 27px;
+	height: 85px;
+}
+
+.arrow-r-a{
+	background-position: -50px -1px ;
+	width: 27px;
+	height: 85px;
+}
+
+.twitter{
+	background-position: -100px 0;
+	width: 68px;
+	height: 68px;
+}
+
+.youtube_icon{
+	background-position: -130px -100px ;
+	width: 21px;
+	height: 21px;
+}
+
+.facebook_icon{
+	background-position: -130px -130px ;
+	width: 21px;
+	height: 21px;
+}
+
+.odnoklassniki{
+	background-position: -100px -160px ;
+	width: 21px;
+	height: 21px;
+}
+
+.twitter21x21{
+	background-position: -100px -130px ;
+	width: 21px;
+	height: 21px;
+}
+
+.vk_icon{
+	background-position: -100px -100px ;
+	width: 21px;
+	height: 21px;
+}
+
+.diller{
+	background-position: -200px 0;
+	width: 73px;
+	height: 135px;
+}
+
+.diller-a{
+	background-position: -300px 0;
+	width: 73px;
+	height: 135px;
+}
+
+.drive{
+	background-position: -400px 0;
+	width: 144px;
+	height: 143px;
+}
+
+.drive-a{
+	background-position: 0 -200px ;
+	width: 144px;
+	height: 143px;
+}
+
+.broshura{
+	background-position: -171px -150px ;
+	width: 106px;
+	height: 137px;
+}
+
+.broshura-a{
+	background-position: -296px -150px ;
+	width: 106px;
+	height: 137px;
+}
+
+.config{
+	background-position: -420px -150px ;
+	width: 134px;
+	height: 62px;
+}
+
+.config-a{
+	background-position: -420px -225px ;
+	width: 134px;
+	height: 62px;
+}
+
+.price{
+	background-position: -170px -300px ;
+	width: 106px;
+	height: 137px;
+}
+
+.price-a{
+	background-position: -300px -300px ;
+	width: 106px;
+	height: 137px;
+}
+
+.arrow-toltip{
+	background-position: -555px 0;
+	width: 16px;
+	height: 9px;
+}
+
