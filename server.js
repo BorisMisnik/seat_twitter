@@ -4,6 +4,8 @@ var express = require('express')
 
 //  configuration node
 app.configure(function(){
+	app.use(express.cookieParser());
+  	app.use(express.session());
 	app.use(express.static( __dirname + '/public' ));
 	app.set('view engine', 'jade');
 	app.set('views', __dirname + '/views');
@@ -24,7 +26,7 @@ model.connect(function(){
 
 var socketIO;
 exports.sendDetails = function(data){
-	console.log(data)
+	// console.log(data)
 	socketIO.emit('details', data);
 };
 

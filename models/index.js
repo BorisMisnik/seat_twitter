@@ -153,13 +153,23 @@ exports.connect = function(callback){
 				model.search(callback);
 				
 			}
-		});	
+		});
+		exports.startStriming();	
 	});
 };
+var Twit = require('twit')
+
+var T = new Twit({
+   	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
+	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
+	access_token: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
+	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE'
+})
 
 // start stream tweets
 exports.startStriming = function(){
-	twit.stream('statuses/filter', {track:'#wottak'}, function(stream) {
+	twit.stream('user', {track:'#ok'}, function(stream) {
+		console.log('ok')
 		stream.on('data', model.tweet.bind(model));
 		stream.on('error', function(error, code) {
 			console.log("My error: " + error + ": " + code);
