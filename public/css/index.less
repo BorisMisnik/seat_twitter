@@ -38,6 +38,12 @@
 	left:50%;
 	margin:-@h/2 0 0 -@w/2;
 }
+// transition
+.trans (@p, @t, @e){
+	-webkit-transition:@p @t @e;
+	-moz-transition:@p @t @e;
+	transition:@p @t @e;
+}
 .arrow-l, .arrow-l-a, .arrow-r, .arrow-r-a, .twitter, .youtube_icon, .facebook_icon, 
 .odnoklassniki, .twitter21x21, .vk_icon, .diller span, .diller-a span, .drive span, .drive-a span, 
 .broshura span, .broshura-a span, .config span, .config-a span, .price span, .price-a span{
@@ -211,13 +217,17 @@ header{
 		}
 	}
 	.tweet{
-		position: absolute;
+		.trans(all, 300ms, ease-in-out);
 		position:absolute;
-		top:20px;
-		padding: 18px 0 18px 15px;
-		width:433px;
+		top:0;
+		left:0;
+		display: none;
+		padding: 18px 25px 18px 15px;
+		min-width: 270px;
+		max-width:433px;
 		border:1px solid #00bdf5;
 		background:#fff;
+		opacity: 0;
 		&.left{
 			&:after{
 				left:56px;
@@ -225,12 +235,12 @@ header{
 		}
 		&.center{
 			&:after{
-				left:200px;
+				left:50%;
 			}
 		}
 		&.right{
 			&:after{
-				left:377px;
+				left:80%;
 			}
 		}
 		&:after{
@@ -254,7 +264,7 @@ header{
 		.text{
 			float: left;
 			margin-left: 12px;
-			width: 337px;
+			max-width: 285px;
 			.names{
 				overflow: hidden;
 				.name{
@@ -301,7 +311,7 @@ header{
 	}
 	.left{
 		float:left;
-		width:400px;
+		width:405px;
 		p{
 			margin:34px 0 0;
 			padding-left: 84px;
@@ -341,6 +351,8 @@ header{
 		#img-news{
 			margin-top: 10px;
 			margin-bottom: 32px;
+			max-width: 400px;
+			max-height: 155ox;
 		}
 		#priz-tweet{
 			overflow: hidden;

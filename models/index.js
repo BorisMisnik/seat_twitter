@@ -16,7 +16,7 @@ var twit = new twitter({
 var model = {
 	visual : 0,
 	noVisual : 0,
-	tweetsCount : 0,
+	tweetsCount : 1,
 	dateTomorrow : Date.tomorrow().toFormat('YYYY-MM-DD'),
 	today : Date.today().toFormat('YYYY-MM-DD'),
 
@@ -24,11 +24,11 @@ var model = {
 	search : function(startServer){
 		var _this = this;
 		// find shared detail today
-		this.collection.find().toArray(function(err, result){
+		this.collection.find({share:true}).toArray(function(err, result){
 			if( err ) throw err;
 			result.forEach(function(item, index){
 				//  get share details today
-				if( item.share && item.date === _this.today )
+				if( item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 				// get id last record and get 100 tweets
 				if( result.length - 1 === index && item.id !== '' ) 
@@ -44,12 +44,10 @@ var model = {
 		var _this = this;
 		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
-			// amount tweets 
-			_this.tweetsCount = data.statuses.length;
-			// console.log('missed tweets amount', _this.tweetsCount );
 			// search % 20
 			data.statuses.forEach(function(item, index){
-				if( index !== 0 && index % 20 === 0 && ( _this.visual < 3 || _this.noVisual < 7))
+				_this.tweetsCount++;
+				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 7))
 					_this.shareDetail(item);
 			});
 		});
@@ -84,7 +82,7 @@ var model = {
 			text : tweet.text,
 			name : tweet.user.name,
 			screen_name : tweet.user.screen_name,
-			avatar : tweet.user.profile_image_url_https
+			avatar : tweet.user.profile_image_url
 		}
 	},
 	updateModel : function(data){
@@ -104,7 +102,6 @@ var model = {
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
-				console.log( object );
 				// sending detail to the client
 				_this.sendDetails();
 			}
