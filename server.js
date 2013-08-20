@@ -33,6 +33,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function(req, res){
+	console.log('POST');
 	model.getDetails(function(data){
 		res.send(data);
 	});

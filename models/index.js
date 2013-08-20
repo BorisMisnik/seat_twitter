@@ -4,14 +4,15 @@ var MongoClient = require('mongodb').MongoClient
   , details = require('../details.json')
   , twitter = require('twitter') 
   , server = require('../server')
+  , http = require('http-get');
 	require('date-utils');  
 
-// var twit = new twitter({
-// 	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
-// 	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
-// 	access_token_key: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
-// 	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE' 
-// });
+var twit = new twitter({
+	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
+	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
+	access_token_key: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
+	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE' 
+});
 
 var model = {
 	visual : 0,
@@ -26,9 +27,6 @@ var model = {
 		// find shared detail today
 		this.collection.find({share:true}).toArray(function(err, result){
 			if( err ) throw err;
-			// run server
-			startServer();
-
 			result.forEach(function(item, index){
 				//  get share details today
 				if( item.date === _this.today )
@@ -36,17 +34,18 @@ var model = {
 				// get id last record and get 100 tweets
 				if( result.length - 1 === index && item.id !== '' ) 
 					_this.searchTweets({since_id : item.id, count : 100}); 	
-
 			});
+			// run server
+			startServer();
 		});
 	},
 	// search latest tweets
 	searchTweets : function(option){
-		console.log(id)
 		var _this = this;
 		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
 			// search % 20
+			if( !data.length ) return;
 			data.statuses.forEach(function(item, index){
 				_this.tweetsCount++;
 				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 7))
@@ -78,14 +77,26 @@ var model = {
 	},
 	adaptationTweet : function(tweet){
 		var d = new Date().toFormat('YYYY-MM-DD-HH24-MI');
+		this.saveImage(tweet.user.profile_image_url, tweet.user.name);
 		return {
 			time : d,
 			id : tweet.id_str,
 			text : tweet.text,
 			name : tweet.user.name,
 			screen_name : tweet.user.screen_name,
-			avatar : tweet.user.profile_image_url
+			avatar : 'img/uploads/'+tweet.user.name+'.png'
 		}
+	},
+	saveImage : function(path, name){
+		var options = {url : path};
+		console.log(__dirname + '/public/img/uploads/')
+		http.get(options, __dirname + '/public/img/uploads/'+name+'.png', function (error, result) {
+			console.log(result)
+			if (error)
+				console.error(error);
+			else
+				console.log('File downloaded at: ' + result.file);
+		});
 	},
 	updateModel : function(data){
 		// if today is tomorrow's update counters
@@ -123,10 +134,9 @@ var model = {
 				
 		});
 	},
-	tweet : function(item){  
-		var _this = this;
+	tweet : function(item){ 
+		if( !item.id ) return;
 		this.tweetsCount++;
-		console.log( _this.tweetsCount );
 		if( this.tweetsCount % 2 === 0 )
 			this.shareDetail(item);
 	}
@@ -159,7 +169,7 @@ exports.connect = function(callback){
 				model.search(callback);
 			}
 		});	
-		// exports.startStriming();
+		exports.startStriming();
 	});
 };
 
@@ -169,9 +179,6 @@ exports.startStriming = function(){
 	twit.stream('user', {track:'#wottak'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
-		stream.on('error', function(error, code) {
-			console.log("My error: " + error + ": " + code);
-		});
 	});
 };
 

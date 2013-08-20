@@ -19,7 +19,7 @@ var canvas = {
 		this.blockTweet.css('opacity','0');
 		this.car = $('.car');
 		// set stage background image
-		this.car.css('background-image', 'url(img/stageFront.jpg)');
+		this.car.css('background-image', 'url(img/stagefront.jpg)');
 		this.newsTweet = $('#priz-tweet');
 		//  add to stage tick event
 		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
@@ -104,7 +104,8 @@ var canvas = {
 	},
 	showBlockTweet : function(tweet, x, y){
 		// update content
-		var text = canvas.formatText(tweet.user.text);
+		var text = this.formatText(tweet.user.text);
+		var avatar = this.preloadAvatar(tweet.user.avatar);
 		this.blockTweet.show().css('opacity','1')
 		this.blockTweet.find('.img').css('background-image', 'url(' + tweet.user.avatar + ')');
 		this.blockTweet.find('.name').text(tweet.user.name);
@@ -140,6 +141,23 @@ var canvas = {
 		var t = text;
 		var result = VerEx().find( '#' ).replace(t, '<span>#wottak</span> ');
 		return result;
+	},
+	// get tweeter avatar
+	preloadAvatar : function(path){
+		console.log(path)
+		var img = new Image();
+		img.onload = function() {
+			var can = document.createElement('canvas');
+  			var ctx = can.getContext('2d');
+  			$(can).attr('width', img.width);
+  			$(can).attr('height', img.height);
+  			ctx.drawImage(img, 0, 0, can.width, can.height);
+  			var data = canvas.toDataURL(); // Read succeeds, canvas won't be dirty.
+  			console.log('data', data)
+		};
+		img.crossOrigin = ''; // no credentials flag. Same as img.crossOrigin='anonymous'
+		img.crossOrigin='anonymous'
+		img.src = path;
 	},
 	// displaying news
 	renderNews : function(data){
@@ -231,3 +249,4 @@ socket.on('details', function (data) {
 	// sorting detail
 	canvas.sortDetail();
 });
+document.domain = 'a0.twimg.com';
