@@ -2,44 +2,190 @@ doctype 5
 html(lang="en")
 	head
 	title Seat
+	link(rel="stylesheet", href="css/bootstrap.min.css")
 	link(rel="stylesheet", href="css/index.css")
+
 	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+	script(src="//code.createjs.com/easeljs-0.6.1.min.js")
+	script(src="//code.createjs.com/preloadjs-0.3.1.min.js")
 	script(src="/socket.io/socket.io.js")
-	script(src="js/build/scripts.js")
+	//- script(src="/build/scripts.min.js")
+	script(src="js/canvas.js")
+
 	body
 		header
 			a(href="http://www.seat.ru/", id="logo")
 			ul#seat_menu
 				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/company/we-are-seat.html") КОМПАНИЯ
+					a(href="http://www.seat.ru/content/ru/brand/ru/company/we-are-seat.html", target="_blank") КОМПАНИЯ
 				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/contact/dealersmaps.html") ДИЛЕРЫ SEAT
+					a(href="http://www.seat.ru/content/ru/brand/ru/contact/dealersmaps.html", target="_blank") ДИЛЕРЫ SEAT
 				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/news-and-events/seat-world.html") МИР SEAT
+					a(href="http://www.seat.ru/content/ru/brand/ru/news-and-events/seat-world.html", target="_blank") МИР SEAT
 				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/finance/about-finance.html") SEAT ФИНАНС
+					a(href="http://www.seat.ru/content/ru/brand/ru/finance/about-finance.html", target="_blank") SEAT ФИНАНС
 				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/service/home.html") SEAT SERVICE
+					a(href="http://www.seat.ru/content/ru/brand/ru/service/home.html", target="_blank") SEAT SERVICE
 				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/contact/contacts.html") КОНТАКТЫ
-			ul#seat_cars
-				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/ibiza-5d/discover.html") IBIZA
-				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/ibiza-sc/discover.html") IBIZA SC 
-				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/ibiza-st/discover.html") IBIZA ST
-				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/leon/leon-reference-copa.html") LEON COPA
-				lI
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/new-leon/discover.html") NEW LEON
-				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/leon-sc/discover.html") LEON SC
-				li
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/altea-freetrack/discover.html") FREETRACK 4x4
-				li 
-					a(href="http://www.seat.ru/content/ru/brand/ru/models/alhambra/discover.html") ALHAMBRA 
-				li 
-					a(href="http://www.seat.ru/content/ru/brand/ru/news-and-events/special-offer/off.html") СПЕЦИАЛЬНЫЕ ПРЕДЛОЖЕНИЯ
+					a(href="http://www.seat.ru/content/ru/brand/ru/contact/contacts.html", target="_blank") КОНТАКТЫ
+			.wrapper-table
+				table#seat_cars(cellspacing="0", cellpadding="0", width="960")
+					tr
+						td
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/ibiza-5d/discover.html", target="_blank")
+								span|IBIZA
+						td
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/ibiza-sc/discover.html", target="_blank") 
+								span|IBIZA&nbsp;SC 
+						td
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/ibiza-st/discover.html", target="_blank") 
+								span|IBIZA&nbsp;ST
+						td
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/leon/leon-reference-copa.html", target="_blank") 
+								span|leon&nbsp;copa
+						td
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/new-leon/discover.html", target="_blank") 
+								span|NEW&nbsp;LEON
+						td
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/leon-sc/discover.html", target="_blank") 
+								span|NEW&nbsp;LEON&nbsp;SC
+						td
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/altea-freetrack/discover.html", target="_blank") 
+								span|FREETRACK&nbsp;4x4
+						td 
+							a(href="http://www.seat.ru/content/ru/brand/ru/models/alhambra/discover.html", target="_blank") 
+								span|ALHAMBRA&nbsp;
+						td 
+							a(href="http://www.seat.ru/content/ru/brand/ru/news-and-events/special-offer/off.html", target="_blank") 
+								span|СПЕЦИАЛЬНЫЕ&nbsp;ПРЕДЛОЖЕНИЯ
 		div#content
-			div.car		
+			//- preloader
+			div.preload
+			//- car
+			div.car
+				canvas#canvas(width="960", height="479")
+				//- controls 
+				button.arrow-l(onclick="canvas.prev()")
+				button.arrow-r(onclick="canvas.next()")
+				ol
+					li.active(onclick="canvas.renderStage('front');")
+					li(onclick="canvas.renderStage('back');")
+					li(onclick="canvas.renderStage('top');")
+				//- tweet
+				.tweet.left
+					.img
+					.text
+						.names
+							span.name Екатерина Коровина
+							span.nick_name @ka_te
+						p	Меня реально вставляет внешность этого красавца,
+							|но пока смотрю на ибицу)) 
+							span #seatnewleon
+
+			//- news
+			section.news
+				.wrapper
+					.left
+						h2.title
+							span.twitter
+							| Пиши в твиттер с ХЭШТЕГом 
+							strong #seatnewleon
+						p	Благодаря активности участников в твиттере, новый Seat Leon получает новые детали                  
+							|и приобретает новый, незабываемый, стремительный облик. Самые активные любители Seat получат реальные призы.
+							| Наведи на деталь ‒  узнаешь кто её хозяин!
+					.right
+						h2.title Последние новости
+						p#text-news Наш Leon вот-вот получит капот. Твитт, устанавливающий 
+							|его - ниже. Екатерина награждается мини-призом.
+						img(src="img/example.png", id="img-news")
+						#priz-tweet
+							.img
+							.text
+								.names
+									span.name Екатерина Коровина
+									span.nick_name @ka_te
+								p	Меня реально вставляет внешность этого красавца,
+									|но пока смотрю на ибицу)) 
+									span #seatnewleon
+			//- details
+			section.details
+				h2 Облако деталей
+			//- slider
+			section.slider
+				h2 Линии завораживают
+				#carousel.carousel.slide
+					<!-- Wrapper for slides -->
+					.carousel-inner
+						.item.active
+							img(src="img/img.jpg")
+						.item
+							img(src="img/img.jpg")
+						.item
+							img(src="img/img.jpg")
+
+					<!-- Controls -->
+					a.left.carousel-control(href="#carousel", data-slide="prev")
+						span.arrow-l
+					a.right.carousel-control(href="#carousel",data-slide="next")
+						span.arrow-r
+
+				<!-- Indicators -->
+				ol.carousel-indicators
+					li(data-target="#carousel", data-slide-to="0").active
+					li(data-target="#carousel", data-slide-to="1")
+					li(data-target="#carousel", data-slide-to="2")
+			//-Send
+			section.socail
+				h2 Познакомься с ним ближе 
+				.links
+					a(href="#").drive
+						span 
+						|ТЕСТ-ДРАЙВ
+					a(href="#").broshura 
+						span
+						|СКАЧАТЬ 
+						br 
+						|БРОШЮРУ		
+					a(href="#").price
+						span 
+						|СКАЧАТЬ 
+						br 
+						|ПРАЙС		
+					a(href="#").config
+						span 
+						b КОНФИГУРАТОР
+					a(href="#").diller
+						span 
+						|НАЙТИ 
+						br 
+						|ДИЛЛЕРА
+		footer
+			.topImg
+				.seat_footer_header_center
+					a(href="http://www.seat.ru/content/ru/brand/ru/company/we-are-seat/enjoyneering.html").seat_footer_tab_link
+			.social
+				.seat_footer_socialmedia
+					.buttons
+						ul
+							li.follow_text
+								span Будьте в курсе
+							li
+								a(href="http://www.facebook.com/SeatRussia", target="_blank").facebook_icon
+							li
+								a(href="http://www.vk.com/SeatRussia", target="_blank").vk_icon
+							li
+								a(href="http://www.odnoklassniki.ru/seatrussia", target="_blank").odnoklassniki
+							li
+								a(href="http://www.twitter.com/SeatRussia", target="_blank").twitter21x21
+							li
+								a(href="https://www.youtube.com/seatrus/", target="_blank").youtube_icon
+			.footer
+				.seat_footer_imprint
+					ul
+						li
+							span &copy;2013 SEAT, S.A.
+						li
+							a(href="http://www.seat.ru/content/ru/brand/ru/legal-note.html", title="ПРАВОВАЯ ИНФОРМАЦИЯ" , target="_blank") ПРАВОВАЯ ИНФОРМАЦИЯ
+						li
+							a(href="http://www.seat.ru/content/ru/brand/ru/sitemap.html", title="КАРТА САЙТА") КАРТА САЙТА
+

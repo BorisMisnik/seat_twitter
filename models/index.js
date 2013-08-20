@@ -6,12 +6,12 @@ var MongoClient = require('mongodb').MongoClient
   , server = require('../server')
 	require('date-utils');  
 
-var twit = new twitter({
-	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
-	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
-	access_token_key: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
-	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE'
-});
+// var twit = new twitter({
+// 	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
+// 	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
+// 	access_token_key: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
+// 	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE' 
+// });
 
 var model = {
 	visual : 0,
@@ -24,8 +24,11 @@ var model = {
 	search : function(startServer){
 		var _this = this;
 		// find shared detail today
-		this.collection.find().toArray(function(err, result){
+		this.collection.find({share:true}).toArray(function(err, result){
 			if( err ) throw err;
+			// run server
+			startServer();
+
 			result.forEach(function(item, index){
 				//  get share details today
 				if( item.share && item.date === _this.today )
@@ -35,12 +38,11 @@ var model = {
 					_this.searchTweets({since_id : item.id, count : 100}); 	
 
 			});
-			// run server
-			startServer();
 		});
 	},
 	// search latest tweets
 	searchTweets : function(option){
+		console.log(id)
 		var _this = this;
 		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
@@ -58,21 +60,22 @@ var model = {
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
 		this.updateModel();
-		if( this.visual < 3 && this.noVisual === 3 ){
-			this.visual++;
-			// update visual detail in db;
-			this.updateDetailInDb('visual', tweet);
-		}
-		else if( this.visual < 3 && this.noVisual === 6 ){
-			this.visual++;
-			// update visual detail in db;
-			this.updateDetailInDb('visual', tweet);
-		}
-		else if( this.noVisual < 7 ){
-			this.noVisual++;
-			// update no-visual detail in db;
-			this.updateDetailInDb('noVisual', tweet);
-		}
+		this.updateDetailInDb('visual', tweet);
+		// if( this.visual < 3 && this.noVisual === 3 ){
+		// 	this.visual++;
+		// 	// update visual detail in db;
+		// 	this.updateDetailInDb('visual', tweet);
+		// }
+		// else if( this.visual < 3 && this.noVisual === 6 ){
+		// 	this.visual++;
+		// 	// update visual detail in db;
+		// 	this.updateDetailInDb('visual', tweet);
+		// }
+		// else if( this.noVisual < 7 ){
+		// 	this.noVisual++;
+		// 	// update no-visual detail in db;
+		// 	this.updateDetailInDb('noVisual', tweet);
+		// }
 
 	},
 	adaptationTweet : function(tweet){
@@ -103,18 +106,24 @@ var model = {
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
-				// console.log( object )
+				console.log( object );
 				// sending detail to the client
-				_this.sendDetails(category);
+				_this.sendDetails();
 			}
 		});
 	},
-	sendDetails : function(category){
-		var query = category === 'all' ? {share:true} : {share:true,type:category};
-		this.collection.find(query).toArray(function(err, result){
+	sendDetails : function(callback){
+		this.collection.find({share:true}).toArray(function(err, result){
 			if( err ) throw err;
-			else
-				server.sendDetails(result);
+			else{
+				// send items with socket
+				if( !callback )
+					server.sendDetails(result);
+				// sending items through the post
+				else
+					callback(result);
+			}
+				
 		});
 	},
 	tweet : function(item){  
@@ -151,25 +160,17 @@ exports.connect = function(callback){
 			else{
 				// search
 				model.search(callback);
-				
 			}
-		});
-		exports.startStriming();	
+		});	
+		// exports.startStriming();
 	});
 };
-var Twit = require('twit')
-
-var T = new Twit({
-   	consumer_key: 'wDonkYzJEDcZbhXDDrG5rg',
-	consumer_secret: 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
-	access_token: '536480495-GedJJj8HJNSLiMcnS2qJ5xwHcWGgAcioVLm6iLQx',
-	access_token_secret: 'DDvYXvTSOhTSxibbQLjPOS7S79KoSe5nhxtPIEBOE'
-})
 
 // start stream tweets
 exports.startStriming = function(){
-	twit.stream('user', {track:'#ok'}, function(stream) {
-		console.log('ok')
+	// console.log(twit.stream('user', {track:'#wottak'}))
+	twit.stream('user', {track:'#wottak'}, function(stream) {
+		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 		stream.on('error', function(error, code) {
 			console.log("My error: " + error + ": " + code);
@@ -178,7 +179,7 @@ exports.startStriming = function(){
 };
 
 // events
-exports.getDetails = function(category, callback){
+exports.getDetails = function(callback){
 	// get all share details and send to client
-	model.sendDetails(category);
+	model.sendDetails(callback);
 };
