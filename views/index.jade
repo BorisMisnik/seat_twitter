@@ -7,6 +7,7 @@ html(lang="en")
 
 	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
 	script(src="//code.createjs.com/easeljs-0.6.1.min.js")
+	script(src="//code.createjs.com/preloadjs-0.3.1.min.js")
 	script(src="/js/VerbalExpressions.js")
 	script(src="/js/bootstrap.js")
 	script(src="/socket.io/socket.io.js")
@@ -60,7 +61,7 @@ html(lang="en")
 								span|СПЕЦИАЛЬНЫЕ&nbsp;ПРЕДЛОЖЕНИЯ
 		div#content
 			//- preloader
-			div.preload
+			div.preload 0%
 			//- car
 			div.car
 				canvas#canvas(width="960", height="479")
@@ -95,7 +96,7 @@ html(lang="en")
 					.right
 						h2.title Последние новости
 						p#text-news
-						img(src="img/example.png", id="img-news")
+						img(id="img-news")
 						#priz-tweet
 							.img
 							.text

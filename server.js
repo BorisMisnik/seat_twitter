@@ -6,14 +6,13 @@ var express = require('express')
   , server = http.createServer(app);
 
 //  configuration node
-app.configure(function(){
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
-	app.use(app.router);
-	app.use(express.static( __dirname + '/public' ));
-	app.set('port', process.env.PORT || 8080);
-	app.set('view engine', 'jade');
-});
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static( __dirname + '/public' ));
+app.set('port', process.env.PORT || 8080);
+app.set('view engine', 'jade');
+
 // connect socket io
 var sockets = io.listen(server);
 sockets.set('log level', 1);
@@ -26,6 +25,7 @@ model.connect(function(){
 	});
 });
 exports.sendDetails = function(data){
+	// send to all connection share detail
 	sockets.sockets.emit('details', data);
 };
 app.get('/', function (req, res) {

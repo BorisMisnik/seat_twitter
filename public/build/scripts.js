@@ -610,7 +610,29 @@ var canvas = {
 	details : [],
 	visualDetails : [],
 	noVisualDetails : [],
+	load : function(){
+		// Create a preloader. There is no manifest added to it up-front, we will add items on-demand.
+		var preload = new createjs.LoadQueue(true, "img/");
+		var manifest = ['stagefront.jpg', 'stageback.jpg', 'stagetop.jpg'];
+		var div = $('.preload');
 
+		for (var i = manifest.length - 1; i >= 0; i--) {
+			preload.loadFile(manifest[i]);
+		};
+		preload.addEventListener('fileload', handleFileLoad);
+        preload.addEventListener('progress', handleOverallProgress);
+
+        function handleFileLoad(event){
+        	div.fadeOut(function(){
+        		$('.car').fadeIn();
+        		canvas.init();
+        	})
+        };
+
+        function handleOverallProgress(){
+        	div.text(Math.floor(preload.progress * 100) + '%');
+        };
+	},
 	init : function(){
 		var c = document.getElementById('canvas');
 		this.stage = new createjs.Stage(c);
@@ -624,11 +646,21 @@ var canvas = {
 		this.blockTweet = $('.car .tweet');
 		this.blockTweet.css('opacity','0');
 		this.car = $('.car');
+		this.imgNews = $('#img-news');
 		// set stage background image
-		this.car.css('background-image', 'url(img/stageFront.jpg)');
+		this.car.css('background-image', 'url(img/stagefront.jpg)');
 		this.newsTweet = $('#priz-tweet');
 		//  add to stage tick event
 		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
+
+		// get all shared detail
+		$.post('/', function(data){
+			canvas.details = data;
+			// sorting detail
+			canvas.sortDetail();
+		})
+		.done(function(){console.log( 'items loaded');})
+		.fail(function(){console.log( 'items loaded error' );})
 	},
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
@@ -710,7 +742,7 @@ var canvas = {
 	},
 	showBlockTweet : function(tweet, x, y){
 		// update content
-		var text = canvas.formatText(tweet.user.text);
+		var text = this.formatText(tweet.user.text);
 		this.blockTweet.show().css('opacity','1')
 		this.blockTweet.find('.img').css('background-image', 'url(' + tweet.user.avatar + ')');
 		this.blockTweet.find('.name').text(tweet.user.name);
@@ -753,8 +785,9 @@ var canvas = {
 		var text = this.formatText(data.user.text);
 
 		$('#text-news').text(textNews);
-		$('#img-news').attr('src', 'img/' + data.name + '.png');
-
+		if( !this.imgNews.is(':visible') )
+			this.imgNews.show();
+		this.imgNews.attr('src', 'img/' + data.name + '.png');
 		this.newsTweet.find('.img').css('background-image', 'url('+data.user.avatar+')');
 		this.newsTweet.find('.name').text(data.user.name);
 		this.newsTweet.find('.nick_name').text('@' + data.user.screen_name);
@@ -817,17 +850,7 @@ var canvas = {
 
 $(document).ready(function(){
 	// init stage
-	canvas.init();
-	// get all shared detail
-	$.post('/', function(data){
-		canvas.details = data;
-		// sorting detail
-		canvas.sortDetail();
-	})
-	.done(function(){console.log( 'items loaded');})
-	.fail(function(){console.log( 'items loaded error' );})
-
-
+	canvas.load();
 });
 // connection socket IO
 var socket = io.connect(window.location.origin); 

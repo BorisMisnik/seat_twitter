@@ -77,23 +77,22 @@ var model = {
 	},
 	adaptationTweet : function(tweet){
 		var d = new Date().toFormat('YYYY-MM-DD-HH24-MI');
-		this.saveImage(tweet.user.profile_image_url, tweet.user.name);
+		// save user avatar
+		this.saveImage(tweet.user.profile_image_url, tweet.user.screen_name);
 		return {
 			time : d,
 			id : tweet.id_str,
 			text : tweet.text,
 			name : tweet.user.name,
 			screen_name : tweet.user.screen_name,
-			avatar : 'img/uploads/'+tweet.user.name+'.png'
+			avatar : 'uploads/'+tweet.user.screen_name+'.png'
 		}
 	},
 	saveImage : function(path, name){
 		var options = {url : path};
-		console.log(__dirname + '/public/img/uploads/')
-		http.get(options, __dirname + '/public/img/uploads/'+name+'.png', function (error, result) {
-			console.log(result)
+		http.get(options, './public/uploads/'+name+'.png', function (error, result) {
 			if (error)
-				console.error(error);
+				console.warn(error);
 			else
 				console.log('File downloaded at: ' + result.file);
 		});
