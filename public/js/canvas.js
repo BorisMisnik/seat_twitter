@@ -170,7 +170,7 @@ var canvas = {
 	// find hashtag in tweуt
 	formatText : function(text){
 		var t = text;
-		var result = VerEx().find( '#' ).replace(t, '<span>#wottak</span> ');
+		var result = VerEx().find( '#wottak' ).replace(t, '<span>#wottak</span> ');
 		return result;
 	},
 	// displaying news
