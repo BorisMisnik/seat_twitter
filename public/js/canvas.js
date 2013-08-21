@@ -13,10 +13,10 @@ var canvas = {
 		for (var i = manifest.length - 1; i >= 0; i--) {
 			preload.loadFile(manifest[i]);
 		};
-		preload.addEventListener('fileload', handleFileLoad);
+		preload.addEventListener('complete', handleComplete);
         preload.addEventListener('progress', handleOverallProgress);
 
-        function handleFileLoad(event){
+        function handleComplete(event){
         	div.fadeOut(function(){
         		$('.car').fadeIn();
         		canvas.init();
