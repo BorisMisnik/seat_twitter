@@ -4,7 +4,11 @@ module.exports = function(grunt){
 			build : {
 				src:  'public/js/*.js',
         		dest: 'public/build/scripts.js'
-			}
+			},
+			css: {
+    			src: 'public/css/*.css',
+    			dest: 'public/build/allcss.css',
+  			}
 		},
 		uglify: {
 		    build: {

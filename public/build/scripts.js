@@ -333,6 +333,18 @@
  
 }).call();
 
+var app = angular.module('admin', []);
+
+function adminCtrl($scope, $http){
+	// get share tweets
+	$http({
+		method : 'GET',
+		url : '/admin/getAll'
+	}).success(function(data){
+		console.log( data );
+		$scope.items = data;
+	})
+}
 /* ========================================================================
  * Bootstrap: carousel.js v3.0.0
  * http://twbs.github.com/bootstrap/javascript.html#carousel
@@ -610,7 +622,28 @@ var canvas = {
 	details : [],
 	visualDetails : [],
 	noVisualDetails : [],
+	load : function(){
+		var preload = new createjs.LoadQueue(true, "img/");
+		var manifest = ['stagefront.jpg', 'stageback.jpg', 'stagetop.jpg'];
+		var div = $('.preload');
 
+		for (var i = manifest.length - 1; i >= 0; i--) {
+			preload.loadFile(manifest[i]);
+		};
+		preload.addEventListener('complete', handleComplete);
+        preload.addEventListener('progress', handleOverallProgress);
+
+        function handleComplete(event){
+        	div.fadeOut(function(){
+        		$('.car').fadeIn();
+        		canvas.init();
+        	})
+        };
+
+        function handleOverallProgress(){
+        	div.text(Math.floor(preload.progress * 100) + '%');
+        };
+	},
 	init : function(){
 		var c = document.getElementById('canvas');
 		this.stage = new createjs.Stage(c);
@@ -624,15 +657,27 @@ var canvas = {
 		this.blockTweet = $('.car .tweet');
 		this.blockTweet.css('opacity','0');
 		this.car = $('.car');
+		this.imgNews = $('#img-news');
 		// set stage background image
-		this.car.css('background-image', 'url(img/stageFront.jpg)');
+		this.car.css('background-image', 'url(img/stagefront.jpg)');
 		this.newsTweet = $('#priz-tweet');
 		//  add to stage tick event
 		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
+
+		// connection socket IO
+		var socket = io.connect(window.location.origin); 
+		// get all share detail
+		socket.on('details', function (data) {
+			canvas.details = data;
+			// sorting detail
+			canvas.sortDetail();
+		});
 	},
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
 		var _this = this;
+		_this.visualDetails = []; //clear array
+		_this.noVisualDetails [];
 		this.details.forEach(function(item, index){
 			if( item.type === 'visual')
 				_this.visualDetails.push(item);
@@ -641,19 +686,24 @@ var canvas = {
 		});
 		this.visual();
 		this.noVisual();
+		// displaying news
+		this.renderNews();
 	},
 	// processing of all visual detail
 	visual : function(){
 		var _this = this;
 		// clear stage
 		this.stage.removeAllChildren();
-		this.visualDetails.forEach(function(item, index){
-			// add visual detail on canvas
-			_this.renderVisual(item);
-			// displaying news on the last item
-			if( _this.visualDetails.length - 1 === index )
-				_this.renderNews(item);
-		});
+		// change stage background image
+		this.car.animate({'opacity':1}, showDetails) // sgow stage
+
+		function showDetails(){
+			_this.visualDetails.forEach(function(item, index){
+				// add visual detail on canvas
+				_this.renderVisual(item);
+			});
+		}
+		
 	},
 	noVisual : function(){
 		this.noVisualDetails.forEach(function(item, index){
@@ -710,7 +760,7 @@ var canvas = {
 	},
 	showBlockTweet : function(tweet, x, y){
 		// update content
-		var text = canvas.formatText(tweet.user.text);
+		var text = this.formatText(tweet.user.text);
 		this.blockTweet.show().css('opacity','1')
 		this.blockTweet.find('.img').css('background-image', 'url(' + tweet.user.avatar + ')');
 		this.blockTweet.find('.name').text(tweet.user.name);
@@ -744,22 +794,57 @@ var canvas = {
 	// find hashtag in tweуt
 	formatText : function(text){
 		var t = text;
-		var result = VerEx().find( '#' ).replace(t, '<span>#wottak</span> ');
+		var result = VerEx().find( '#wottak' ).replace(t, '<span>#wottak</span> ');
 		return result;
 	},
 	// displaying news
-	renderNews : function(data){
-		var textNews = data['news-text']+' '+data.user.name + ' награждается мини-призом.';
-		var text = this.formatText(data.user.text);
+	renderNews : function(){
 
-		$('#text-news').text(textNews);
-		$('#img-news').attr('src', 'img/' + data.name + '.png');
+		var _this = this;
+		$('#newsCarousel .carousel-inner').html('');		// clear html
+		// crated new item
+		this.visualDetails.forEach(function(item){
+					console.log( 'item', item );
+			renderTemplate(item);
+		});
+		$('#newsCarousel .item').eq(0).addClass('active');	// show first item
+		// show navigate button
+		if( !$('.next-news').is(':visible') && $('#newsCarousel .item').length ){
+			$('.next-news').show();
+			$('.prev-news').show();	
+		};
 
-		this.newsTweet.find('.img').css('background-image', 'url('+data.user.avatar+')');
-		this.newsTweet.find('.name').text(data.user.name);
-		this.newsTweet.find('.nick_name').text('@' + data.user.screen_name);
-		this.newsTweet.find('p').html(text);
+		// crate template with mustache.js
+		function renderTemplate(data){
 
+			var textNews = data['news-text']+' '+data.user.name + ' награждается мини-призом.';
+			var text = _this.formatText(data.user.text);
+			var template = " <div class='item'>"
+				+ "<p id='text-news'>{{textnews}}</p>"
+				+ "<div id='img-news'>"
+				+ 	"<img src='img/{{name}}.png'/>"
+				+ "</div>"
+				+ "<div id='priz-tweet'>"
+				+	"<div class='imgT' style='background-image:url({{user.avatar}})'></div>"
+				+	"<div class='text'>"
+				+		"<div class='names'>"
+				+			"<span class='name'>{{user.name}}</span>"
+				+			"<span class='nick_name'>@{{user.screen_name}}</span>"
+				+		"</div>"
+				+		"<p>{{text}}</p>"
+				+	"</div>"
+				+	"</div>"
+				+"</div>";
+
+			data.textnews = textNews;
+			data.text = text;
+
+			var html = Mustache.to_html(template, data);
+			$('#newsCarousel .carousel-inner').append(html); // append new template in carousel
+			var lastItem = $('#newsCarousel .item').last(); // add twitter hashtag to span element
+			var t = lastItem.find('.text p').text();
+			lastItem.find('.text p').html(t);
+		}
 	},
 	// stage tick event
 	tick: function(event){
@@ -796,8 +881,6 @@ var canvas = {
 
 		if( type ) //  method was called from html
 			this.position = type; 
-		// clear stage
-		this.stage.removeAllChildren();
 
 		// select current nav button
 		this.nav.removeClass();
@@ -808,32 +891,18 @@ var canvas = {
 		else if( this.position === 'top' )
 			this.nav.eq(2).addClass('active');
 
+		this.stage.clear();
+
+		// change stage background image
+		this.car.css('background-image', 'url(img/stage'+this.position+'.jpg)')
+			.css('opacity',0) // hide stage
+
 		// render visual detail
 		this.visual();
-		// change stage background image
-		this.car.css('background-image', 'url(img/stage'+this.position+'.jpg)');
 	}
 }
 
 $(document).ready(function(){
 	// init stage
-	canvas.init();
-	// get all shared detail
-	$.post('/', function(data){
-		canvas.details = data;
-		// sorting detail
-		canvas.sortDetail();
-	})
-	.done(function(){console.log( 'items loaded');})
-	.fail(function(){console.log( 'items loaded error' );})
-
-
-});
-// connection socket IO
-var socket = io.connect(window.location.origin); 
-// get all share detail
-socket.on('details', function (data) {
-	canvas.details = data;
-	// sorting detail
-	canvas.sortDetail();
+	canvas.load();
 });

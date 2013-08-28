@@ -3,7 +3,7 @@ var express = require('express')
   , app = express()
   , http = require('http')
   , model = require('./models/')
-  , server = http.createServer(app)
+  , server = http.createServer(app);
 
 // routers
 var index = require('./controllers/index')
@@ -13,7 +13,7 @@ app.use(express.static( __dirname + '/public' ));
 app.use(express.cookieParser('password'));
 app.use(express.session());
 app.use(app.router);
-app.set('port', process.env.PORT || 5000);
+app.set('port', process.env.PORT || 8080);
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 
@@ -36,6 +36,7 @@ model.connect(function(){
 	});
 });
 exports.sendDetails = function(data){
+	// send to all connection share detail
 	sockets.sockets.emit('details', data);
 };
 
