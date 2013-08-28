@@ -16,6 +16,7 @@ app.set('view engine', 'jade');
 // connect socket io
 var sockets = io.listen(server);
 sockets.set('log level', 1);
+sockets.set('transports', ['xhr-polling','websocket','flashsocket']);
 
 // connect to mongodb and start server
 model.connect(function(){

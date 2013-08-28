@@ -263,12 +263,12 @@ header{
 			content:'';
 		}
 		.img{
-			.size(56px, 56px);
+			.size(48px, 48px);
 			float:left;
 			border-radius: 50%;
-			background-image: url("../img/example.png");
 			background-position: center;
-			}
+			background-repeat: no-repeat;
+		}
 		.text{
 			float: left;
 			margin-left: 12px;
@@ -317,7 +317,7 @@ header{
 		font-size: 15px;
 		line-height: 1.3;
 	}
-	.left{
+	.columL{
 		float:left;
 		width:405px;
 		p{
@@ -340,7 +340,7 @@ header{
 				}
 		}
 	}
-	.right{
+	.columR{
 		float:right;
 		padding-left: 36px;
 		width:464px;
@@ -348,30 +348,76 @@ header{
 		text-align: center;
 		*{
 			text-align: left;
+			// padding: 0 !important;
 		}
 		.title{
 			margin-bottom: 29px;
 		}
+		.item{
+			text-align: center;
+			min-width: 100%;
+			width:427px;
+			line-height: 1;
+		}
+		#newsCarousel{
+			position: relative;
+			min-height: 270px;
+		}
+		.next-news{
+			@w:27px;
+			@h:85px;
+			.size(@w, @h);
+			background: url(../img/sprites.png) no-repeat;
+			background-position:  -50px -100px ;
+			left: 100%;
+			opacity: 1;
+			top:50%;
+			margin: -65.5px 0 0 -42.5px;
+			&:hover{
+				background-position: -50px 0;
+			}
+		}
+		.prev-news{
+			@w:27px;
+			@h:85px;
+			.size(@w, @h);
+			background: url(../img/sprites.png) no-repeat;
+			background-position: 0 0;
+			opacity: 1;
+			top:50%;
+			margin: -65.5px 0 0 -42.5px;
+			left:36px;
+			&:hover{
+				background-position: 0 -100px;
+			}
+		}
 		#text-news{
 			margin:0;
 			width:404px;
+			padding:0;
 		}
 		#img-news{
-			margin-top: 10px;
-			margin-bottom: 32px;
-			max-width: 400px;
-			max-height: 155px;
-			display: none;
+			width: 293px;
+			height: 155px;
+			text-align: center;
+			margin:10px auto 32px;
+			line-height: 155px;
+			img{
+				vertical-align: middle;
+				width: auto;
+				max-height: 155px;
+			}
 		}
 		#priz-tweet{
 			overflow: hidden;
 			margin: auto;
 			width:435px;
-			.img{
-				.size(56px, 56px);
+			.imgT{
+				.size(48px, 48px);
 				float:left;
 				border-radius: 50%;
 				background-position: center;
+				background-repeat: no-repeat;
 			}
 			.text{
 				float:right;
@@ -392,6 +438,7 @@ header{
 				p{
 					margin-top: 13px;
 					span{color:#0096cb;}
+					padding: 0 !important;
 				}
 			}
 		}
@@ -455,6 +502,12 @@ header{
 			border:1px solid #e11628;
 			background:none;
 		}
+	}
+}
+.video{
+	.section();
+	& > h2{
+		.sectionTitle();
 	}
 }
 .socail{

@@ -611,7 +611,6 @@ var canvas = {
 	visualDetails : [],
 	noVisualDetails : [],
 	load : function(){
-		// Create a preloader. There is no manifest added to it up-front, we will add items on-demand.
 		var preload = new createjs.LoadQueue(true, "img/");
 		var manifest = ['stagefront.jpg', 'stageback.jpg', 'stagetop.jpg'];
 		var div = $('.preload');
@@ -653,14 +652,14 @@ var canvas = {
 		//  add to stage tick event
 		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
 
-		// get all shared detail
+		// get  shared detail
 		$.post('/', function(data){
 			canvas.details = data;
 			// sorting detail
 			canvas.sortDetail();
 		})
-		.done(function(){console.log( 'items loaded');})
-		.fail(function(){console.log( 'items loaded error' );})
+		.done(function(){console.log( 'items load');})
+		.fail(function(){console.log( 'items load error' );})
 	},
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
@@ -673,19 +672,24 @@ var canvas = {
 		});
 		this.visual();
 		this.noVisual();
+		// displaying news
+		this.renderNews();
 	},
 	// processing of all visual detail
 	visual : function(){
 		var _this = this;
 		// clear stage
 		this.stage.removeAllChildren();
-		this.visualDetails.forEach(function(item, index){
-			// add visual detail on canvas
-			_this.renderVisual(item);
-			// displaying news on the last item
-			if( _this.visualDetails.length - 1 === index )
-				_this.renderNews(item);
-		});
+		// change stage background image
+		this.car.animate({'opacity':1}, showDetails) // sgow stage
+
+		function showDetails(){
+			_this.visualDetails.forEach(function(item, index){
+				// add visual detail on canvas
+				_this.renderVisual(item);
+			});
+		}
+		
 	},
 	noVisual : function(){
 		this.noVisualDetails.forEach(function(item, index){
@@ -776,23 +780,50 @@ var canvas = {
 	// find hashtag in tweуt
 	formatText : function(text){
 		var t = text;
-		var result = VerEx().find( '#' ).replace(t, '<span>#wottak</span> ');
+		var result = VerEx().find( '#wottak' ).replace(t, '<span>#wottak</span> ');
 		return result;
 	},
 	// displaying news
-	renderNews : function(data){
-		var textNews = data['news-text']+' '+data.user.name + ' награждается мини-призом.';
-		var text = this.formatText(data.user.text);
+	renderNews : function(){
+		var _this = this;
+		// clear html
+		$('#newsCarousel .carousel-inner').html('');
+		// crated new item
+		this.visualDetails.forEach(function(item){
+			renderTemplate(item);
+		});
+		// show first item
+		$('.item').eq(0).addClass('active');
+		// crate template with mustache.js
+		function renderTemplate(data){
+			var textNews = data['news-text']+' '+data.user.name + ' награждается мини-призом.';
+			var text = _this.formatText(data.user.text);
+			var template = " <div class='item'>"
+				+ "<p id='text-news'>{{textnews}}</p>"
+				+ "<div id='img-news'>"
+				+ 	"<img src='img/{{name}}.png'/>"
+				+ "</div>"
+				+ "<div id='priz-tweet'>"
+				+	"<div class='imgT' style='background-image:url({{user.avatar}})'></div>"
+				+	"<div class='text'>"
+				+		"<div class='names'>"
+				+			"<span class='name'>{{user.name}}</span>"
+				+			"<span class='nick_name'>@{{user.screen_name}}</span>"
+				+		"</div>"
+				+		"<p>{{text}}</p>"
+				+	"</div>"
+				+	"</div>"
+				+"</div>";
 
-		$('#text-news').text(textNews);
-		if( !this.imgNews.is(':visible') )
-			this.imgNews.show();
-		this.imgNews.attr('src', 'img/' + data.name + '.png');
-		this.newsTweet.find('.img').css('background-image', 'url('+data.user.avatar+')');
-		this.newsTweet.find('.name').text(data.user.name);
-		this.newsTweet.find('.nick_name').text('@' + data.user.screen_name);
-		this.newsTweet.find('p').html(text);
+			data.textnews = textNews;
+			data.text = text;
 
+			var html = Mustache.to_html(template, data);
+			$('#newsCarousel .carousel-inner').append(html); // append new template in carousel
+			var lastItem = $('#newsCarousel .item').last(); // add twitter hashtag to span element
+			var t = lastItem.find('.text p').text();
+			lastItem.find('.text p').html(t);
+		}
 	},
 	// stage tick event
 	tick: function(event){
@@ -829,8 +860,6 @@ var canvas = {
 
 		if( type ) //  method was called from html
 			this.position = type; 
-		// clear stage
-		this.stage.removeAllChildren();
 
 		// select current nav button
 		this.nav.removeClass();
@@ -841,10 +870,14 @@ var canvas = {
 		else if( this.position === 'top' )
 			this.nav.eq(2).addClass('active');
 
+		this.stage.clear();
+
+		// change stage background image
+		this.car.css('background-image', 'url(img/stage'+this.position+'.jpg)')
+			.css('opacity',0) // hide stage
+
 		// render visual detail
 		this.visual();
-		// change stage background image
-		this.car.css('background-image', 'url(img/stage'+this.position+'.jpg)');
 	}
 }
 

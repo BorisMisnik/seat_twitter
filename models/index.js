@@ -4,7 +4,8 @@ var MongoClient = require('mongodb').MongoClient
   , details = require('../details.json')
   , twitter = require('twitter') 
   , server = require('../server')
-  , http = require('http-get');
+  , http = require('http-get')
+  , cronJob = require('cron').CronJob;
 	require('date-utils');  
 
 var twit = new twitter({
@@ -17,10 +18,8 @@ var twit = new twitter({
 var model = {
 	visual : 0,
 	noVisual : 0,
-	tweetsCount : 1,
-	dateTomorrow : Date.tomorrow().toFormat('YYYY-MM-DD'),
+	tweetsCount : 0,
 	today : Date.today().toFormat('YYYY-MM-DD'),
-
 	// search shared detail today
 	search : function(startServer){
 		var _this = this;
@@ -48,7 +47,7 @@ var model = {
 			if( !data.length ) return;
 			data.statuses.forEach(function(item, index){
 				_this.tweetsCount++;
-				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 7))
+				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
 					_this.shareDetail(item);
 			});
 		});
@@ -56,7 +55,6 @@ var model = {
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
-		this.updateModel();
 		this.updateDetailInDb('visual', tweet);
 		// if( this.visual < 3 && this.noVisual === 3 ){
 		// 	this.visual++;
@@ -92,20 +90,8 @@ var model = {
 		var options = {url : path};
 		http.get(options, './public/uploads/'+name+'.png', function (error, result) {
 			if (error)
-				console.warn(error);
-			else
-				console.log('File downloaded at: ' + result.file);
+				console.log(error);
 		});
-	},
-	updateModel : function(data){
-		// if today is tomorrow's update counters
-		if( this.dateTomorrow === this.today ){
-			// reset amount details
-			this.visual = 0;
-			this.noVisual = 0;
-			// update date tomorrow
-			this.dateTomorrow = Date.tomorrow().toFormat('YYYY-MM-DD');
-		}
 	},
 	updateDetailInDb : function(category, tweet){
 		var _this = this;
@@ -140,6 +126,13 @@ var model = {
 			this.shareDetail(item);
 	}
 };
+//Reset everything on a new day!
+new cronJob('0 0 0 * * *', function(){
+    //Reset 
+    model.visual = 0;
+    model.noVisual = 0;
+}, null, true);
+
 // Connect to db
 exports.connect = function(callback){
 	var host = process.env['MONGO_NODE_DRIVER_HOST'] != null ? 
@@ -174,8 +167,7 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	// console.log(twit.stream('user', {track:'#wottak'}))
-	twit.stream('user', {track:'#wottak'}, function(stream) {
+	twit.stream('statuses/filter', {track:'#wottak'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 	});

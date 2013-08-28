@@ -12,7 +12,8 @@
     "socket.io": "~0.9.16",
     "date-utils": "~1.2.13",
     "twitter": "~0.2.1",
-    "http-get": "~0.5.10"
+    "http-get": "~0.5.10",
+    "cron": "~1.0.1"
   },
   "devDependencies": {
     "grunt": ">=0.4",
