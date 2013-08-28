@@ -44,12 +44,14 @@ var model = {
 		var _this = this;
 		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
-			// search % 20
-			if( !data.length ) return;
+			// search % 20  
+			if( !data.statuses.length ) return;
 			data.statuses.forEach(function(item, index){
+				if( !item.user ) return;
 				_this.tweetsCount++;
+				console.log('search', tweetsCount)
 				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
-					_this.shareDetail(item);
+					_this.shareDetail(item); 
 			});
 		});
 	},
@@ -80,7 +82,8 @@ var model = {
 		this.saveImage(tweet.user.profile_image_url, tweet.user.screen_name);
 		return {
 			time : d,
-			id : tweet.user.id_str,
+			user_id : tweet.user.id_str,
+			tweet_id : tweet.id_str,
 			text : tweet.text,
 			name : tweet.user.name,
 			screen_name : tweet.user.screen_name,
@@ -97,7 +100,7 @@ var model = {
 	updateDetailInDb : function(category, tweet){
 		var _this = this;
 		var query = {share:false, type:category};
-		var set = {id:tweet.id, date:_this.today, user:tweet, share:true}
+		var set = {id:tweet.tweet_id, date:_this.today, user:tweet, share:true}
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
@@ -123,13 +126,16 @@ var model = {
 	tweet : function(item){
 		var _this = this;
 		if( !item.user.id_str ) return;
-		_this.tweetsCount++;
-		if( _this.tweetsCount % 2 === 0 ){
+		this.tweetsCount++;
+		console.log(this.tweetsCount)
+		if( this.tweetsCount % 2 === 0 ){
 			// search this user in seat group
 			twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
 				_.find(data.ids, function(id){ // find user id in result
-					if( id === item.user.id_str )
+					if( id === item.user.id_str ){
 						_this.shareDetail(item); // share detail
+						return true;
+					}
 				});
 			});
 		}	
@@ -186,3 +192,22 @@ exports.getDetails = function(callback){
 	// get all share details and send to client
 	model.sendDetails(callback);
 };
+
+// remove user
+var ObjectID = require('mongodb').ObjectID;
+exports.removeUser = function(db_id, tweet_id){
+	// find prev tweet
+	twit.search('#wottak', {max_id: tweet_id,count : 2}, function(data){
+		console.log(data.statuses[1])
+		if( !data.statuses[1].user ) return;
+		// update collection
+		var tweet = model.adaptationTweet(data[1]) // get info
+		var query = {_id : new ObjectID(db_id)}; // find details by id
+		var set = {id:tweet.tweet_id, date:_this.today, user:tweet, share:true} 
+		model.collection.update(query, {$set : set},function(err, object){// update detail
+			if( err ) throw new Error(err);
+			console.log(object)
+		})
+	})
+	
+}

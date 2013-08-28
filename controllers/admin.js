@@ -17,9 +17,13 @@ exports.login = function(req, res){
 
 	res.redirect('/admin');
 };
-// GET */admin/getAll/*
+// GET */admin/edit/*
 exports.getAll = function(req, res){
 	model.getDetails(function(data){
 		res.send(data);
 	})
 };
+// DELETE */admint/edit*
+exports.remove = function(req, res){
+	model.removeUser(req.query.db_id, req.query.tweet_id);
+}

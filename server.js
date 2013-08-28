@@ -43,4 +43,5 @@ exports.sendDetails = function(data){
 app.get('/', index.index);
 app.get('/admin', admin.index);
 app.get('/admin/login', admin.login);
-app.get('/admin/getAll', admin.getAll);
+app.get('/admin/edit', admin.getAll);
+app.delete('/admin/edit', admin.remove);

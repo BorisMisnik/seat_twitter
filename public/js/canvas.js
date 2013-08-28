@@ -59,7 +59,7 @@ var canvas = {
 	sortDetail : function(){
 		var _this = this;
 		_this.visualDetails = []; //clear array
-		_this.noVisualDetails [];
+		_this.noVisualDetails = [];
 		this.details.forEach(function(item, index){
 			if( item.type === 'visual')
 				_this.visualDetails.push(item);
@@ -77,7 +77,7 @@ var canvas = {
 		// clear stage
 		this.stage.removeAllChildren();
 		// change stage background image
-		this.car.animate({'opacity':1}, showDetails) // sgow stage
+		this.car.animate({'opacity':1}, showDetails) // show stage
 
 		function showDetails(){
 			_this.visualDetails.forEach(function(item, index){
@@ -175,27 +175,26 @@ var canvas = {
 	},
 	// find hashtag in tweуt
 	formatText : function(text){
-		var t = text;
-		var result = VerEx().find( '#wottak' ).replace(t, '<span>#wottak</span> ');
+		var result = VerEx().find( '#wottak' ).replace(text, '<span>#wottak</span> ');
 		return result;
 	},
 	// displaying news
 	renderNews : function(){
-
 		var _this = this;
 		$('#newsCarousel .carousel-inner').html('');		// clear html
 		// crated new item
 		this.visualDetails.forEach(function(item){
-					console.log( 'item', item );
 			renderTemplate(item);
 		});
-		$('#newsCarousel .item').eq(0).addClass('active');	// show first item
+		if( !$('#newsCarousel .active').length )
+			$('#newsCarousel .item').eq(0).addClass('active');	// show first item
 		// show navigate button
 		if( !$('.next-news').is(':visible') && $('#newsCarousel .item').length ){
 			$('.next-news').show();
 			$('.prev-news').show();	
 		};
-
+		// update carousel
+		$('#newsCarousel').carousel();
 		// crate template with mustache.js
 		function renderTemplate(data){
 

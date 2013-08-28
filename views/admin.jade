@@ -30,7 +30,6 @@ html(lang="en", ng-app="admin")
 								th Ник
 								th Сообщение
 								th Время
-								th URL
 								th Удалить
 							tr(ng-repeat="item in items")
 								td 
@@ -40,7 +39,7 @@ html(lang="en", ng-app="admin")
 								td {{item.user.text}}
 								td {{item.user.time}}
 								td 
-									//- button(ng-clic())
+									button(ng-click="remove(item._id,item.id);", class="btn btn-danger") Наказать
 
 
 		
