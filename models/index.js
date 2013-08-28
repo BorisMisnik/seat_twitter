@@ -16,7 +16,7 @@ var twit = new twitter({
 var model = {
 	visual : 0,
 	noVisual : 0,
-	tweetsCount : 1,
+	tweetsCount : 0,
 	dateTomorrow : Date.tomorrow().toFormat('YYYY-MM-DD'),
 	today : Date.today().toFormat('YYYY-MM-DD'),
 
@@ -114,7 +114,7 @@ var model = {
 				// send items with socket
 				if( !callback )
 					server.sendDetails(result);
-				// sending items through the post
+				// sending items through the get
 				else
 					callback(result);
 			}
@@ -124,7 +124,6 @@ var model = {
 	tweet : function(item){  
 		var _this = this;
 		this.tweetsCount++;
-		console.log( _this.tweetsCount );
 		if( this.tweetsCount % 2 === 0 )
 			this.shareDetail(item);
 	}

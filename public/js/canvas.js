@@ -212,22 +212,12 @@ var canvas = {
 $(document).ready(function(){
 	// init stage
 	canvas.init();
-	// get all shared detail
-	$.post('/', function(data){
-		canvas.details = data;
-		// sorting detail
-		canvas.sortDetail();
-	})
-	.done(function(){console.log( 'items loaded');})
-	.fail(function(){console.log( 'items loaded error' );})
-
-
-});
-// connection socket IO
-var socket = io.connect(window.location.origin); 
-// get all share detail
-socket.on('details', function (data) {
+	// connection socket IO
+	var socket = io.connect(window.location.origin); 
+	// get all share detail
+	socket.on('details', function (data) {
 	canvas.details = data;
 	// sorting detail
 	canvas.sortDetail();
+	});
 });
