@@ -2,10 +2,10 @@ var model = require('../models/');
 // GET */admin*
 exports.index = function(req, res){
 	// if authorized
-	// if(req.session.login)
+	if(req.session.login)
 		res.render('admin', {authorized : true});
-	// else
-	// 	res.render('admin', {authorized : false});
+	else
+		res.render('admin', {authorized : false});
 };
 // GET */admin/login*
 exports.login = function(req, res){
@@ -14,7 +14,7 @@ exports.login = function(req, res){
 
 	if( login === "rmuhortov@g2moscow.ru" && password === "seat1seat.com")
 		req.session.login = true;  
-
+		
 	res.redirect('/admin');
 };
 // GET */admin/edit/*
