@@ -338,14 +338,16 @@ var app = angular.module('admin', []);
 function adminCtrl($scope, $http){
 	$scope.items = [];
 	// get share tweets
-	$http({
-		method : 'GET',
-		url : '/admin/edit'
-	}).success(function(data){
-		console.log( data );
-		$scope.items = data;
-	});
-
+	function tweets(){
+		$http({
+			method : 'GET',
+			url : '/admin/edit'
+		}).success(function(data){
+			console.log( data );
+			$scope.items = data;
+		});
+	}
+	tweets();
 	// remove detail
 	$scope.remove = function(db, tweet){
 		$http({
@@ -355,8 +357,9 @@ function adminCtrl($scope, $http){
 				db_id : db,
 				tweet_id : tweet
 			}
-		}).success(function(data){
-			console.log(data)
+		}).success(function(data, status, headers, config){
+			if( status === 200 )
+				tweets();
 		})
 	};
 }
@@ -468,7 +471,6 @@ function adminCtrl($scope, $http){
     var that      = this
 
     this.sliding = true
-
     isCycling && this.pause()
 
     $next = $next.length ? $next : this.$element.find('.item')[fallback]()
@@ -813,20 +815,12 @@ var canvas = {
 	// displaying news
 	renderNews : function(){
 		var _this = this;
-		$('#newsCarousel .carousel-inner').html('');		// clear html
+		if( this.visualDetails.length )
+			$('#newsCarousel .carousel-inner').html('');		// clear html
 		// crated new item
 		this.visualDetails.forEach(function(item){
 			renderTemplate(item);
 		});
-		if( !$('#newsCarousel .active').length )
-			$('#newsCarousel .item').eq(0).addClass('active');	// show first item
-		// show navigate button
-		if( !$('.next-news').is(':visible') && $('#newsCarousel .item').length ){
-			$('.next-news').show();
-			$('.prev-news').show();	
-		};
-		// update carousel
-		$('#newsCarousel').carousel();
 		// crate template with mustache.js
 		function renderTemplate(data){
 
@@ -858,6 +852,16 @@ var canvas = {
 			var t = lastItem.find('.text p').text();
 			lastItem.find('.text p').html(t);
 		}
+
+		// show last item
+		if( $('#newsCarousel .item').length )
+			$('#newsCarousel .item').first().addClass('active');	
+
+		// show navigate button
+		if( !$('.next-news').is(':visible') && this.visualDetails.length ){
+			$('.next-news').show();
+			$('.prev-news').show();	
+		};
 	},
 	// stage tick event
 	tick: function(event){

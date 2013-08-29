@@ -49,10 +49,10 @@ var model = {
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
 				_this.tweetsCount++;
-				console.log('search', tweetsCount)
 				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
 					_this.shareDetail(item); 
 			});
+			run = false;
 		});
 	},
 	// share detail
@@ -195,19 +195,22 @@ exports.getDetails = function(callback){
 
 // remove user
 var ObjectID = require('mongodb').ObjectID;
-exports.removeUser = function(db_id, tweet_id){
+exports.removeUser = function(db_id, tweet_id, callback){
 	// find prev tweet
-	twit.search('#wottak', {max_id: tweet_id,count : 2}, function(data){
-		console.log(data.statuses[1])
-		if( !data.statuses[1].user ) return;
+	twit.search('#wottak', {max_id:tweet_id,count:2}, function(data){
+		if( !data.statuses ) return;
+		if( data.statuses.length !== 2 ) return;
 		// update collection
-		var tweet = model.adaptationTweet(data[1]) // get info
+		var tweet = model.adaptationTweet(data.statuses[1]) // get info
 		var query = {_id : new ObjectID(db_id)}; // find details by id
-		var set = {id:tweet.tweet_id, date:_this.today, user:tweet, share:true} 
-		model.collection.update(query, {$set : set},function(err, object){// update detail
+		var set = {id:tweet.tweet_id, date:model.today, user:tweet, admin:true};
+		model.collection.update(query, {$set : set},function(err, object){ // update detail
 			if( err ) throw new Error(err);
-			console.log(object)
-		})
-	})
+			else if( object ){ // if update detail success
+				exports.getDetails(); // send detail to client
+				callback(); // run callback 
+			}
+		});
+	});
 	
 }

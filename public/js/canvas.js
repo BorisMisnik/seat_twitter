@@ -181,20 +181,12 @@ var canvas = {
 	// displaying news
 	renderNews : function(){
 		var _this = this;
-		$('#newsCarousel .carousel-inner').html('');		// clear html
+		if( this.visualDetails.length )
+			$('#newsCarousel .carousel-inner').html('');		// clear html
 		// crated new item
 		this.visualDetails.forEach(function(item){
 			renderTemplate(item);
 		});
-		if( !$('#newsCarousel .active').length )
-			$('#newsCarousel .item').eq(0).addClass('active');	// show first item
-		// show navigate button
-		if( !$('.next-news').is(':visible') && $('#newsCarousel .item').length ){
-			$('.next-news').show();
-			$('.prev-news').show();	
-		};
-		// update carousel
-		$('#newsCarousel').carousel();
 		// crate template with mustache.js
 		function renderTemplate(data){
 
@@ -226,6 +218,16 @@ var canvas = {
 			var t = lastItem.find('.text p').text();
 			lastItem.find('.text p').html(t);
 		}
+
+		// show last item
+		if( $('#newsCarousel .item').length )
+			$('#newsCarousel .item').first().addClass('active');	
+
+		// show navigate button
+		if( !$('.next-news').is(':visible') && this.visualDetails.length ){
+			$('.next-news').show();
+			$('.prev-news').show();	
+		};
 	},
 	// stage tick event
 	tick: function(event){

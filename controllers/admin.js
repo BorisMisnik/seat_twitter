@@ -25,5 +25,7 @@ exports.getAll = function(req, res){
 };
 // DELETE */admint/edit*
 exports.remove = function(req, res){
-	model.removeUser(req.query.db_id, req.query.tweet_id);
+	model.removeUser(req.query.db_id, req.query.tweet_id, function(){
+		res.send('ok', 200 );
+	});
 }
