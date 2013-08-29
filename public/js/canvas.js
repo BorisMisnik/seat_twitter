@@ -58,9 +58,11 @@ var canvas = {
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
 		var _this = this;
-		_this.visualDetails = []; //clear array
-		_this.noVisualDetails = [];
+		this.visualDetails = []; //clear array
+		this.noVisualDetails = [];
 		this.details.forEach(function(item, index){
+			// displaying news
+			this.renderNews(item);
 			if( item.type === 'visual')
 				_this.visualDetails.push(item);
 			else
@@ -68,9 +70,7 @@ var canvas = {
 		});
 		this.visual();
 		this.noVisual();
-		// displaying news
-		this.renderNews();
-	},
+			},
 	// processing of all visual detail
 	visual : function(){
 		var _this = this;
@@ -89,6 +89,7 @@ var canvas = {
 	},
 	noVisual : function(){
 		this.noVisualDetails.forEach(function(item, index){
+
 		});
 	},
 	// add visual detail on canvas

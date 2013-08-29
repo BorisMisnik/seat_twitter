@@ -1,4 +1,5 @@
 // GET */*
 exports.index = function(req, res){
-	res.render('index');
+	var array = new Array(30);
+	res.render('index', {items:array});
 }

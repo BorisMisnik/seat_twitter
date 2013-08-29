@@ -44,6 +44,13 @@
 	-moz-transition:@p @t @e;
 	transition:@p @t @e;
 }
+// backgroundPosition
+.bg (@x, @y){
+	background-position:@x @y;
+	&.active{
+		background-position:@x @y;
+	}
+}
 .arrow-l, .arrow-l-a, .arrow-r, .arrow-r-a, .twitter, .youtube_icon, .facebook_icon, 
 .odnoklassniki, .twitter21x21, .vk_icon, .diller span, .diller-a span, .drive span, .drive-a span, 
 .broshura span, .broshura-a span, .config span, .config-a span, .price span, .price-a span{
@@ -448,8 +455,208 @@ header{
 }
 .details{
 	.section();
+	text-align: center;
 	& > h2{
 		.sectionTitle();
+		text-align: left;
+	}
+	> div{
+		.size (72px, 72px);
+		display: inline-block;
+		margin-right: 20px;
+		margin-bottom: 20px;
+		background-image: url("../img/details.png");
+		background-repeat: no-repeat;
+		&.active{
+			cursor: pointer;
+		}
+	}
+	.v9{
+		margin-right: 0;
+	}
+	.v0{
+		background-position: 0 0;
+		&.active{
+			background-position: 0 -277px;
+		}
+	}
+	.v1{
+		background-position: -92px 0;
+		&.active{
+			background-position: -92px -277px;
+		}
+	}
+	.v2{
+		background-position: -184px 0;
+		&.active{
+			background-position: -184px -277px;
+		}
+	}
+	.v3{
+		background-position: -276px 0;
+		&.active{
+			background-position: -276px -277px;
+		}
+	}
+	.v4{
+		background-position: -368px 0;
+		&.active{
+			background-position: -368px -277px;
+		}
+	}
+	.v5{
+		background-position: -460px 0;
+		&.active{
+			background-position: -460px -277px;
+		}
+	}
+	.v6{
+		background-position: -552px 0;
+		&.active{
+			background-position: -552px -277px;
+		}
+	}
+	.v7{
+		background-position: -644px 0;
+		&.active{
+			background-position: -644px -277px;
+		}
+	}
+	.v8{
+		background-position: -736px 0;
+		&.active{
+			background-position: -736px -277px;
+		}
+	}
+	.v9{
+		background-position: -828px 0;
+		&.active{
+			background-position: -828px -277px;
+		}
+	}
+	// 
+	.v10{
+		background-position: 0 -92px;
+		&.active{
+			background-position: 0 -369px;
+		}
+	}
+	.v11{
+		background-position: -92px -92px;
+		&.active{
+			background-position: -92px -369px;
+		}
+	}
+	.v12{
+		background-position: -184px -92px;
+		&.active{
+			background-position: -184px -369px;
+		}
+	}
+	.v13{
+		background-position: -276px -92px;
+		&.active{
+			background-position: -276px -369px;
+		}
+	}
+	.v14{
+		background-position: -368px -92px;
+		&.active{
+			background-position: -368px -369px;
+		}
+	}
+	.v15{
+		background-position: -460px -92px;
+		&.active{
+			background-position: -460px -369px;
+		}
+	}
+	.v16{
+		background-position: -552px -92px;
+		&.active{
+			background-position: -552px -369px;
+		}
+	}
+	.v17{
+		background-position: -644px -92px;
+		&.active{
+			background-position: -644px -369px;
+		}
+	}
+	.v18{
+		background-position: -736px -92px;
+		&.active{
+			background-position: -736px -369px;
+		}
+	}
+	.v19{
+		margin-right: 0;
+		background-position: -828px -92px;
+		&.active{
+			background-position: -828px -369px;
+		}
+	}
+	//  
+	.v20{
+		background-position: 0 -184px;
+		&.active{
+			background-position: 0 -461px;
+		}
+	}
+	.v21{
+		background-position: -92px -184px;
+		&.active{
+			background-position: -92px -461px;
+		}
+	}
+	.v22{
+		background-position: -184px -184px;
+		&.active{
+			background-position: -184px -461px;
+		}
+	}
+	.v23{
+		background-position: -276px -184px;
+		&.active{
+			background-position: -276px -461px;
+		}
+	}
+	.v24{
+		background-position: -368px -184px;
+		&.active{
+			background-position: -368px -461px;
+		}
+	}
+	.v25{
+		background-position: -460px -184px;
+		&.active{
+			background-position: -460px -461px;
+		}
+	}
+	.v26{
+		background-position: -552px -184px;
+		&.active{
+			background-position: -552px -461px;
+		}
+	}
+	.v27{
+		background-position: -644px -184px;
+		&.active{
+			background-position: -644px -461px;
+		}
+	}
+	.v28{
+		background-position: -736px -184px;
+		&.active{
+			background-position: -736px -461px;
+		}
+	}
+	.v29{
+		margin-right: 0;
+		background-position: -828px -184px;
+		&.active{
+			background-position: -828px -461px;
+		}
 	}
 }
 .slider{
