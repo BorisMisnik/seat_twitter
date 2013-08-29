@@ -4,7 +4,9 @@ var MongoClient = require('mongodb').MongoClient
   , details = require('../details.json')
   , twitter = require('twitter') 
   , server = require('../server')
-  , http = require('http-get');
+  , http = require('http-get')
+  , cronJob = require('cron').CronJob
+  , _ = require('underscore');
 	require('date-utils');  
 
 var twit = new twitter({
@@ -17,10 +19,8 @@ var twit = new twitter({
 var model = {
 	visual : 0,
 	noVisual : 0,
-	tweetsCount : 1,
-	dateTomorrow : Date.tomorrow().toFormat('YYYY-MM-DD'),
+	tweetsCount : 0,
 	today : Date.today().toFormat('YYYY-MM-DD'),
-
 	// search shared detail today
 	search : function(startServer){
 		var _this = this;
@@ -44,19 +44,20 @@ var model = {
 		var _this = this;
 		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
-			// search % 20
-			if( !data.length ) return;
+			// search % 20  
+			if( !data.statuses.length ) return;
 			data.statuses.forEach(function(item, index){
+				if( !item.user ) return;
 				_this.tweetsCount++;
-				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 7))
-					_this.shareDetail(item);
+				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
+					_this.shareDetail(item); 
 			});
+			run = false;
 		});
 	},
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
-		this.updateModel();
 		this.updateDetailInDb('visual', tweet);
 		// if( this.visual < 3 && this.noVisual === 3 ){
 		// 	this.visual++;
@@ -81,7 +82,8 @@ var model = {
 		this.saveImage(tweet.user.profile_image_url, tweet.user.screen_name);
 		return {
 			time : d,
-			id : tweet.id_str,
+			user_id : tweet.user.id_str,
+			tweet_id : tweet.id_str,
 			text : tweet.text,
 			name : tweet.user.name,
 			screen_name : tweet.user.screen_name,
@@ -92,25 +94,13 @@ var model = {
 		var options = {url : path};
 		http.get(options, './public/uploads/'+name+'.png', function (error, result) {
 			if (error)
-				console.warn(error);
-			else
-				console.log('File downloaded at: ' + result.file);
+				console.log(error);
 		});
-	},
-	updateModel : function(data){
-		// if today is tomorrow's update counters
-		if( this.dateTomorrow === this.today ){
-			// reset amount details
-			this.visual = 0;
-			this.noVisual = 0;
-			// update date tomorrow
-			this.dateTomorrow = Date.tomorrow().toFormat('YYYY-MM-DD');
-		}
 	},
 	updateDetailInDb : function(category, tweet){
 		var _this = this;
 		var query = {share:false, type:category};
-		var set = {id:tweet.id, date:_this.today, user:tweet, share:true}
+		var set = {id:tweet.tweet_id, date:_this.today, user:tweet, share:true}
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
@@ -126,20 +116,38 @@ var model = {
 				// send items with socket
 				if( !callback )
 					server.sendDetails(result);
-				// sending items through the post
+				// sending items through the get
 				else
 					callback(result);
 			}
 				
 		});
 	},
-	tweet : function(item){ 
-		if( !item.id ) return;
+	tweet : function(item){
+		var _this = this;
+		if( !item.user.id_str ) return;
 		this.tweetsCount++;
-		if( this.tweetsCount % 2 === 0 )
-			this.shareDetail(item);
+		console.log(this.tweetsCount)
+		if( this.tweetsCount % 2 === 0 ){
+			// search this user in seat group
+			twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
+				_.find(data.ids, function(id){ // find user id in result
+					if( id === item.user.id_str ){
+						_this.shareDetail(item); // share detail
+						return true;
+					}
+				});
+			});
+		}	
 	}
 };
+//Reset everything on a new day!
+new cronJob('0 0 0 * * *', function(){
+    //Reset 
+    model.visual = 0;
+    model.noVisual = 0;
+}, null, true);
+
 // Connect to db
 exports.connect = function(callback){
 	var host = process.env['MONGO_NODE_DRIVER_HOST'] != null ? 
@@ -174,15 +182,35 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	// console.log(twit.stream('user', {track:'#wottak'}))
-	twit.stream('user', {track:'#wottak'}, function(stream) {
+	twit.stream('statuses/filter', {track:'#wottak'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 	});
 };
 
-// events
 exports.getDetails = function(callback){
 	// get all share details and send to client
 	model.sendDetails(callback);
 };
+
+// remove user
+var ObjectID = require('mongodb').ObjectID;
+exports.removeUser = function(db_id, tweet_id, callback){
+	// find prev tweet
+	twit.search('#wottak', {max_id:tweet_id,count:2}, function(data){
+		if( !data.statuses ) return;
+		if( data.statuses.length !== 2 ) return;
+		// update collection
+		var tweet = model.adaptationTweet(data.statuses[1]) // get info
+		var query = {_id : new ObjectID(db_id)}; // find details by id
+		var set = {id:tweet.tweet_id, date:model.today, user:tweet, admin:true};
+		model.collection.update(query, {$set : set},function(err, object){ // update detail
+			if( err ) throw new Error(err);
+			else if( object ){ // if update detail success
+				exports.getDetails(); // send detail to client
+				callback(); // run callback 
+			}
+		});
+	});
+	
+}

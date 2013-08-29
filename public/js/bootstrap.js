@@ -106,7 +106,6 @@
     var that      = this
 
     this.sliding = true
-
     isCycling && this.pause()
 
     $next = $next.length ? $next : this.$element.find('.item')[fallback]()
@@ -114,7 +113,6 @@
     var e = $.Event('slide.bs.carousel', { relatedTarget: $next[0], direction: direction })
 
     if ($next.hasClass('active')) return
-
     if (this.$indicators.length) {
       this.$indicators.find('.active').removeClass('active')
       this.$element.one('slid', function () {
