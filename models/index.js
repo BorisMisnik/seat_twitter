@@ -129,19 +129,21 @@ var model = {
 	},
 	tweet : function(item){
 		var _this = this;
-		if( !item.user.id_str ) return;
+		if( !item.user ) return;
 		this.tweetsCount++;
-		// if( this.tweetsCount % 2 === 0 ){
+		console.log( 'tweet !!!' );
+		if( this.tweetsCount % 2 === 0 ){
 			// search this user in seat group
 			twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
 				_.find(data.ids, function(id){ // find user id in result
 					if( id === item.user.id_str ){
+						console.log( item.user.id_str );
 						_this.shareDetail(item); // share detail
 						return true;
 					}
 				});
 			});
-		// }	
+		}	
 	}
 };
 //Reset everything on a new day!
