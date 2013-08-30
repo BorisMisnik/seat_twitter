@@ -2,161 +2,401 @@
 	{
 		"type" : "visual",
 		"name" : "v1",
+		"text" : "Бампер",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "Проснувшись однажды утром после беспокойного сна,"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v2",
+		"text" : "Передние боковые фары",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "Грегор Замза обнаружил, что он у себя в постели"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v3",
+		"text" : "Боковое зеркало",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "панцирнотвердой спине, он видел, стоило ему приподнять "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v4",
+		"text" : "Дверные ручки",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "голову, свой коричневый, выпуклый, разделенный"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v5",
+		"text" : "Переднюю боковую дверь",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "дугообразными чешуйками живот, на верхушке которого и"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v6",
+		"text" : "Заднюю боковую дверь",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "еле держалось готовое вот-вот окончательно сползти"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v7",
+		"text" : "Диски",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "одеяло. Его многочисленные, убого тонкие по сравнению с"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v8",
+		"text" : "Шины",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "остальным телом ножки беспомощно копошились у него "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v9",
+		"text" : "Капот",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "перед глазами. «Что со мной случилось?» – подумал он. Это "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v10",
+		"text" : "Значок SEAT",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "не было сном. Его комната, настоящая, разве что слишком "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v11",
+		"text" : "Крышку радиатора",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "маленькая, но обычная комната, мирно покоилась в своих "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v12",
+		"text" : "Крышу",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "четырех хорошо знакомых стенах. Над столом, где были "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v13",
+		"text" : "Лобовое стекло",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "разложены распакованные образцы сукон – Замза был "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v14",
+		"text" : "Задний бампер",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "коммивояжером, – висел портрет, который он недавно "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v15",
+		"text" : "Задние фары",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "коммивояжером, – висел портрет, который он недавно "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v16",
+		"text" : "Передние фары",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "вырезал из иллюстрированного журнала и вставил в "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v17",
+		"text" : "Выхлопная труба",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "дама в меховой шляпе и боа, она сидела очень прямо и "
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v18",
+		"text" : "Заднюю дверь багажника",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "Грегор Замза обнаружил, что он у себя в постели"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v19",
+		"text" : "Задний дворник",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "красивую золоченую рамку. На портрете была изображена"
+		"date" : ""
 	},
 	{
 		"type" : "visual",
 		"name" : "v20",
+		"text" : "Передний дворник дворник",
 		"share" : false,
 		"user" : "",
-		"date" : "",
-		"news-text" : "в окно, и пасмурная погода – слышно было, как по жести "
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v0",
+		"text" : "SEAT Sound System",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v1",
+		"text" : "Сенсорная мультимедийная система",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v2",
+		"text" : "Многофункциональное рулевое колесо",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v3",
+		"text" : "Монохромная мультимедийная система с сенсорным дисплеем",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v4",
+		"text" : "Регулируемая поясничная подушка",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v5",
+		"text" : "Задние электростеклоподъемники",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v6",
+		"text" : "Задние датчики парковки",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v7",
+		"text" : "Ключ с функцией дистанционного открытия дверей и багажника",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v8",
+		"text" : "Система распознавания усталости водителя",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v9",
+		"text" : "Подушка безопасности для коленей",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v10",
+		"text" : "Спортивные сиденья Alcantara",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v11",
+		"text" : "Бежевая кожаная обивка сидений",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v12",
+		"text" : "Электрический привод складывания зеркал",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v13",
+		"text" : "Базовая центральная консоль",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v14",
+		"text" : "Обтянутая кожей рукоятка ручного тормоза",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v15",
+		"text" : "Подлокотник",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v16",
+		"text" : "Ремень безопасности ",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v17",
+		"text" : "Коробка передач",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v18",	
+		"text" : "Лампы для чтения для передних пассажиров",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v19",
+		"text" : "Крепления для детских кресел ISOFIX",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v20",
+		"text" : "Обогрев зеркал",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v21",
+		"text" : "SEAT Drive Profile",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v22",
+		"text" : "Антиблокировочная система",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v23",
+		"text" : "Тонированные стекла",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v24",
+		"text" : "Система предупреждения о спущенных шинах",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v25",
+		"text" : "Кожаная обивка сидений",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v26",
+		"share" : false,
+		"text" : "Бежевая обивка салона",
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v27",
+		"text" : "Подрулевые лепестки переключения передач",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v28",
+		"text" : "Кондиционер",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v29",
+		"text" : "Скрытая выхлопная труба",
+		"share" : false,
+		"user" : "",
+		"date" : ""
 	}
 ]

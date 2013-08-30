@@ -2,18 +2,20 @@ doctype 5
 html(lang="en")
 	head
 		title Seat
+		link(rel='shortcut icon', href="img/favicon.ico")
 		link(rel="stylesheet", href="css/bootstrap.min.css")
 		link(rel="stylesheet", href="css/index.css")
-		link(rel='shortcut icon', href="img/favicon.ico")
+		link(rel="stylesheet", href="css/jquery.mCustomScrollbar.css")
 
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
 		script(src="//code.createjs.com/easeljs-0.6.1.min.js")
 		script(src="//code.createjs.com/preloadjs-0.3.1.min.js")
-		script(src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js")
 		script(src="/socket.io/socket.io.js")
 		
 		script(src="/js/VerbalExpressions.js")
 		script(src="/js/bootstrap.js")
+		script(src="/js/jquery.mousewheel.min.js")
+		script(src="/js/jquery.mCustomScrollbar.min.js")
 		script(src="js/canvas.js")
 
 		//if lt IE 9
@@ -100,24 +102,26 @@ html(lang="en")
 							| Наведи на деталь ‒  узнаешь кто её хозяин!
 					.columR
 						h2.title Последние новости
-						#newsCarousel.carousel.slide
-							<!-- Wrapper for slides -->
-							.carousel-inner
-								.item
-							<!-- Controls -->
-							a.carousel-control.next-news(href="#newsCarousel", data-slide="next")
-								span.arrow-l
-							a.carousel-control.prev-news(href="#newsCarousel", data-slide="prev")
-								span.arrow-r
+						#newsCarousel
 			//- details
 			section.details
 				h2 Облако деталей
+				.tweet-box
+					.img
+					.text
+						.names
+							span.name
+							span.nick_name
+						p	
+							span 
+				each item, i in items
+					div(class="detail v"+i)
 			//- Video
 			section.video
 				h2 Видео
 				video(width="900", controls)
-					//- source(src="video/Seat_Leon_30_RUS_price.mp4",type="video/mp4")
-					//- source(src="video/Seat_Leon_30_RUS_price.webm",type='video/webm')
+					source(src="video/Seat_Leon_30_RUS_price.mp4",type="video/mp4")
+					source(src="video/Seat_Leon_30_RUS_price.webm",type='video/webm')
 			//- slider
 			section.slider
 				h2 Линии завораживают

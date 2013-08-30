@@ -58,7 +58,12 @@ var model = {
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
-		this.updateDetailInDb('visual', tweet);
+		if(this.noVisual < 31){
+			this.updateDetailInDb('noVisual', tweet);
+		}
+		else if(this.visual < 21){
+			this.updateDetailInDb('visual', tweet);
+		}
 		// if( this.visual < 3 && this.noVisual === 3 ){
 		// 	this.visual++;
 		// 	// update visual detail in db;
@@ -74,7 +79,6 @@ var model = {
 		// 	// update no-visual detail in db;
 		// 	this.updateDetailInDb('noVisual', tweet);
 		// }
-
 	},
 	adaptationTweet : function(tweet){
 		var d = new Date().toFormat('YYYY-MM-DD-HH24-MI');
@@ -100,7 +104,7 @@ var model = {
 	updateDetailInDb : function(category, tweet){
 		var _this = this;
 		var query = {share:false, type:category};
-		var set = {id:tweet.tweet_id, date:_this.today, user:tweet, share:true}
+		var set = {id:tweet.tweet_id, date:this.today, user:tweet, share:true}
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
@@ -127,8 +131,7 @@ var model = {
 		var _this = this;
 		if( !item.user.id_str ) return;
 		this.tweetsCount++;
-		console.log(this.tweetsCount)
-		if( this.tweetsCount % 2 === 0 ){
+		// if( this.tweetsCount % 2 === 0 ){
 			// search this user in seat group
 			twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
 				_.find(data.ids, function(id){ // find user id in result
@@ -138,7 +141,7 @@ var model = {
 					}
 				});
 			});
-		}	
+		// }	
 	}
 };
 //Reset everything on a new day!
