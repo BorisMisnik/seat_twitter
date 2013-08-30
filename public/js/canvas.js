@@ -13,18 +13,18 @@ var canvas = {
 			preload.loadFile(manifest[i]);
 		};
 		preload.addEventListener('complete', handleComplete);
-        preload.addEventListener('progress', handleOverallProgress);
+		preload.addEventListener('progress', handleOverallProgress);
 
-        function handleComplete(event){
-        	div.fadeOut(function(){
-        		$('.car').fadeIn();
-        		canvas.init();
-        	})
-        };
+		function handleComplete(event){
+			div.fadeOut(function(){
+				$('.car').fadeIn();
+				canvas.init();
+			})
+		};
 
-        function handleOverallProgress(){
-        	div.text(Math.floor(preload.progress * 100) + '%');
-        };
+		function handleOverallProgress(){
+			div.text(Math.floor(preload.progress * 100) + '%');
+		};
 	},
 	init : function(){
 		var c = document.getElementById('canvas');
@@ -45,7 +45,6 @@ var canvas = {
 		this.newsTweet = $('#priz-tweet');
 		//  add to stage tick event
 		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
-
 		// connection socket IO
 		var socket = io.connect(window.location.origin); 
 		// get all share detail
@@ -53,6 +52,11 @@ var canvas = {
 			canvas.details = data;
 			// sorting detail
 			canvas.sortDetail();
+			console.log( data );
+		});
+		// enable news scroll
+		$('#newsCarousel').mCustomScrollbar({
+			horizontalScroll:true
 		});
 	},
 	// sorting items on the visual and no-visual
@@ -61,16 +65,16 @@ var canvas = {
 		this.visualDetails = []; //clear array
 		this.noVisualDetails = [];
 		this.details.forEach(function(item, index){
-			// displaying news
-			this.renderNews(item);
 			if( item.type === 'visual')
 				_this.visualDetails.push(item);
 			else
 				_this.noVisualDetails.push(item);
+			// render news
+			_this.renderNews(item, index);
 		});
 		this.visual();
 		this.noVisual();
-			},
+	},
 	// processing of all visual detail
 	visual : function(){
 		var _this = this;
@@ -88,8 +92,9 @@ var canvas = {
 		
 	},
 	noVisual : function(){
+		var _this = this;
 		this.noVisualDetails.forEach(function(item, index){
-
+			_this.renderNoVisual(item);
 		});
 	},
 	// add visual detail on canvas
@@ -108,7 +113,43 @@ var canvas = {
 		};
 	},
 	renderNoVisual : function(data){
-
+		var _this = this;
+		$('.'+data.name).addClass('active')
+			.on({
+				mouseenter : function(e){
+					// update content
+					var $box = $('.tweet-box');
+					var $this = $(this);
+					var text = _this.formatText(data.user.text);
+					$box.find('.img').css('background-image', 'url(' + data.user.avatar + ')');
+					$box.find('.name').text(data.user.name);
+					$box.find('.nick_name').text('@' + data.user.screen_name);
+					$box.find('.nick_name').text('@' + data.user.screen_name);
+					$box.find('p').html(text);
+					// set position block
+					var w = $box.outerWidth(true) 
+					  , h = $box.outerHeight(true) 
+					  , x = $this.position().left
+					  , y = $this.position().top
+					  , left;
+					 // block out of page
+					if( (x - 56) + w > 850){
+						left = 	(x + 77) - w;
+						$box.addClass('right').removeClass('left');
+					}
+					else{
+						left = x-32;
+						$box.addClass('left').removeClass('right');
+					} 
+					var top = y - h - 8;
+					$box.css({left:left,top:top}).fadeIn();
+				},
+				mouseleave : function(e){
+					var $box = $('.tweet-box');
+					$box.hide();
+				}
+			})
+		
 	},
 	// image upload
 	handleDetailLoad : function(event, item){
@@ -180,55 +221,72 @@ var canvas = {
 		return result;
 	},
 	// displaying news
-	renderNews : function(){
+	renderNews : function(data, index){
 		var _this = this;
-		if( this.visualDetails.length )
-			$('#newsCarousel .carousel-inner').html('');		// clear html
-		// crated new item
-		this.visualDetails.forEach(function(item){
-			renderTemplate(item);
-		});
-		// crate template with mustache.js
-		function renderTemplate(data){
+		var textNews, text, template, html;
+		
+		// visual template
+		if( data.type === 'visual')
+			visual();
+		else
+			noVisual();
 
-			var textNews = data['news-text']+' '+data.user.name + ' награждается мини-призом.';
-			var text = _this.formatText(data.user.text);
-			var template = " <div class='item'>"
-				+ "<p id='text-news'>{{textnews}}</p>"
+		function visual(){  // add news about visual detail
+			textNews = '';
+			if( index % 2 === 0 ){
+				textNews ='Пользователь <span>' + data.user.screen_name+ '</span> получает деталь ' 
+				+ data.text + ' и награждается мини-призом! Поздравляем! Участвуйте в конкурсе '
+				+ 'и у Вас есть возможность получить главный приз!';
+			}
+			else{
+				textNews ='Пользователь <span>' + data.user.screen_name+ '</span> получает деталь ' 
+				+ data.text + ' и награждается мини-призом! Поздравляем! До сборки Нового Леона осталось ' 
+				+ 'деталей <b>'+(20-_this.visualDetails.length)+'</b>. Спешите поучаствовать!';
+			}
+			text = _this.formatText(data.user.text);
+			template =  " <div class='item'>"
+				+ "<p id='text-news'>"+textNews+"</p>"
 				+ "<div id='img-news'>"
-				+ 	"<img src='img/{{name}}.png'/>"
+				+ 	"<img src='img/"+data.name+".png'/>"
 				+ "</div>"
 				+ "<div id='priz-tweet'>"
-				+	"<div class='imgT' style='background-image:url({{user.avatar}})'></div>"
+				+	"<div class='imgT' style='background-image:url("+data.user.avatar+")'></div>"
 				+	"<div class='text'>"
 				+		"<div class='names'>"
-				+			"<span class='name'>{{user.name}}</span>"
-				+			"<span class='nick_name'>@{{user.screen_name}}</span>"
+				+			"<span class='name'>"+data.user.name+"</span>"
+				+			"<span class='nick_name'>@"+data.user.screen_name+"</span>"
 				+		"</div>"
-				+		"<p>{{text}}</p>"
+				+		"<p>"+text+"</p>"
 				+	"</div>"
 				+	"</div>"
 				+"</div>";
-
-			data.textnews = textNews;
-			data.text = text;
-
-			var html = Mustache.to_html(template, data);
-			$('#newsCarousel .carousel-inner').append(html); // append new template in carousel
-			var lastItem = $('#newsCarousel .item').last(); // add twitter hashtag to span element
-			var t = lastItem.find('.text p').text();
-			lastItem.find('.text p').html(t);
-		}
-
-		// show last item
-		if( $('#newsCarousel .item').length )
-			$('#newsCarousel .item').first().addClass('active');	
-
-		// show navigate button
-		if( !$('.next-news').is(':visible') && this.visualDetails.length ){
-			$('.next-news').show();
-			$('.prev-news').show();	
+			html =  $.parseHTML(template);
 		};
+
+		function noVisual(){ // add news about no-visual detail
+			textNews = '';
+			textNews ='Пользователь <span>@' + data.user.screen_name+ '</span> получает деталь '
+				+ data.text + '! Поздравляем! Осталось деталей <b>'+(30 - _this.noVisualDetails.length)+'</b>.';
+			text = _this.formatText(data.user.text);
+			template =  " <div class='item n'>"
+				+ "<p id='text-news'>"+textNews+"</p>"
+				+ "<div id='priz-tweet'>"
+				+	"<div class='imgT' style='background-image:url("+data.user.avatar+")'></div>"
+				+	"<div class='text'>"
+				+		"<div class='names'>"
+				+			"<span class='name'>"+data.user.name+"</span>"
+				+			"<span class='nick_name'>@"+data.user.screen_name+"</span>"
+				+		"</div>"
+				+		"<p>"+text+"</p>"
+				+	"</div>"
+				+	"</div>"
+				+"</div>";
+			html =  $.parseHTML(template);
+		}
+		$('#newsCarousel').append(html).mCustomScrollbar("destroy"); // append new template in carousel
+		$('#newsCarousel').mCustomScrollbar({
+			horizontalScroll:true
+		});
 	},
 	// stage tick event
 	tick: function(event){

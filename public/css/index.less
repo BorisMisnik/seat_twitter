@@ -280,6 +280,7 @@ header{
 			float: left;
 			margin-left: 12px;
 			max-width: 285px;
+			text-align: left;
 			.names{
 				overflow: hidden;
 				.name{
@@ -348,7 +349,9 @@ header{
 		}
 	}
 	.columR{
+		position: relative;
 		float:right;
+		margin-bottom: 50px;
 		padding-left: 36px;
 		width:464px;
 		border-left:1px solid #f1f1f1;
@@ -361,10 +364,22 @@ header{
 			margin-bottom: 29px;
 		}
 		.item{
-			min-width: 100%;
+			display: inline-block !important;
+			margin-bottom: 20px;
 			width:427px;
+			vertical-align: top;
 			text-align: center;
 			line-height: 1;
+			#text-news{
+				span{
+						color:#0096CB;
+				}
+			}
+		}
+		.item.n{
+			#text-news{
+				margin-bottom: 40px;
+			}
 		}
 		#newsCarousel{
 			position: relative;
@@ -431,6 +446,7 @@ header{
 			.text{
 				float:right;
 				width:369px;
+				text-align: left;
 				.names{
 					overflow: hidden;
 					.name{
@@ -455,12 +471,13 @@ header{
 }
 .details{
 	.section();
+	position: relative;
 	text-align: center;
 	& > h2{
 		.sectionTitle();
 		text-align: left;
 	}
-	> div{
+	.detail{
 		.size (72px, 72px);
 		display: inline-block;
 		margin-right: 20px;
@@ -656,6 +673,68 @@ header{
 		background-position: -828px -184px;
 		&.active{
 			background-position: -828px -461px;
+		}
+	}
+	.tweet-box{
+		position: absolute;
+		top: 0;
+		left: 0;
+		display:none;
+		padding: 18px 25px 18px 15px;
+		min-width: 270px;
+		max-width: 433px;
+		border: 1px solid #00BDF5;
+		background: #FFF;
+		.img{
+			float: left;
+			width: 48px;
+			height: 48px;
+			border-radius: 50%;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+		.text{
+			float: left;
+			margin-left: 12px;
+			max-width: 285px;
+			text-align: left;
+		}
+		.names{
+			overflow: hidden;
+			.name{
+				color: #333;
+				font-weight: bold;
+				font-size: 15px;
+			}
+			.nick_name{
+				margin-left: 9px;
+				color: #9A9A9A;
+				font-size: 15px;
+			}
+		}
+		p{
+			margin-top: 13px;
+			margin-bottom: 0;
+			span{
+				color: #0096CB;
+			}
+		}
+		&:after{
+			position: absolute;
+			bottom: -9px;
+			left: 0;
+			display: block;
+			width: 16px;
+			height: 9px;
+			background: url(../img/sprites.png) no-repeat;
+			background-position: -555px 0;
+			content: '';
+		}
+		&.left:after{
+			left: 56px;
+		}
+		&.right:after{
+			left: 80%;
 		}
 	}
 }
