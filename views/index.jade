@@ -10,6 +10,7 @@ html(lang="en")
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
 		script(src="//code.createjs.com/easeljs-0.6.1.min.js")
 		script(src="//code.createjs.com/preloadjs-0.3.1.min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js")
 		script(src="/socket.io/socket.io.js")
 		
 		script(src="/js/VerbalExpressions.js")
@@ -17,6 +18,7 @@ html(lang="en")
 		script(src="/js/jquery.mousewheel.min.js")
 		script(src="/js/jquery.mCustomScrollbar.min.js")
 		script(src="js/canvas.js")
+		script(src="js/authorized.js")
 
 		//if lt IE 9
 			script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js")
@@ -73,12 +75,12 @@ html(lang="en")
 			div.car
 				canvas#canvas(width="960", height="479")
 				//- controls 
-				button.arrow-l(onclick="canvas.prev()")
-				button.arrow-r(onclick="canvas.next()")
+				button.arrow-l(onclick="app.prev()")
+				button.arrow-r(onclick="app.next()")
 				ol
-					li.active(onclick="canvas.renderStage('front');")
-					li(onclick="canvas.renderStage('back');")
-					li(onclick="canvas.renderStage('top');")
+					li.active(onclick="app.renderStage('front');")
+					li(onclick="app.renderStage('back');")
+					li(onclick="app.renderStage('top');")
 				//- tweet
 				.tweet.left
 					.img
@@ -200,4 +202,30 @@ html(lang="en")
 							a(href="http://www.seat.ru/content/ru/brand/ru/legal-note.html", title="ПРАВОВАЯ ИНФОРМАЦИЯ" , target="_blank") ПРАВОВАЯ ИНФОРМАЦИЯ
 						li
 							a(href="http://www.seat.ru/content/ru/brand/ru/sitemap.html", title="КАРТА САЙТА") КАРТА САЙТА
-
+		//- popup
+		.background
+		.popup_text
+			a(href="https://twitter.com/SeatRussia", target="_blank", class="popup_logo")
+			h3 SEAT Россия
+			h4 @SeatRussia
+			strong Для участия в конкурсе следуйте за нами в Twitter!
+			a(href="https://twitter.com/SeatRussia" 
+			  class="twitter-follow-button" 
+			  data-show-count="false" 
+			  data-lang="ru" 
+			  data-width="85px" 
+			  data-size="large"
+			  data-show-screen-name="false") Читать @SeatRussia		
+			a(href="/auth/twitter", class="auth") Авторизоваться
+			//- a(href="/auth/twitter", class="btn btn-primary") Войти
+		script(type="text/javascript")
+			! function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0],
+					p = /^http:/.test(d.location) ? 'http' : 'https';
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
+					js.id = id;
+					js.src = p + '://platform.twitter.com/widgets.js';
+					fjs.parentNode.insertBefore(js, fjs);
+				}
+			}(document, 'script', 'twitter-wjs');

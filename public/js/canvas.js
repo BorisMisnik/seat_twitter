@@ -1,4 +1,4 @@
-var canvas = {
+var app = {
 	update:true,
 	position : 'front',
 	details : [],
@@ -18,7 +18,7 @@ var canvas = {
 		function handleComplete(event){
 			div.fadeOut(function(){
 				$('.car').fadeIn();
-				canvas.init();
+				app.init();
 			})
 		};
 
@@ -27,13 +27,14 @@ var canvas = {
 		};
 	},
 	init : function(){
-		var c = document.getElementById('canvas');
+		var c = document.getElementById('app');
+		var _this = this;
 		this.stage = new createjs.Stage(c);
 		// enable touch interactions if supported on the current device:
 		createjs.Touch.enable(this.stage);
 		// enabled mouse over / out events
 		this.stage.enableMouseOver(10);
-		this.stage.mouseMoveOutside = true; // keep tracking the mouse even when it leaves the canvas
+		this.stage.mouseMoveOutside = true; // keep tracking the mouse even when it leaves the app
 
 		this.nav = $('.car li');
 		this.blockTweet = $('.car .tweet');
@@ -43,21 +44,29 @@ var canvas = {
 		// set stage background image
 		this.car.css('background-image', 'url(img/stagefront.jpg)');
 		this.newsTweet = $('#priz-tweet');
+		this.news = $('#newsCarousel');
 		//  add to stage tick event
-		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
+		createjs.Ticker.addEventListener("tick", app.tick.bind(app));
 		// connection socket IO
 		var socket = io.connect(window.location.origin); 
-		// get all share detail
-		socket.on('details', function (data) {
-			canvas.details = data;
-			// sorting detail
-			canvas.sortDetail();
-			console.log( data );
-		});
+		socket.once('connect', function(){
+			// get all share detail
+			socket.on('details', function (data) {
+				// clear news
+				_this.news.find('*').remove();
+				_this.details = data;
+				// sorting detail
+				_this.sortDetail();
+				console.log( data );
+			});
+		})
 		// enable news scroll
-		$('#newsCarousel').mCustomScrollbar({
+		this.news.mCustomScrollbar({
 			horizontalScroll:true
 		});
+
+		// init authorized
+		app.popup();
 	},
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
@@ -85,7 +94,7 @@ var canvas = {
 
 		function showDetails(){
 			_this.visualDetails.forEach(function(item, index){
-				// add visual detail on canvas
+				// add visual detail on app
 				_this.renderVisual(item);
 			});
 		}
@@ -97,19 +106,20 @@ var canvas = {
 			_this.renderNoVisual(item);
 		});
 	},
-	// add visual detail on canvas
+	// add visual detail on app
 	renderVisual : function(data){
 		// crate new image
 		var image = new Image();
 		var name = data.name;
+		var _this = this;
 		// Exclusion of non-existent images
-		if( canvas.position === 'front' && ( name === 'v18' || name === 'v17' || name === 'v19' || name === 'v20')) return;
-		if( canvas.position === 'back' && ( name === 'v2' || name === 'v11' || name === 'v13' || name === 'v16' || name === 'v20')) return;
-		if( canvas.position === 'top' && ( name === 'v17' || name === '20') ) return;
+		if( this.position === 'front' && ( name === 'v18' || name === 'v17' || name === 'v19' || name === 'v20')) return;
+		if( this.position === 'back' && ( name === 'v2' || name === 'v11' || name === 'v13' || name === 'v16' || name === 'v20')) return;
+		if( this.position === 'top' && ( name === 'v17' || name === '20') ) return;
 
 		image.src = 'img/'+name+'-'+this.position+'.png';
 		image.onload = function(event){
-			canvas.handleDetailLoad(event, data);
+			_this.handleDetailLoad(event, data);
 		};
 	},
 	renderNoVisual : function(data){
@@ -121,9 +131,9 @@ var canvas = {
 					var $box = $('.tweet-box');
 					var $this = $(this);
 					var text = _this.formatText(data.user.text);
+					console.log( $box.find('.nick_name') );
 					$box.find('.img').css('background-image', 'url(' + data.user.avatar + ')');
 					$box.find('.name').text(data.user.name);
-					$box.find('.nick_name').text('@' + data.user.screen_name);
 					$box.find('.nick_name').text('@' + data.user.screen_name);
 					$box.find('p').html(text);
 					// set position block
@@ -156,6 +166,7 @@ var canvas = {
 		var image = event.target;
 		var bitmap;
 		var container = new createjs.Container();
+		var _this = this;
 		// update stage tick
 		this.update = true;
 		// crate new bitmap
@@ -172,15 +183,15 @@ var canvas = {
 		(function(target, tweet) {
 			bitmap.onMouseOver = function(event) {
 				// show block with tweet
-				canvas.showBlockTweet(tweet, event.stageX, event.stageY);
+				_this.showBlockTweet(tweet, event.stageX, event.stageY);
 			}
 			bitmap.onMouseOut = function() {
 				// hide block with tweet
-				canvas.hideBlockTweet();
+				_this.hideBlockTweet();
 			}	
 		})(bitmap, item);
 		// update stage
-		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
+		createjs.Ticker.addEventListener("tick", _this.tick.bind(_this));
 	},
 	showBlockTweet : function(tweet, x, y){
 		// update content
@@ -232,14 +243,15 @@ var canvas = {
 			noVisual();
 
 		function visual(){  // add news about visual detail
+			var choosenTemplate = Math.random() < 0.5 ? true : false;
 			textNews = '';
-			if( index % 2 === 0 ){
-				textNews ='Пользователь <span>' + data.user.screen_name+ '</span> получает деталь ' 
+			if( choosenTemplate ){
+				textNews ='Пользователь <span>@' + data.user.screen_name+ '</span> получает деталь ' 
 				+ data.text + ' и награждается мини-призом! Поздравляем! Участвуйте в конкурсе '
 				+ 'и у Вас есть возможность получить главный приз!';
 			}
 			else{
-				textNews ='Пользователь <span>' + data.user.screen_name+ '</span> получает деталь ' 
+				textNews ='Пользователь <span>@' + data.user.screen_name+ '</span> получает деталь ' 
 				+ data.text + ' и награждается мини-призом! Поздравляем! До сборки Нового Леона осталось ' 
 				+ 'деталей <b>'+(20-_this.visualDetails.length)+'</b>. Спешите поучаствовать!';
 			}
@@ -283,8 +295,8 @@ var canvas = {
 				+"</div>";
 			html =  $.parseHTML(template);
 		}
-		$('#newsCarousel').append(html).mCustomScrollbar("destroy"); // append new template in carousel
-		$('#newsCarousel').mCustomScrollbar({
+		this.news.append(html).mCustomScrollbar("destroy"); // append new template in carousel
+		this.news.mCustomScrollbar({
 			horizontalScroll:true
 		});
 	},
@@ -346,5 +358,5 @@ var canvas = {
 
 $(document).ready(function(){
 	// init stage
-	canvas.load();
+	app.load();
 });
