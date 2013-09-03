@@ -32,7 +32,6 @@ html(lang="en")
 		//if lt IE 9
 			script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js")
 
-		
 	body
 		header
 			a(href="http://www.seat.ru/", id="logo")
@@ -114,14 +113,13 @@ html(lang="en")
 							|и приобретает новый, незабываемый, стремительный облик. Самые активные любители Seat получат реальные призы.
 							| Наведи на деталь ‒  узнаешь кто её хозяин! 
 						p
-							| Следуйте за нами в Twitter и будьте в курсе последних новостей мира SEAT!
-							a(href="https://twitter.com/SeatRussia" 
-							  class="twitter-follow-button" 
-							  data-show-count="false" 
-							  data-lang="ru" 
-							  data-width="85px" 
-							  data-size="large"
-							  data-show-screen-name="false") Читать @SeatRussia		
+							strong
+								|Следуйте за нами в Twitter и будьте в курсе последних новостей мира SEAT!
+							a(href="https://twitter.com/SeatRussia",
+							class="twitter-follow-button"
+							data-show-count="false"
+							data-lang="ru"
+							data-size="large") Читать @SeatRussia</a>
 					.columR
 						h2.title Последние новости
 						#newsCarousel
@@ -237,7 +235,7 @@ html(lang="en")
 		//- social
 		script(type="text/javascript", src="//vk.com/js/api/openapi.js?100")
 		script(type="text/javascript").
-			! function (d, s, id) {
+			!function (d, s, id) {
 				var js, fjs = d.getElementsByTagName(s)[0],
 					p = /^http:/.test(d.location) ? 'http' : 'https';
 				if (!d.getElementById(id)) {
@@ -252,9 +250,13 @@ html(lang="en")
 				var js, fjs = d.getElementsByTagName(s)[0];
 				if (d.getElementById(id)) return;
 				js = d.createElement(s); js.id = id;
-				js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&appId=334050486717364";
+				js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&appId=166083373582731";
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 
-			VK.init({apiId: 3857794, onlyWidgets: true});
-			VK.Widgets.Like("vk_like", {type: "mini", height: 20});
+			window.onload = function () {
+				if( !window.VK ) return;
+				VK.init({apiId: 3857794, onlyWidgets: true});
+				VK.Widgets.Like("vk_like", {type: "mini", height: 20});
+			}
+			
