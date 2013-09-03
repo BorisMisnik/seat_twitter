@@ -26,7 +26,7 @@ html(lang="en")
 		script(src="/js/bootstrap.js")
 		script(src="/js/jquery.mousewheel.min.js")
 		script(src="/js/jquery.mCustomScrollbar.min.js")
-		script(src="js/app.js")
+		script(src="js/canvas.js")
 
 		//if lt IE 9
 			script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js")
@@ -234,28 +234,28 @@ html(lang="en")
 							a(href="http://www.seat.ru/content/ru/brand/ru/sitemap.html", title="КАРТА САЙТА") КАРТА САЙТА
 		#fb-root
 		//- social
-		//- script(type="text/javascript", src="//vk.com/js/api/openapi.js?100")
-		//- script(type="text/javascript").
-		//- 	! function (d, s, id) {
-		//- 		var js, fjs = d.getElementsByTagName(s)[0],
-		//- 			p = /^http:/.test(d.location) ? 'http' : 'https';
-		//- 		if (!d.getElementById(id)) {
-		//- 			js = d.createElement(s);
-		//- 			js.id = id;
-		//- 			js.src = p + '://platform.twitter.com/widgets.js';
-		//- 			fjs.parentNode.insertBefore(js, fjs);
-		//- 		}
-		//- 	}(document, 'script', 'twitter-wjs');
+		script(type="text/javascript", src="//vk.com/js/api/openapi.js?100")
+		script(type="text/javascript").
+			! function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0],
+					p = /^http:/.test(d.location) ? 'http' : 'https';
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
+					js.id = id;
+					js.src = p + '://platform.twitter.com/widgets.js';
+					fjs.parentNode.insertBefore(js, fjs);
+				}
+			}(document, 'script', 'twitter-wjs');
 
-		//- 	(function(d, s, id) {
-		//- 		var js, fjs = d.getElementsByTagName(s)[0];
-		//- 		if (d.getElementById(id)) return;
-		//- 		js = d.createElement(s); js.id = id;
-		//- 		js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&appId=334050486717364";
-		//- 		fjs.parentNode.insertBefore(js, fjs);
-		//- 	}(document, 'script', 'facebook-jssdk'));
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&appId=334050486717364";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
 
-		//- 	VK.init({apiId: 3857794, onlyWidgets: true});
-		//- 	VK.Widgets.Like("vk_like", {type: "mini", height: 20});
+			VK.init({apiId: 3857794, onlyWidgets: true});
+			VK.Widgets.Like("vk_like", {type: "mini", height: 20});
 
 
