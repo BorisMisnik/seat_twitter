@@ -1152,7 +1152,6 @@ var app = {
 					var $box = $('.tweet-box');
 					var $this = $(this);
 					var text = _this.formatText(data.user.text);
-					console.log( $box.find('.nick_name') );
 					$box.find('.img').css('background-image', 'url(' + data.user.avatar + ')');
 					$box.find('.name').text(data.user.name);
 					$box.find('.nick_name').text('@' + data.user.screen_name);
