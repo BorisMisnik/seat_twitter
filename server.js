@@ -3,6 +3,8 @@ var express = require('express')
   , app = express()
   , http = require('http')
   , model = require('./models/')
+  , passport = require('passport')
+  , TwitterStrategy = require('passport-twitter').Strategy
   , server = http.createServer(app);
 
 // routers
@@ -48,3 +50,16 @@ app.get('/admin', admin.index);
 app.get('/admin/login', admin.login);
 app.get('/admin/edit', admin.getAll);
 app.delete('/admin/edit', admin.remove);
+
+//   Use passport.authenticate() as route middleware to authenticate the request.
+app.get('/auth/twitter', 
+	passport.authenticate('twitter'),
+	function(req, res){
+		// The request will be redirected to Twitter for authentication, so this
+    	// function will not be called.
+	});
+app.get('/auth/twitter/callback',
+	passport.authenticate('twitter', { failureRedirect: '/#login' }),
+	function(req, res){  // Successful authentication, redirect home.
+		res.redirect('/');
+	});
