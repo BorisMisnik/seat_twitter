@@ -9,13 +9,16 @@ var express = require('express')
 var index = require('./controllers/index')
   , admin = require('./controllers/admin');
 
-app.use(express.static( __dirname + '/public' ));
-app.use(express.cookieParser('password'));
-app.use(express.session());
-app.use(app.router);
+// configure Express
 app.set('port', process.env.PORT || 8080);
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser());
+app.use(express.session({secret : 'password'}));
+app.use(app.router);
+app.use(express.static( __dirname + '/public' ));
 
 // connect socket io
 var sockets = io.listen(server);

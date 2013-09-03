@@ -1,5 +1,7 @@
 // GET */*
+var array = new Array(30)
+  , model = require('../models/');
+
 exports.index = function(req, res){
-	var array = new Array(30);
 	res.render('index', {items:array});
 }

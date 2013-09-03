@@ -45,40 +45,34 @@ var model = {
 		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
 			// search % 20  
-			if( !data.statuses.length ) return;
+			if( !data.statuses ) return;
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
+
 				_this.tweetsCount++;
 				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
 					_this.shareDetail(item); 
 			});
-			run = false;
 		});
 	},
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
-		if(this.noVisual < 31){
-			this.updateDetailInDb('noVisual', tweet);
-		}
-		else if(this.visual < 21){
+		if( this.visual === 0 && this.visual !== 2 && this.noVisual === 0 ){
+			this.visual++;
+			// update visual detail in db;
 			this.updateDetailInDb('visual', tweet);
 		}
-		// if( this.visual < 3 && this.noVisual === 3 ){
-		// 	this.visual++;
-		// 	// update visual detail in db;
-		// 	this.updateDetailInDb('visual', tweet);
-		// }
-		// else if( this.visual < 3 && this.noVisual === 6 ){
-		// 	this.visual++;
-		// 	// update visual detail in db;
-		// 	this.updateDetailInDb('visual', tweet);
-		// }
-		// else if( this.noVisual < 7 ){
-		// 	this.noVisual++;
-		// 	// update no-visual detail in db;
-		// 	this.updateDetailInDb('noVisual', tweet);
-		// }
+		else if( this.visual !== 2 && this.noVisual === 3 ){
+			this.visual++;
+			// update visual detail in db;
+			this.updateDetailInDb('visual', tweet);
+		}
+		else if( this.noVisual !== 3 ){
+			this.noVisual++;
+			// update no-visual detail in db;
+			this.updateDetailInDb('noVisual', tweet);
+		}
 	},
 	adaptationTweet : function(tweet){
 		var d = new Date().toFormat('YYYY-MM-DD-HH24-MI');
@@ -120,7 +114,6 @@ var model = {
 				// send items with socket
 				if( !callback )
 					server.sendDetails(result);
-				// sending items through the get
 				else
 					callback(result);
 			}
@@ -129,30 +122,61 @@ var model = {
 	},
 	tweet : function(item){
 		var _this = this;
-		if( !item.user ) return;
+		if( !item.user || !item.text.indexOf('#wottak') < 0 ) return;
 		this.tweetsCount++;
-		console.log( 'tweet !!!' );
 		if( this.tweetsCount % 2 === 0 ){
 			// search this user in seat group
-			twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
-				_.find(data.ids, function(id){ // find user id in result
-					if( id === item.user.id_str ){
-						console.log( item.user.id_str );
-						_this.shareDetail(item); // share detail
-						return true;
-					}
-				});
+			_this.findUser(item.user.id_str, function(){
+				_this.shareDetail(item); // share detail
 			});
 		}	
+	},
+	findUser : function(user_id, callback, notFound){
+		twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
+			if( !data.ids ) return;
+			_.find(data.ids, function(id){ // find user id in result
+				if( id === user_id ){
+					callback(true) // run callback
+					return true;
+				}
+			});
+			if( notFound )
+				notFound(); // run if item not found callback
+		});
 	}
 };
 //Reset everything on a new day!
 new cronJob('0 0 0 * * *', function(){
-    //Reset 
-    model.visual = 0;
-    model.noVisual = 0;
+	// if not all detail share
+	if(  model.visual !== 2 || model.noVisual !== 3 ){
+		var amount = ( 2 - model.visual ) + ( 3 - model.noVisual );
+		// get id last record
+		model.collection.find({share : true}).toArray(function(err, result){
+			if( err ) console.log( err )
+			else if( result.length ){
+				var tweet_id = result[result.length-1].id; // id last record;
+				// search tweets and share details
+				twit.search('#wottak',{max_id:tweet_id,count:amount},function(data){
+					if( !data.statuses ) return;
+					// share detail
+					data.statuses.forEach(function(item, index){
+						model.shareDetail(item);
+						if( index === data.statuses.length - 1){
+							// reset
+							model.visual = 0;
+							model.noVisual = 0;
+						}
+					});
+				});
+			}
+		});
+	}
+	else{
+		//Reset 
+		model.visual = 0;
+		model.noVisual = 0;
+	}
 }, null, true);
-
 // Connect to db
 exports.connect = function(callback){
 	var host = process.env['MONGO_NODE_DRIVER_HOST'] != null ? 
@@ -187,9 +211,14 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	twit.stream('statuses/filter', {track:'#wottak'}, function(stream) {
+	// stream russin region
+	// twit.stream('statuses/filter', {'locations':'33.83,55.12,132.62,55.62,33.15,67.62,152.90,69.62'}, function(stream) {
+	twit.stream('statuses/filter', {'track':'#wottak'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
+		stream.on('error', function(err){
+			console.log( err );
+		});
 	});
 };
 
@@ -217,5 +246,8 @@ exports.removeUser = function(db_id, tweet_id, callback){
 			}
 		});
 	});
-	
+}
+// check user in seat group
+exports.checkUser = function(id, callback){
+	model.findUser(id, callback) // find user in seat group;
 }
