@@ -11,24 +11,6 @@ var express = require('express')
 var index = require('./controllers/index')
   , admin = require('./controllers/admin');
 
-// Passport session setup.  
-passport.serializeUser(function(user, done) {
- 	done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-	done(null, obj);
-});
-
-passport.use(new TwitterStrategy({
-	consumerKey : 'wDonkYzJEDcZbhXDDrG5rg',
-	consumerSecret : 'TfWeZPHJBMv2AEKbO0hBHRQyzFEiYZu3qGtnd6rDiKA',
-	callbackURL: "http://ec2-23-22-150-11.compute-1.amazonaws.com/auth/twitter/callback"
-}, function(token, tokenSecret, profile, done){
-		return done(null, profile);
-	}
-));
-
 // configure Express
 app.set('port', process.env.PORT || 8080);
 app.set('view engine', 'jade');
@@ -37,9 +19,6 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({secret : 'password'}));
-// Initialize Passport!
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(app.router);
 app.use(express.static( __dirname + '/public' ));
 
@@ -84,4 +63,3 @@ app.get('/auth/twitter/callback',
 	function(req, res){  // Successful authentication, redirect home.
 		res.redirect('/');
 	});
-

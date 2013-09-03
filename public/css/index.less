@@ -92,7 +92,7 @@ header{
 	top: 29px;
 	left: 25px;
 	display: block;
-	background:url('../img/logo_seat_big.png') no-repeat; 
+	background:url("../img/sprites.png") -2px -369px no-repeat;
 }
 #seat_menu{
 	position: absolute;
@@ -126,7 +126,7 @@ header{
 	.size(960px, 31px);
 	position: absolute;
 	top:0;
-	background: url('../img/mainnav_bg.png');
+	background:#50575d;
 	td{
 		width: auto;
 		&:last-child a span{
@@ -904,7 +904,12 @@ footer{
 		.size(960px, 29px);
 		display: block;
 		margin: 0 auto;
-		background: url('../img/enjoyneering.png') no-repeat right top rgba(0, 0, 0, 0) ;
+		a{
+			display: inline-block;
+			width: 123px;
+			height: 29px;
+			background: url('../img/sprites.png') no-repeat -418px -300px rgba(0, 0, 0, 0);
+		}
 	}
 	.seat_footer_tab_link{
 		.size(125px, 29px);
@@ -925,10 +930,13 @@ footer{
 		.size(966px, 81px);
 		margin:0 auto;
 	}
+	.buttons{
+		padding-top: 32px;
+	}
 	.buttons ul{
 		float: left;
-		margin-top: 32px;
-		padding-left: 135px;
+		padding-left: 47px;
+		margin-right: 47px;
 		li{
 			display: inline;
 			float:left;
@@ -1055,4 +1063,8 @@ footer{
 			background-position:-87px -450px;
 		}
 	}
+}
+html body #vk_like{
+	display: inline-block;
+	margin-left: 36px;
 }

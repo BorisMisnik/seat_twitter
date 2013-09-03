@@ -41,7 +41,6 @@ var app = {
 		this.blockTweet.css('opacity','0');
 		this.car = $('.car');
 		this.imgNews = $('#img-news');
-		this.news = $('#newsCarousel');
 		// set stage background image
 		this.car.css('background-image', 'url(img/stagefront.jpg)');
 		this.newsTweet = $('#priz-tweet');
@@ -67,7 +66,7 @@ var app = {
 		});
 
 		// init authorized
-		app.popup();
+		// app.popup();
 	},
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
@@ -84,16 +83,6 @@ var app = {
 		});
 		this.visual();
 		this.noVisual();
-		// enable news scroll
-		_this.news.mCustomScrollbar("destroy");
-		_this.news.mCustomScrollbar({
-			horizontalScroll:true
-		});
-		setTimeout(function(){
-			var w = $('.mCSB_container').width();
-			$('.mCSB_container').width( w + 5 );
-		}, 0);
-		
 	},
 	// processing of all visual detail
 	visual : function(){
@@ -108,7 +97,7 @@ var app = {
 				// add visual detail on app
 				_this.renderVisual(item);
 			});
-		};
+		}
 		
 	},
 	noVisual : function(){
@@ -142,6 +131,7 @@ var app = {
 					var $box = $('.tweet-box');
 					var $this = $(this);
 					var text = _this.formatText(data.user.text);
+					console.log( $box.find('.nick_name') );
 					$box.find('.img').css('background-image', 'url(' + data.user.avatar + ')');
 					$box.find('.name').text(data.user.name);
 					$box.find('.nick_name').text('@' + data.user.screen_name);
@@ -305,7 +295,10 @@ var app = {
 				+"</div>";
 			html =  $.parseHTML(template);
 		}
-		this.news.append(html) // append new template in carousel
+		this.news.append(html).mCustomScrollbar("destroy"); // append new template in carousel
+		this.news.mCustomScrollbar({
+			horizontalScroll:true
+		});
 	},
 	// stage tick event
 	tick: function(event){
