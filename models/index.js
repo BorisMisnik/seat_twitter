@@ -131,17 +131,15 @@ var model = {
 			});
 		}	
 	},
-	findUser : function(user_id, callback, notFound){
+	findUser : function(user_id, callback){
 		twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
 			if( !data.ids ) return;
 			_.find(data.ids, function(id){ // find user id in result
 				if( id === user_id ){
-					callback(true) // run callback
+					callback() // run callback
 					return true;
 				}
 			});
-			if( notFound )
-				notFound(); // run if item not found callback
 		});
 	}
 };
@@ -211,7 +209,6 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	// stream russin region
 	// twit.stream('statuses/filter', {'locations':'33.83,55.12,132.62,55.62,33.15,67.62,152.90,69.62'}, function(stream) {
 	twit.stream('statuses/filter', {'track':'#wottak'}, function(stream) {
 		console.log( 'Stream started' );
