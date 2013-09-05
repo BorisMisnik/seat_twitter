@@ -126,11 +126,11 @@ var model = {
 		var _this = this; 
 		if( !item.user || !item.text.indexOf('#wottak') < 0 ) return;
 		this.tweetsCount++;
-		console.log(this.tweetsCount);
 		if( this.tweetsCount % 2 === 0 ){
 			// search this user in seat group
 			_this.findUser(item.user.id_str, function(){
 				_this.shareDetail(item); // share detail
+				console.log('user find')
 			});
 		}	
 	},
