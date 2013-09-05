@@ -30,6 +30,7 @@ html(lang="en", ng-app="admin")
 								th Ник
 								th Сообщение
 								th Время
+								th Исправленно
 								th Удалить
 							tr(ng-repeat="item in items")
 								td 
@@ -38,6 +39,8 @@ html(lang="en", ng-app="admin")
 								td {{item.user.screen_name}}
 								td {{item.user.text}}
 								td {{item.user.time}}
+								td 
+									span(ng-show="item.admin") YES
 								td 
 									button(ng-click="remove(item._id,item.id);", class="btn btn-danger") Наказать
 

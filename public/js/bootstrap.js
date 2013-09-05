@@ -106,7 +106,6 @@
     var that      = this
 
     this.sliding = true
-
     isCycling && this.pause()
 
     $next = $next.length ? $next : this.$element.find('.item')[fallback]()

@@ -1,23 +1,37 @@
 doctype 5
 html(lang="en")
 	head
-		title Seat
+		title Seat Twitter Constructor
+
+		//- meta
+		meta(property="og:title", content="Seat Twitter Constructor")
+		meta(property="og:image", content="http://ec2-23-22-150-11.compute-1.amazonaws.com/img/logo_seat_big.png")
+		meta(property="og:site_name", content="Seat Twitter Constructor")
+		meta(property="og:description", content=" ")
+
+		//- style
+		link(rel='shortcut icon', href="img/favicon.ico")
 		link(rel="stylesheet", href="css/bootstrap.min.css")
 		link(rel="stylesheet", href="css/index.css")
-		link(rel='shortcut icon', href="img/favicon.ico")
+		link(rel="stylesheet", href="css/jquery.mCustomScrollbar.css")
 
-		script(src="/socket.io/socket.io.js")
+		//- scripts
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
 		script(src="//code.createjs.com/easeljs-0.6.1.min.js")
 		script(src="//code.createjs.com/preloadjs-0.3.1.min.js")
-		script(src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js")
+		script(src="/socket.io/socket.io.js")
 		
 		script(src="/js/VerbalExpressions.js")
 		script(src="/js/bootstrap.js")
+		script(src="/js/jquery.mousewheel.min.js")
+		script(src="/js/jquery.mCustomScrollbar.min.js")
 		script(src="js/canvas.js")
+		script(src="js/authorized.js")
 
 		//if lt IE 9
 			script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js")
+
 	body
 		header
 			a(href="http://www.seat.ru/", id="logo")
@@ -71,12 +85,12 @@ html(lang="en")
 			div.car
 				canvas#canvas(width="960", height="479")
 				//- controls 
-				button.arrow-l(onclick="canvas.prev()")
-				button.arrow-r(onclick="canvas.next()")
+				button.arrow-l(onclick="app.prev()")
+				button.arrow-r(onclick="app.next()")
 				ol
-					li.active(onclick="canvas.renderStage('front');")
-					li(onclick="canvas.renderStage('back');")
-					li(onclick="canvas.renderStage('top');")
+					li.active(onclick="app.renderStage('front');")
+					li(onclick="app.renderStage('back');")
+					li(onclick="app.renderStage('top');")
 				//- tweet
 				.tweet.left
 					.img
@@ -97,20 +111,31 @@ html(lang="en")
 							strong #seatnewleon
 						p	Благодаря активности участников в твиттере, новый Seat Leon получает новые детали                  
 							|и приобретает новый, незабываемый, стремительный облик. Самые активные любители Seat получат реальные призы.
-							| Наведи на деталь ‒  узнаешь кто её хозяин!
+							| Наведи на деталь ‒  узнаешь кто её хозяин! 
+						p
+							strong
+								|Следуйте за нами в Twitter и будьте в курсе последних новостей мира SEAT!
+							a(href="https://twitter.com/SeatRussia",
+							class="twitter-follow-button"
+							data-show-count="false"
+							data-lang="ru"
+							data-size="large") Читать @SeatRussia</a>
 					.columR
 						h2.title Последние новости
-						#newsCarousel.carousel.slide
-							<!-- Wrapper for slides -->
-							.carousel-inner
-							<!-- Controls -->
-							a.carousel-control.next-news(href="#newsCarousel", data-slide="next")
-								span.arrow-l
-							a.carousel-control.prev-news(href="#newsCarousel", data-slide="prev")
-								span.arrow-r
+						#newsCarousel
 			//- details
 			section.details
 				h2 Облако деталей
+				.tweet-box
+					.img
+					.text
+						.names
+							span.name
+							span.nick_name
+						p	
+							span 
+				each item, i in items
+					div(class="detail v"+i)
 			//- Video
 			section.video
 				h2 Видео
@@ -186,6 +211,17 @@ html(lang="en")
 								a(href="http://www.twitter.com/SeatRussia", target="_blank").twitter21x21
 							li
 								a(href="https://www.youtube.com/seatrus/", target="_blank").youtube_icon
+
+						a(href="https://twitter.com/share", class="twitter-share-button", data-lang="ru", data-width="115px") Твитнуть
+						div(
+							class="fb-like" 
+							data-href="http://ec2-23-22-150-11.compute-1.amazonaws.com/" 
+							data-width="100" 
+							data-layout="button_count" 
+							data-show-faces="false" 
+							data-send="false")
+						#vk_like
+						
 			.footer
 				.seat_footer_imprint
 					ul
@@ -195,4 +231,32 @@ html(lang="en")
 							a(href="http://www.seat.ru/content/ru/brand/ru/legal-note.html", title="ПРАВОВАЯ ИНФОРМАЦИЯ" , target="_blank") ПРАВОВАЯ ИНФОРМАЦИЯ
 						li
 							a(href="http://www.seat.ru/content/ru/brand/ru/sitemap.html", title="КАРТА САЙТА") КАРТА САЙТА
+		#fb-root
+		//- social
+		script(type="text/javascript", src="//vk.com/js/api/openapi.js?100")
+		script(type="text/javascript").
+			!function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0],
+					p = /^http:/.test(d.location) ? 'http' : 'https';
+				if (!d.getElementById(id)) {
+					js = d.createElement(s);
+					js.id = id;
+					js.src = p + '://platform.twitter.com/widgets.js';
+					fjs.parentNode.insertBefore(js, fjs);
+				}
+			}(document, 'script', 'twitter-wjs');
 
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1&appId=166083373582731";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+
+			window.onload = function () {
+				if( !window.VK ) return;
+				VK.init({apiId: 3857794, onlyWidgets: true});
+				VK.Widgets.Like("vk_like", {type: "mini", height: 20});
+			}
+			
