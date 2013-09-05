@@ -127,6 +127,7 @@ var model = {
 		if( !item.user || !item.text.indexOf('#wottak') < 0 ) return;
 		this.tweetsCount++;
 		if( this.tweetsCount % 2 === 0 ){
+				console.log(this.tweetsCount)
 			// search this user in seat group
 			_this.findUser(item.user.id_str, function(){
 				_this.shareDetail(item); // share detail
@@ -139,7 +140,7 @@ var model = {
 			if( !data.ids ) return;
 			_.find(data.ids, function(id){ // find user id in result
 				if( id === user_id ){
-					console.log(id)
+				
 					callback() // run callback
 					return true;
 				}
@@ -150,6 +151,7 @@ var model = {
 //Reset everything on a new day!
 new cronJob('0 0 0 * * *', function(){
 	// if not all detail share
+	console.log('new day');
 	if(  model.visual !== 2 || model.noVisual !== 3 ){
 		var amount = ( 2 - model.visual ) + ( 3 - model.noVisual );
 		// get id last record
