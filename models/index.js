@@ -58,6 +58,7 @@ var model = {
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
+		console.log('shareDetail');
 		if( this.visual === 0 && this.visual !== 2 && this.noVisual === 0 ){
 			this.visual++;
 			// update visual detail in db;
@@ -100,6 +101,7 @@ var model = {
 		var query = {share:false, type:category};
 		var set = {id:tweet.tweet_id, date:this.today, user:tweet, share:true}
 		this.collection.update(query, {$set : set},function(err, object){
+			console.log('update object', object)
 			if( err ) console.warn(err.message);
 			else if( object ){
 				// sending detail to the client
@@ -121,15 +123,13 @@ var model = {
 		});
 	},
 	tweet : function(item){
-		var _this = this;
-		console.log(item)  
+		var _this = this; 
 		if( !item.user || !item.text.indexOf('#wottak') < 0 ) return;
 		this.tweetsCount++;
 		console.log(this.tweetsCount);
 		if( this.tweetsCount % 2 === 0 ){
 			// search this user in seat group
 			_this.findUser(item.user.id_str, function(){
-				console.log(item.user.id_str);
 				_this.shareDetail(item); // share detail
 			});
 		}	
