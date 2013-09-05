@@ -45,7 +45,7 @@ var model = {
 		// search tweets by hashtag and options
 		twit.search('#wottak',option,function(data){
 			// search % 20  
-			if( !data.statuses.length ) return;
+			if( !data.statuses ) return;
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
 				_this.tweetsCount++;
