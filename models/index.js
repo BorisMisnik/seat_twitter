@@ -138,10 +138,8 @@ var model = {
 		twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
 			if( !data.ids ) return;
 			_.find(data.ids, function(id){ // find user id in result
-				console.log(user_id)
 				if( id === user_id ){
 					console.log(id)
-					
 					callback() // run callback
 					return true;
 				}
