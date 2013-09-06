@@ -40,6 +40,7 @@ var canvas = {
 		this.blockTweet.css('opacity','0');
 		this.car = $('.car');
 		this.imgNews = $('#img-news');
+		this.news = $('#newsCarousel');
 		// set stage background image
 		this.car.css('background-image', 'url(img/stagefront.jpg)');
 		this.newsTweet = $('#priz-tweet');
@@ -59,25 +60,34 @@ var canvas = {
 			});
 		});
 		// enable news scroll
-		$('#newsCarousel').mCustomScrollbar({
+		this.news.mCustomScrollbar({
 			horizontalScroll:true
 		});
 	},
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
 		var _this = this;
+		var time = 0;
 		this.visualDetails = []; //clear array
 		this.noVisualDetails = [];
 		this.details.forEach(function(item, index){
-			if( item.type === 'visual')
-				_this.visualDetails.push(item);
-			else
-				_this.noVisualDetails.push(item);
-			// render news
+			setTimeout(function(){
+				if( item.type === 'visual'){
+					_this.visualDetails.push(item);
+					_this.renderVisual(item);
+				}		
+				else{
+					_this.noVisualDetails.push(item);
+					_this.renderNoVisual(item);		
+				}
+			}, time)
 			_this.renderNews(item, index);
+			time += 100;
 		});
-		this.visual();
-		this.noVisual();
+		this.news.mCustomScrollbar('destroy');
+		this.news.mCustomScrollbar({
+			horizontalScroll:true
+		});
 	},
 	// processing of all visual detail
 	visual : function(){
@@ -287,10 +297,7 @@ var canvas = {
 				+"</div>";
 			html =  $.parseHTML(template);
 		}
-		$('#newsCarousel').append(html).mCustomScrollbar("destroy"); // append new template in carousel
-		$('#newsCarousel').mCustomScrollbar({
-			horizontalScroll:true
-		});
+		this.news.append(html); // append new template in carousel
 	},
 	// stage tick event
 	tick: function(event){
