@@ -119,8 +119,7 @@ var model = {
 					server.sendDetails(result);
 				else
 					callback(result);
-			}
-				
+			}	
 		});
 	},
 	tweet : function(item){
@@ -141,7 +140,6 @@ var model = {
 			if( !data.ids ) return;
 			_.find(data.ids, function(id){ // find user id in result
 				if( id === user_id ){
-				
 					callback() // run callback
 					return true;
 				}
@@ -168,6 +166,7 @@ new cronJob('0 0 0 * * *', function(){
 						model.shareDetail(item);
 						if( index === data.statuses.length - 1){
 							// reset
+							console.log('reset amout detail');
 							model.visual = 0;
 							model.noVisual = 0;
 						}
@@ -178,6 +177,7 @@ new cronJob('0 0 0 * * *', function(){
 	}
 	else{
 		//Reset 
+		console.log('reset amout detail');
 		model.visual = 0;
 		model.noVisual = 0;
 	}
@@ -220,6 +220,10 @@ exports.startStriming = function(){
 	twit.stream('statuses/filter', {'track':'#wottak'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
+		stream.on('end', function (response) { // Handle a disconnection
+			console.log('Stream stoped');
+    		exports.startStriming();
+  		});
 		stream.on('error', function(err){
 			console.log( err );
 		});
