@@ -58,7 +58,8 @@ var model = {
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
-		console.log('shareDetail');
+		console.log('shareDetail visual', this.visual );
+		console.log('shareDetail noVisual', this.noVisual );
 		if( this.visual === 0 && this.visual !== 2 && this.noVisual === 0 ){
 			this.visual++;
 			// update visual detail in db;
