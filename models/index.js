@@ -29,6 +29,8 @@ var model = {
 			if( err ) throw err;
 			result.forEach(function(item, index){
 				//  get share details today
+				console.log( item.date  )
+				console.log( _this.today  )
 				if( item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 				// get id last record and get 100 tweets
@@ -48,7 +50,6 @@ var model = {
 			if( !data.statuses ) return;
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
-
 				_this.tweetsCount++;
 				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
 					_this.shareDetail(item); 
