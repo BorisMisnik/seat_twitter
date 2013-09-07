@@ -29,8 +29,6 @@ var model = {
 			if( err ) throw err;
 			result.forEach(function(item, index){
 				//  get share details today
-				console.log( item.date  )
-				console.log( _this.today  )
 				if( item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 				// get id last record and get 100 tweets
