@@ -67,23 +67,20 @@ var canvas = {
 	// sorting items on the visual and no-visual
 	sortDetail : function(){
 		var _this = this;
-		var time = 0;
 		this.visualDetails = []; //clear array
 		this.noVisualDetails = [];
 		this.details.forEach(function(item, index){
-			setTimeout(function(){
-				if( item.type === 'visual'){
-					_this.visualDetails.push(item);
-					_this.renderVisual(item);
-				}		
-				else{
-					_this.noVisualDetails.push(item);
-					_this.renderNoVisual(item);		
-				}
-			}, time)
+			if( item.type === 'visual')
+				_this.visualDetails.push(item);		
+			else
+				_this.noVisualDetails.push(item);
+
 			_this.renderNews(item, index);
-			time += 100;
 		});
+
+		this.visual();
+		this.noVisual();
+
 		this.news.mCustomScrollbar('destroy');
 		this.news.mCustomScrollbar({
 			horizontalScroll:true
@@ -92,6 +89,7 @@ var canvas = {
 	// processing of all visual detail
 	visual : function(){
 		var _this = this;
+		var time = 0;
 		// clear stage
 		this.stage.removeAllChildren();
 		// change stage background image
@@ -100,15 +98,22 @@ var canvas = {
 		function showDetails(){
 			_this.visualDetails.forEach(function(item, index){
 				// add visual detail on canvas
-				_this.renderVisual(item);
+				setTimeout(function(){
+					_this.renderVisual(item);
+				}, time);
+				time += 100
 			});
 		}
 		
 	},
 	noVisual : function(){
 		var _this = this;
+		var time = 0;
 		this.noVisualDetails.forEach(function(item, index){
-			_this.renderNoVisual(item);
+			setTimeout(function(){
+				_this.renderNoVisual(item);
+			}, time)
+			time += 100;
 		});
 	},
 	// add visual detail on canvas
@@ -137,7 +142,6 @@ var canvas = {
 					var text = _this.formatText(data.user.text);
 					$box.find('.img').css('background-image', 'url(' + data.user.avatar + ')');
 					$box.find('.name').text(data.user.name);
-					$box.find('.nick_name').text('@' + data.user.screen_name);
 					$box.find('.nick_name').text('@' + data.user.screen_name);
 					$box.find('p').html(text);
 					// set position block
