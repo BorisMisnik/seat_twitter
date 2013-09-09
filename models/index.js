@@ -225,7 +225,7 @@ exports.startStriming = function(){
 		stream.on('data', model.tweet.bind(model));
 		stream.on('end', function (response) { // Handle a disconnection
 			console.log('Stream stoped');
-    		// exports.startStriming();
+    		exports.startStriming();
   		});
 		stream.on('error', function(err){
 			console.log( err );
