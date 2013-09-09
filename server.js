@@ -2,6 +2,8 @@ var express = require('express')
   , io = require('socket.io')
   , app = express()
   , http = require('http')
+  , RedisStore = require ( 'connect-redis' ) ( express )
+  , sessionStore = new RedisStore ()
   , model = require('./models/')
   , server = http.createServer(app);
 
@@ -16,7 +18,9 @@ app.set('views', __dirname + '/views');
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
-app.use(express.session({secret : 'password'}));
+app.use(express.session({
+	secret: 'password', store: sessionStore, key: 'hello'
+}));
 app.use(app.router);
 app.use(express.static( __dirname + '/public' ));
 
