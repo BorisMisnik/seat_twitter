@@ -235,7 +235,7 @@ var canvas = {
 	},
 	// find hashtag in tweуt
 	formatText : function(text){
-		var result = VerEx().find( '#wottak' ).replace(text, '<span>#wottak</span> ');
+		var result = VerEx().find( '#seatnewleon' ).replace(text, '<span>#seatnewleon</span> ');
 		return result;
 	},
 	// displaying news
@@ -362,4 +362,9 @@ var canvas = {
 $(document).ready(function(){
 	// init stage
 	canvas.load();
+
+	$('video').on('play', function(){
+		yaCounter22260598.reachGoal('PLAY');
+	});
+
 });

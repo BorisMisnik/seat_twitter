@@ -2,7 +2,8 @@ module.exports = function(grunt){
 	grunt.initConfig({
 		concat : {
 			build : {
-				src:  'public/js/*.js',
+				src: ['public/js/bootstrap.js', 'public/js/canvas.js', 'public/js/jquery.mCustomScrollbar.min.js',
+				'public/js/VerbalExpressions.js'],
         		dest: 'public/build/scripts.js'
 			},
 			css: {
