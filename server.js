@@ -12,7 +12,7 @@ var index = require('./controllers/index')
   , admin = require('./controllers/admin');
 
 // configure Express
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 80);
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.bodyParser());
