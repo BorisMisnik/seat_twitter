@@ -4,8 +4,8 @@ var express = require('express')
   , http = require('http')
   , RedisStore = require ( 'connect-redis' ) ( express )
   , sessionStore = new RedisStore ()
-  , model = require('./models/')
-  , server = http.createServer(app);
+  , model = require('./models/');
+  // , server = http.createServer(app);
 
 // routers
 var index = require('./controllers/index')
@@ -25,20 +25,20 @@ app.use(app.router);
 app.use(express.static( __dirname + '/public' ));
 
 // connect socket io
-var sockets = io.listen(server);
-sockets.set('log level', 1);
-// enable all transports
-sockets.set('transports', ['xhr-polling','websocket']);
-sockets.on('connection', function(socket){
-	// if user connect send share detail
-	model.getDetails(function(data){
-		socket.emit('details', data);
-	});
-});
+// var sockets = io.listen(server);
+// sockets.set('log level', 1);
+// // enable all transports
+// sockets.set('transports', ['xhr-polling','websocket']);
+// sockets.on('connection', function(socket){
+// 	// if user connect send share detail
+// 	model.getDetails(function(data){
+// 		socket.emit('details', data);
+// 	});
+// });
 // connect to mongodb and start server
 model.connect(function(){
 	//Create the server
-	server.listen(app.get('port'), function(){
+	app.listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));
 	});
 });
