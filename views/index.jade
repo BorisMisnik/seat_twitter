@@ -5,29 +5,30 @@ html(lang="en")
 
 		//- meta
 		meta(property="og:title", content="Seat Twitter Constructor")
-		meta(property="og:image", content="http://ec2-23-22-150-11.compute-1.amazonaws.com/img/popupLogo.png")
+		meta(property="og:image", content="http://newleon.ru/img/popupLogo.png")
 		meta(property="og:site_name", content="Seat Twitter Constructor")
 		meta(property="og:description", content=" ")
 
 		//- style
 		link(rel='shortcut icon', href="img/favicon.ico")
-		link(rel="stylesheet", href="css/bootstrap.min.css")
-		link(rel="stylesheet", href="css/index.css")
-		link(rel="stylesheet", href="css/jquery.mCustomScrollbar.css")
+		//- link(rel="stylesheet", href="css/bootstrap.min.css")
+		//- link(rel="stylesheet", href="css/index.css")
+		//- link(rel="stylesheet", href="css/jquery.mCustomScrollbar.css")
+		link(rel="stylesheet", href="/build/allcss.css")
 
 		//- scripts
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
 		script(src="//code.createjs.com/easeljs-0.6.1.min.js")
 		script(src="//code.createjs.com/preloadjs-0.3.1.min.js")
-		script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js")
 		script(src="/socket.io/socket.io.js")
 		script(src="//vk.com/js/api/openapi.js?100")
 
-		script(src="/js/VerbalExpressions.js")
-		script(src="/js/bootstrap.js")
-		script(src="/js/jquery.mousewheel.min.js")
-		script(src="/js/jquery.mCustomScrollbar.min.js")
-		script(src="js/canvas.js")
+		//- script(src="/js/VerbalExpressions.js")
+		//- script(src="/js/bootstrap.js")
+		//- script(src="/js/jquery.mousewheel.min.js")
+		//- script(src="/js/jquery.mCustomScrollbar.min.js")
+		//- script(src="/js/canvas.js")
+		script(src="/build/scripts.min.js")
 
 		//if lt IE 9
 			script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js")
@@ -215,7 +216,7 @@ html(lang="en")
 						a(href="https://twitter.com/share", class="twitter-share-button", data-lang="ru", data-width="115px") Твитнуть
 						div(
 							class="fb-like" 
-							data-href="http://ec2-23-22-150-11.compute-1.amazonaws.com/" 
+							data-href="http://newleon.ru" 
 							data-width="100" 
 							data-layout="button_count" 
 							data-show-faces="false" 
@@ -254,9 +255,33 @@ html(lang="en")
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 
+			(function (d, w, c) {
+				(w[c] = w[c] || []).push(function() {
+					try {
+						w.yaCounter22260598 = new Ya.Metrika({id:22260598,
+								webvisor:true,
+								clickmap:true,
+								accurateTrackBounce:true});
+					} catch(e) { }
+				});
+
+				var n = d.getElementsByTagName("script")[0],
+					s = d.createElement("script"),
+					f = function () { n.parentNode.insertBefore(s, n); };
+				s.type = "text/javascript";
+				s.async = true;
+				s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+				if (w.opera == "[object Opera]") {
+					d.addEventListener("DOMContentLoaded", f, false);
+				} else { f(); }
+			})(document, window, "yandex_metrika_callbacks");
+
 			window.onload = function () {
 				if( !window.VK ) return;
-				VK.init({apiId: 3857794, onlyWidgets: true});
+				VK.init({apiId: 3868264, onlyWidgets: true});
 				VK.Widgets.Like("vk_like", {type: "mini", height: 20});
 			}
+
+
 			

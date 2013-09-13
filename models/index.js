@@ -17,23 +17,31 @@ var twit = new twitter({
 });
 
 var model = {
+	shareVisual : 0,
+	shareNoVisual : 0,
 	visual : 0,
 	noVisual : 0,
 	tweetsCount : 0,
 	today : Date.today().toFormat('YYYY-MM-DD'),
+	location : '36.38,53.21,70.22,67.57, 29.72,59.72,39.85,67.89,84.46,55.52,117.33,73.14,121.37,54.61,149.67,71.60,'
+	+ '150.62,59.34,169.05,69.70',	
 	// search shared detail today
 	search : function(startServer){
 		var _this = this;
-		// find shared detail today
+		var locat = this.location + ' 1mi';
+		// find shared detail 
 		this.collection.find({share:true}).toArray(function(err, result){
 			if( err ) throw err;
 			result.forEach(function(item, index){
+				if( !item.type ) return;
+				// get all share  detail
+				item.type === 'visual' ? _this.shareVisual++ : _this.shareNoVisual++;
 				//  get share details today
 				if( item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 				// get id last record and get 100 tweets
 				if( result.length - 1 === index && item.id !== '' ) 
-					_this.searchTweets({since_id : item.id, count : 100}); 	
+					_this.searchTweets({since_id : item.id, count : 100, geocode:locat}); 	
 			});
 			// run server
 			startServer();
@@ -43,13 +51,13 @@ var model = {
 	searchTweets : function(option){
 		var _this = this;
 		// search tweets by hashtag and options
-		twit.search('#wottak',option,function(data){
+		twit.search('#seatnewleon',option,function(data){
 			// search % 20  
 			if( !data.statuses ) return;
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
 				_this.tweetsCount++;
-				if( _this.tweetsCount % 2 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
+				if( _this.tweetsCount % 20 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
 					_this.shareDetail(item); 
 			});
 		});
@@ -57,20 +65,21 @@ var model = {
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
+<<<<<<< HEAD
 		// console.log('shareDetail visual', this.visual );
 		// console.log('shareDetail noVisual', this.noVisual );
 		if( this.visual === 0 && this.visual !== 2 && this.noVisual === 0 ){
+=======
+		if( this.visual !== 2 && this.shareVisual !== 20){
+>>>>>>> 62542e2295b7d2e60ac1a5bdb9a74ee962f44cdf
 			this.visual++;
+			this.shareVisual++;
 			// update visual detail in db;
 			this.updateDetailInDb('visual', tweet);
 		}
-		else if( this.visual !== 2 && this.noVisual === 3 ){
-			this.visual++;
-			// update visual detail in db;
-			this.updateDetailInDb('visual', tweet);
-		}
-		else if( this.noVisual !== 3 ){
+		else if( this.noVisual !== 3 && this.shareNoVisual !== 30){
 			this.noVisual++;
+			this.shareNoVisual++;
 			// update no-visual detail in db;
 			this.updateDetailInDb('noVisual', tweet);
 		}
@@ -101,7 +110,6 @@ var model = {
 		var query = {share:false, type:category};
 		var set = {id:tweet.tweet_id, date:this.today, user:tweet, share:true}
 		this.collection.update(query, {$set : set},function(err, object){
-			console.log('update object', object)
 			if( err ) console.warn(err.message);
 			else if( object ){
 				// sending detail to the client
@@ -123,10 +131,10 @@ var model = {
 	},
 	tweet : function(item){
 		var _this = this; 
-		if( !item.user || !item.text.indexOf('#wottak') < 0 ) return;
+		if( !item.user || item.text.toLowerCase().indexOf('#seatnewleon') < 0 ) return;
 		this.tweetsCount++;
-		if( this.tweetsCount % 2 === 0 ){
-				console.log(this.tweetsCount)
+		if( this.tweetsCount % 20 === 0 ){
+			console.log(this.tweetsCount)
 			// search this user in seat group
 			_this.findUser(item.user.id_str, function(){
 				_this.shareDetail(item); // share detail
@@ -152,20 +160,22 @@ new cronJob('0 0 0 * * *', function(){
 	console.log('new day');
 	if(  model.visual !== 2 || model.noVisual !== 3 ){
 		var amount = ( 2 - model.visual ) + ( 3 - model.noVisual );
+		var locat = model.location + ' 1mi';
 		// get id last record
 		model.collection.find({share : true}).toArray(function(err, result){
 			if( err ) console.log( err )
 			else if( result.length ){
 				var tweet_id = result[result.length-1].id; // id last record;
+				if( tweet_id === '' ) return;
 				// search tweets and share details
-				twit.search('#wottak',{max_id:tweet_id,count:amount},function(data){
+				twit.search('#seatnewleon',{max_id:tweet_id,count:amount,geocode:locat},function(data){
 					if( !data.statuses ) return;
 					// share detail
 					data.statuses.forEach(function(item, index){
 						model.shareDetail(item);
 						if( index === data.statuses.length - 1){
 							// reset
-							console.log('reset amout detail');
+							console.log('reset amount detail');
 							model.visual = 0;
 							model.noVisual = 0;
 						}
@@ -176,7 +186,7 @@ new cronJob('0 0 0 * * *', function(){
 	}
 	else{
 		//Reset 
-		console.log('reset amout detail');
+		console.log('reset amount detail');
 		model.visual = 0;
 		model.noVisual = 0;
 	}
@@ -215,8 +225,8 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	// twit.stream('statuses/filter', {'locations':'33.83,55.12,132.62,55.62,33.15,67.62,152.90,69.62'}, function(stream) {
-	twit.stream('statuses/filter', {'track':'#wottak'}, function(stream) {
+	twit.stream('statuses/filter', {'locations':model.location}, function(stream) {
+	// twit.stream('statuses/filter', {'track':'#seatnewleon'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 		stream.on('end', function (response) { // Handle a disconnection
@@ -238,7 +248,7 @@ exports.getDetails = function(callback){
 var ObjectID = require('mongodb').ObjectID;
 exports.removeUser = function(db_id, tweet_id, callback){
 	// find prev tweet
-	twit.search('#wottak', {max_id:tweet_id,count:2}, function(data){
+	twit.search('#seatnewleon', {max_id:tweet_id,count:2}, function(data){
 		if( !data.statuses ) return;
 		if( data.statuses.length !== 2 ) return;
 		// update collection
