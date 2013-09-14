@@ -24,7 +24,7 @@ var model = {
 	tweetsCount : 0,
 	today : Date.today().toFormat('YYYY-MM-DD'),
 	location : '36.38,53.21,70.22,67.57, 29.72,59.72,39.85,67.89,84.46,55.52,117.33,73.14,121.37,54.61,149.67,71.60,'
-	+ '150.62,59.34,169.05,69.70',	
+	+ '150.62,59.34,169.05,69.70',			
 	// search shared detail today
 	search : function(startServer){
 		var _this = this;
@@ -125,6 +125,7 @@ var model = {
 	},
 	tweet : function(item){
 		var _this = this; 
+		// console.log(item.user.location)
 		if( !item.user || item.text.toLowerCase().indexOf('#seatnewleon') < 0 ) return;
 		this.tweetsCount++;
 		if( this.tweetsCount % 20 === 0 ){
