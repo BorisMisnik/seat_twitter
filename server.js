@@ -28,7 +28,7 @@ app.use(express.static( __dirname + '/public' ));
 var sockets = io.listen(server);
 sockets.set('log level', 1);
 // enable all transports
-sockets.set('transports', ['xhr-polling','websocket']);
+sockets.set('transports');
 sockets.on('connection', function(socket){
 	// if user connect send share detail
 	model.getDetails(function(data){
