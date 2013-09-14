@@ -15,8 +15,6 @@
     "http-get": "~0.5.10",
     "cron": "~1.0.1",
     "underscore": "~1.5.1",
-    "passport-twitter": "~1.0.0",
-    "passport": "~0.1.17",
     "connect-redis": "~1.4.5"
   },
   "devDependencies": {

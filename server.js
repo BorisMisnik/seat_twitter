@@ -4,15 +4,15 @@ var express = require('express')
   , http = require('http')
   , RedisStore = require ( 'connect-redis' ) ( express )
   , sessionStore = new RedisStore ()
-  , model = require('./models/');
-  // , server = http.createServer(app);
+  , model = require('./models/')
+  , server = http.createServer(app);
 
 // routers
 var index = require('./controllers/index')
   , admin = require('./controllers/admin');
 
 // configure Express
-app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 8080);
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.bodyParser());
@@ -25,16 +25,16 @@ app.use(app.router);
 app.use(express.static( __dirname + '/public' ));
 
 // connect socket io
-// var sockets = io.listen(server);
-// sockets.set('log level', 1);
-// // enable all transports
-// sockets.set('transports', ['xhr-polling','websocket']);
-// sockets.on('connection', function(socket){
-// 	// if user connect send share detail
-// 	model.getDetails(function(data){
-// 		socket.emit('details', data);
-// 	});
-// });
+var sockets = io.listen(server);
+sockets.set('log level', 1);
+// enable all transports
+sockets.set('transports', ['xhr-polling','websocket']);
+sockets.on('connection', function(socket){
+	// if user connect send share detail
+	model.getDetails(function(data){
+		socket.emit('details', data);
+	});
+});
 // connect to mongodb and start server
 model.connect(function(){
 	//Create the server
