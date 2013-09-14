@@ -38,7 +38,7 @@ sockets.on('connection', function(socket){
 // connect to mongodb and start server
 model.connect(function(){
 	//Create the server
-	server.listen(app.get('port'), function(){
+	app.listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));
 	});
 });
