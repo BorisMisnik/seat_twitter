@@ -229,7 +229,7 @@ exports.connect = function(callback){
 // start stream tweets
 exports.startStriming = function(){
 	// twit.stream('statuses/filter', {'locations':model.location}, function(stream) {
-	twit.stream('statuses/filter', {'track':'#seatnewleon '}, function(stream) {
+	twit.stream('statuses/filter', {'track':'#seatnewleon'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 		stream.on('end', function (response) { // Handle a disconnection
