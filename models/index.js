@@ -23,8 +23,9 @@ var model = {
 	noVisual : 0,
 	tweetsCount : 0,
 	today : Date.today().toFormat('YYYY-MM-DD'),
-	location : '36.38,53.21,70.22,67.57, 29.72,59.72,39.85,67.89,84.46,55.52,117.33,73.14,121.37,54.61,149.67,71.60,'
-	+ '150.62,59.34,169.05,69.70',			
+	// location : '36.38,53.21,70.22,67.57, 29.72,59.72,39.85,67.89,84.46,55.52,117.33,73.14,121.37,54.61,149.67,71.60,'
+	// + '150.62,59.34,169.05,69.70',		
+	location : '30.26,50.17,31.19,50.65',			
 	// search shared detail today
 	search : function(startServer){
 		var _this = this;
@@ -41,7 +42,7 @@ var model = {
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 				// get id last record and get 100 tweets
 				if( result.length - 1 === index && item.id !== '' ) 
-					_this.searchTweets({since_id : item.id, count : 100, geocode:locat}); 	
+					_this.searchTweets({since_id : item.id, count : 100}); 	
 			});
 			// run server
 			startServer();
@@ -127,8 +128,8 @@ var model = {
 	},
 	tweet : function(item){
 		var _this = this; 
-		// console.log(item.user.location)
-		if( !item.user || item.text.toLowerCase().indexOf('#seatnewleon') < 0 ) return;
+		console.log(item)
+		if( item.text.toLowerCase().indexOf('#seatnewleon') < 0 ) return;
 		this.tweetsCount++;
 		// if( this.tweetsCount % 20 === 0 ){
 			console.log(this.tweetsCount)
@@ -165,7 +166,7 @@ new cronJob('0 0 0 * * *', function(){
 				var tweet_id = result[result.length-1].id; // id last record;
 				if( tweet_id === '' ) return;
 				// search tweets and share details
-				twit.search('#seatnewleon',{max_id:tweet_id,count:amount,geocode:locat},function(data){
+				twit.search('#seatnewleon',{max_id:tweet_id,count:amount},function(data){
 					if( !data.statuses ) return;
 					// share detail
 					data.statuses.forEach(function(item, index){
@@ -222,8 +223,8 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	twit.stream('statuses/filter', {'locations':model.location}, function(stream) {
-	// twit.stream('statuses/filter', {'track':'#seatnewleon'}, function(stream) {
+	// twit.stream('statuses/filter', {'locations':model.location}, function(stream) {
+	twit.stream('statuses/filter', {'track':'#seatnewleon '}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 		stream.on('end', function (response) { // Handle a disconnection
