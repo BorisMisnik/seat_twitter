@@ -5,16 +5,15 @@ html(lang="en")
 
 		//- meta
 		meta(property="og:title", content="Seat Twitter Constructor")
-		meta(property="og:image", content="http://newleon.ru/img/popupLogo.png")
 		meta(property="og:site_name", content="Seat Twitter Constructor")
-		meta(property="og:description", content=" ")
+		meta(property="og:description", content="Собери Seat")
 
 		//- style
-		link(rel='shortcut icon', href="img/favicon.ico")
+		//- link(rel='shortcut icon', href="img/favicon.ico")
 		//- link(rel="stylesheet", href="css/bootstrap.min.css")
 		//- link(rel="stylesheet", href="css/index.css")
 		//- link(rel="stylesheet", href="css/jquery.mCustomScrollbar.css")
-		link(rel="stylesheet", href="/build/allcss.css")
+		link(rel="stylesheet", href="build/allcss.css")
 
 		//- scripts
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
@@ -22,12 +21,10 @@ html(lang="en")
 		script(src="//code.createjs.com/preloadjs-0.3.1.min.js")
 		script(src="/socket.io/socket.io.js")
 		script(src="//vk.com/js/api/openapi.js?100")
-
 		//- script(src="/js/VerbalExpressions.js")
 		//- script(src="/js/bootstrap.js")
-		//- script(src="/js/jquery.mousewheel.min.js")
 		//- script(src="/js/jquery.mCustomScrollbar.min.js")
-		//- script(src="/js/canvas.js")
+		//- script(src="/js/canvas.js")		
 		script(src="/build/scripts.min.js")
 
 		//if lt IE 9
@@ -140,9 +137,7 @@ html(lang="en")
 			//- Video
 			section.video
 				h2 Видео
-				video(width="900", controls)
-					source(src="video/Seat_Leon_30_RUS_price.webm",type='video/webm')
-					source(src="video/Seat_Leon_30_RUS_price.mp4",type="video/mp4")
+				#ytapiplayer
 			//- slider
 			section.slider
 				h2 Линии завораживают
@@ -192,6 +187,20 @@ html(lang="en")
 						|НАЙТИ 
 						br 
 						|ДИЛЛЕРА
+			#buttons
+						a(href="https://twitter.com/share"
+						  class="twitter-share-button" 
+						  data-lang="ru"
+						  data-text=" "
+						  data-hashtags="seatnewleon") Твитнуть
+						div(
+							class="fb-like" 
+							data-href="http://newleon.ru" 
+							data-width="100" 
+							data-layout="button_count" 
+							data-show-faces="false" 
+							data-send="false")
+						#vk_like
 		footer
 			.topImg
 				.seat_footer_header_center
@@ -212,16 +221,6 @@ html(lang="en")
 								a(href="http://www.twitter.com/SeatRussia", target="_blank").twitter21x21
 							li
 								a(href="https://www.youtube.com/seatrus/", target="_blank").youtube_icon
-
-						a(href="https://twitter.com/share", class="twitter-share-button", data-lang="ru", data-width="115px") Твитнуть
-						div(
-							class="fb-like" 
-							data-href="http://newleon.ru" 
-							data-width="100" 
-							data-layout="button_count" 
-							data-show-faces="false" 
-							data-send="false")
-						#vk_like
 						
 			.footer
 				.seat_footer_imprint
@@ -282,6 +281,3 @@ html(lang="en")
 				VK.init({apiId: 3868264, onlyWidgets: true});
 				VK.Widgets.Like("vk_like", {type: "mini", height: 20});
 			}
-
-
-			

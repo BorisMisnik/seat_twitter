@@ -25,6 +25,33 @@ var canvas = {
 		function handleOverallProgress(){
 			div.text(Math.floor(preload.progress * 100) + '%');
 		};
+
+
+		// crate movie
+		this.crateMovie();
+	},
+	crateMovie : function(){
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+		window.onYouTubeIframeAPIReady = function(){
+			var player = new YT.Player('ytapiplayer', {
+				height: '457',
+				width: '900',
+				videoId: 'fgtN2wysc5s',
+				events: {
+					onStateChange: onPlayerStateChange
+		  		}
+			});
+		}
+
+		function onPlayerStateChange(e){
+			if( e.data === 1 )
+				yaCounter22260598.reachGoal('PLAY');
+		}
+
 	},
 	init : function(){
 		var c = document.getElementById('canvas');
@@ -362,9 +389,4 @@ var canvas = {
 $(document).ready(function(){
 	// init stage
 	canvas.load();
-
-	$('video').on('play', function(){
-		yaCounter22260598.reachGoal('PLAY');
-	});
-
 });
