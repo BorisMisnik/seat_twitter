@@ -130,14 +130,14 @@ var model = {
 		var _this = this; 
 		if( !item.user ) return;
 		this.tweetsCount++;
-		// if( this.tweetsCount % 20 === 0 ){
+		if( this.tweetsCount % 20 === 0 ){
 			console.log(this.tweetsCount)
 			// search this user in seat group
 			_this.findUser(item.user.id_str, function(){
 				_this.shareDetail(item); // share detail
 				console.log('user find')
 			});
-		// }	
+		}	
 	},
 	findUser : function(user_id, callback){
 		twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
@@ -166,7 +166,12 @@ new cronJob('0 0 0 * * *', function(){
 				if( tweet_id === '' ) return;
 				// search tweets and share details
 				twit.search('#seatnewleon',{max_id:tweet_id,count:amount},function(data){
-					if( !data.statuses ) return;
+					if( !data.statuses ){
+						console.log('reset amount detail');
+						model.visual = 0;
+						model.noVisual = 0;
+						return;
+					};
 					// share detail
 					data.statuses.forEach(function(item, index){
 						model.shareDetail(item);
