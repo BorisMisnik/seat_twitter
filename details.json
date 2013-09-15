@@ -161,7 +161,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v0",
+		"name" : "v1",
 		"text" : "SEAT Sound System",
 		"share" : false,
 		"user" : "",
@@ -169,7 +169,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v1",
+		"name" : "v2",
 		"text" : "Сенсорная мультимедийная система",
 		"share" : false,
 		"user" : "",
@@ -177,7 +177,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v2",
+		"name" : "v3",
 		"text" : "Многофункциональное рулевое колесо",
 		"share" : false,
 		"user" : "",
@@ -185,7 +185,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v3",
+		"name" : "v4",
 		"text" : "Монохромная мультимедийная система с сенсорным дисплеем",
 		"share" : false,
 		"user" : "",
@@ -193,7 +193,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v4",
+		"name" : "v5",
 		"text" : "Регулируемая поясничная подушка",
 		"share" : false,
 		"user" : "",
@@ -201,7 +201,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v5",
+		"name" : "v6",
 		"text" : "Задние электростеклоподъемники",
 		"share" : false,
 		"user" : "",
@@ -209,7 +209,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v6",
+		"name" : "v7",
 		"text" : "Задние датчики парковки",
 		"share" : false,
 		"user" : "",
@@ -217,7 +217,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v7",
+		"name" : "v8",
 		"text" : "Ключ с функцией дистанционного открытия дверей и багажника",
 		"share" : false,
 		"user" : "",
@@ -225,7 +225,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v8",
+		"name" : "v9",
 		"text" : "Система распознавания усталости водителя",
 		"share" : false,
 		"user" : "",
@@ -233,7 +233,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v9",
+		"name" : "v10",
 		"text" : "Подушка безопасности для коленей",
 		"share" : false,
 		"user" : "",
@@ -241,7 +241,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v10",
+		"name" : "v11",
 		"text" : "Спортивные сиденья Alcantara",
 		"share" : false,
 		"user" : "",
@@ -249,7 +249,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v11",
+		"name" : "v12",
 		"text" : "Бежевая кожаная обивка сидений",
 		"share" : false,
 		"user" : "",
@@ -257,7 +257,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v12",
+		"name" : "v13",
 		"text" : "Электрический привод складывания зеркал",
 		"share" : false,
 		"user" : "",
@@ -265,7 +265,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v13",
+		"name" : "v14",
 		"text" : "Базовая центральная консоль",
 		"share" : false,
 		"user" : "",
@@ -273,7 +273,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v14",
+		"name" : "v15",
 		"text" : "Обтянутая кожей рукоятка ручного тормоза",
 		"share" : false,
 		"user" : "",
@@ -281,7 +281,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v15",
+		"name" : "v16",
 		"text" : "Подлокотник",
 		"share" : false,
 		"user" : "",
@@ -289,7 +289,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v16",
+		"name" : "v17",
 		"text" : "Ремень безопасности ",
 		"share" : false,
 		"user" : "",
@@ -297,7 +297,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v17",
+		"name" : "v18",
 		"text" : "Коробка передач",
 		"share" : false,
 		"user" : "",
@@ -305,7 +305,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v18",	
+		"name" : "v19",	
 		"text" : "Лампы для чтения для передних пассажиров",
 		"share" : false,
 		"user" : "",
@@ -313,7 +313,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v19",
+		"name" : "v20",
 		"text" : "Крепления для детских кресел ISOFIX",
 		"share" : false,
 		"user" : "",
@@ -321,7 +321,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v20",
+		"name" : "v21",
 		"text" : "Обогрев зеркал",
 		"share" : false,
 		"user" : "",
@@ -329,7 +329,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v21",
+		"name" : "v22",
 		"text" : "SEAT Drive Profile",
 		"share" : false,
 		"user" : "",
@@ -337,7 +337,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v22",
+		"name" : "v23",
 		"text" : "Антиблокировочная система",
 		"share" : false,
 		"user" : "",
@@ -345,7 +345,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v23",
+		"name" : "v24",
 		"text" : "Тонированные стекла",
 		"share" : false,
 		"user" : "",
@@ -353,7 +353,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v24",
+		"name" : "v25",
 		"text" : "Система предупреждения о спущенных шинах",
 		"share" : false,
 		"user" : "",
@@ -361,7 +361,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v25",
+		"name" : "v26",
 		"text" : "Кожаная обивка сидений",
 		"share" : false,
 		"user" : "",
@@ -369,7 +369,7 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v26",
+		"name" : "v27",
 		"share" : false,
 		"text" : "Бежевая обивка салона",
 		"user" : "",
@@ -377,16 +377,8 @@
 	},
 	{
 		"type" : "noVisual",
-		"name" : "v27",
-		"text" : "Подрулевые лепестки переключения передач",
-		"share" : false,
-		"user" : "",
-		"date" : ""
-	},
-	{
-		"type" : "noVisual",
 		"name" : "v28",
-		"text" : "Кондиционер",
+		"text" : "Подрулевые лепестки переключения передач", 
 		"share" : false,
 		"user" : "",
 		"date" : ""
@@ -394,6 +386,14 @@
 	{
 		"type" : "noVisual",
 		"name" : "v29",
+		"text" : "Кондиционер",
+		"share" : false,
+		"user" : "",
+		"date" : ""
+	},
+	{
+		"type" : "noVisual",
+		"name" : "v30",
 		"text" : "Скрытая выхлопная труба",
 		"share" : false,
 		"user" : "",

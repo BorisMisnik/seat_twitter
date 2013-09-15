@@ -68,13 +68,13 @@ var model = {
 		var tweet = this.adaptationTweet(item);
 		// console.log('shareDetail visual', this.visual );
 		// console.log('shareDetail noVisual', this.noVisual );
-		if( this.visual !== 2 && (this.noVisual === 0 || this.noVisual === 3) && this.shareNoVisual !== 20){
+		if( this.visual !== 2 && this.shareVisual < 21 ){
 			this.visual++;
-			this.shareVisual++;
+			this.shareVisual++; 
 			// update visual detail in db;
 			this.updateDetailInDb('visual', tweet);
 		}
-		else if( this.noVisual !== 3 && this.shareNoVisual !== 30){
+		else if( this.noVisual !== 3 && this.shareNoVisual < 31){
 			this.noVisual++;
 			this.shareNoVisual++;
 			// update no-visual detail in db;
@@ -88,7 +88,7 @@ var model = {
 		return {
 			time : d,
 			user_id : tweet.user.id_str,
-			tweet_id : tweet.id_str,
+			tweet_id : tweet.id_str, 
 			text : tweet.text,
 			name : tweet.user.name,
 			screen_name : tweet.user.screen_name,
@@ -104,7 +104,8 @@ var model = {
 	},
 	updateDetailInDb : function(category, tweet){
 		var _this = this;
-		var query = {share:false, type:category};
+		var n = 'v' + (category === 'visual' ? this.shareVisual : this.shareNoVisual);
+		var query = {share:false, type:category, name : n};
 		var set = {id:tweet.tweet_id, date:this.today, user:tweet, share:true}
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
@@ -126,7 +127,7 @@ var model = {
 			}	
 		});
 	},
-	tweet : function(item){
+	tweet : function(item){ 
 		var _this = this; 
 		if( !item.user ) return;
 		this.tweetsCount++;
@@ -137,7 +138,7 @@ var model = {
 				_this.shareDetail(item); // share detail
 				console.log('user find')
 			});
-		}	
+		}
 	},
 	findUser : function(user_id, callback){
 		twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
