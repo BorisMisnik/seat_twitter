@@ -6,6 +6,7 @@ exports.index = function(req, res){
 		res.render('admin', {authorized : true});
 	else
 		res.render('admin', {authorized : false});
+
 };
 // GET */admin/login*
 exports.login = function(req, res){

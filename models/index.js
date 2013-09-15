@@ -68,7 +68,7 @@ var model = {
 		var tweet = this.adaptationTweet(item);
 		// console.log('shareDetail visual', this.visual );
 		// console.log('shareDetail noVisual', this.noVisual );
-		if( this.visual === 0 && this.visual !== 2 && this.noVisual === 0 ){
+		if( this.visual !== 2 && (this.noVisual === 0 || this.noVisual === 3) && this.shareNoVisual !== 20){
 			this.visual++;
 			this.shareVisual++;
 			// update visual detail in db;
@@ -128,8 +128,7 @@ var model = {
 	},
 	tweet : function(item){
 		var _this = this; 
-		console.log(item)
-		if( item.text.toLowerCase().indexOf('#seatnewleon') < 0 ) return;
+		if( !item.user ) return;
 		this.tweetsCount++;
 		// if( this.tweetsCount % 20 === 0 ){
 			console.log(this.tweetsCount)

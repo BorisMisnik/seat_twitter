@@ -18,9 +18,7 @@ app.set('views', __dirname + '/views');
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
-app.use(express.session({
-  secret: 'password', store: sessionStore, key: 'hello'
-}));
+app.use(express.session({secret: '1234567890QWERTY'}));
 app.use(app.router);
 app.use(express.static( __dirname + '/public' ));
 
