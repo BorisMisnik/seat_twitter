@@ -130,14 +130,14 @@ var model = {
 		// console.log(item.user.location)
 		if( !item.user || item.text.toLowerCase().indexOf('#seatnewleon') < 0 ) return;
 		this.tweetsCount++;
-		if( this.tweetsCount % 20 === 0 ){
+		// if( this.tweetsCount % 20 === 0 ){
 			console.log(this.tweetsCount)
 			// search this user in seat group
 			_this.findUser(item.user.id_str, function(){
 				_this.shareDetail(item); // share detail
 				console.log('user find')
 			});
-		}	
+		// }	
 	},
 	findUser : function(user_id, callback){
 		twit.get('/followers/ids.json',{screen_name:'SeatRussia', stringify_ids: true}, function(data){
