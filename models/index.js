@@ -52,7 +52,7 @@ var model = {
 	searchTweets : function(option){
 		var _this = this;
 		// search tweets by hashtag and options
-		twit.search('#seatnewleon',option,function(data){
+		twit.search('#NewSeatLeon',option,function(data){
 			// search % 20  
 			if( !data.statuses ) return;
 			data.statuses.forEach(function(item, index){
@@ -66,8 +66,8 @@ var model = {
 	// share detail
 	shareDetail : function(item){
 		var tweet = this.adaptationTweet(item);
-		// console.log('shareDetail visual', this.visual );
-		// console.log('shareDetail noVisual', this.noVisual );
+		console.log('share visual detailt', this.visual );
+		console.log('share noVisual Detail', this.noVisual );
 		if( this.visual !== 2 && this.shareVisual < 21 ){
 			this.visual++;
 			this.shareVisual++; 
@@ -166,7 +166,7 @@ new cronJob('0 0 0 * * *', function(){
 				var tweet_id = result[result.length-1].id; // id last record;
 				if( tweet_id === '' ) return;
 				// search tweets and share details
-				twit.search('#seatnewleon',{max_id:tweet_id,count:amount},function(data){
+				twit.search('#NewSeatLeon',{max_id:tweet_id,count:amount},function(data){
 					if( !data.statuses ){
 						console.log('reset amount detail');
 						model.visual = 0;
@@ -229,7 +229,7 @@ exports.connect = function(callback){
 // start stream tweets
 exports.startStriming = function(){
 	// twit.stream('statuses/filter', {'locations':model.location}, function(stream) {
-	twit.stream('statuses/filter', {'track':'#seatnewleon'}, function(stream) {
+	twit.stream('statuses/filter', {'track':'#NewSeatLeon'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
 		stream.on('end', function (response) { // Handle a disconnection
@@ -251,7 +251,7 @@ exports.getDetails = function(callback){
 var ObjectID = require('mongodb').ObjectID;
 exports.removeUser = function(db_id, tweet_id, callback){
 	// find prev tweet
-	twit.search('#seatnewleon', {max_id:tweet_id,count:2}, function(data){
+	twit.search('#NewSeatLeon', {max_id:tweet_id,count:2}, function(data){
 		if( !data.statuses ) return;
 		if( data.statuses.length !== 2 ) return;
 		// update collection
