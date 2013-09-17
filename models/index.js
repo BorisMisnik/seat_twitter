@@ -44,8 +44,8 @@ var model = {
 				if( result.length - 1 === index && item.id !== '' ) 
 					_this.searchTweets({since_id : item.id, count : 100}); 	
 			});
-			// model.visual();
-			// model.noVisual();
+			_this.visual = 0;
+			_this.noVisual = 0;
 			// run server
 			startServer();
 		});
@@ -159,6 +159,7 @@ var model = {
 new cronJob('0 0 0 * * *', function(){
 	// if not all detail share
 	console.log('new day');
+	model.today = Date.today().toFormat('YYYY-MM-DD')
 	if(  model.visual !== 2 || model.noVisual !== 3 ){
 		var amount = ( 2 - model.visual ) + ( 3 - model.noVisual );
 		var locat = model.location + ' 1mi';
