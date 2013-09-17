@@ -41,8 +41,8 @@ var model = {
 				if( item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 				// get id last record and get 100 tweets
-				if( result.length - 1 === index && item.id !== '' ) 
-					_this.searchTweets({since_id : item.id, count : 100}); 	
+				if( result.length - 1 === index && item.id !== '' ) {}
+					// _this.searchTweets({since_id : item.id, count : 100}); 	
 			});
 			// _this.visual = 0;
 			// _this.noVisual = 0;
@@ -51,7 +51,7 @@ var model = {
 				type:'noVisual',name:'v8',
 				type:'visual',name:'v5',
 				type:'visual',name:'v6'
-			},{$set: {user: ''}}, function(err, result){
+			},{$set: {user: {} }}, function(err, result){
 				if(err) console.log('err')
 				else{
 					console.log('ok')
