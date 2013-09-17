@@ -58,7 +58,7 @@ var model = {
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
 				_this.tweetsCount++;
-				if( _this.tweetsCount % 10 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
+				if( _this.tweetsCount % 10 === 0 && ( _this.visual !== 2 || _this.noVisual !== 3))
 					_this.shareDetail(item); 
 			});
 		});
