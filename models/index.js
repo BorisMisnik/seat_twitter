@@ -46,15 +46,16 @@ var model = {
 			});
 			// _this.visual = 0;
 			// _this.noVisual = 0;
-			model.collection.update({
-				type:'visual',name:'v5',
-			},{$set: {user: {} }}, function(err, result){
-				if(err) console.log('err')
-				else{
-					console.log('ok')
-				}
-			})
-
+			// model.collection.update({
+			// 	type:'visual',name:'v5',
+			// },{$set: {user: {} }}, function(err, result){
+			// 	if(err) console.log('err')
+			// 	else{
+			// 		console.log('ok')
+			// 	}
+			// })
+			console.log(_this.visual)
+			console.log(_this.noVisual)
 			// run server
 			startServer();
 		});
