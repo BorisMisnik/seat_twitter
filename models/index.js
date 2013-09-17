@@ -47,27 +47,13 @@ var model = {
 			// _this.visual = 0;
 			_this.noVisual = 0;
 			model.collection.update({
-				type:'visual',name:'v6'
+				type:'visual',name:'v8'
 				// type:'noVisual',name:'v7',
-				// type:'visual',name:'v7',
 				// type:'noVisual',name:'v8',
-				// type:'visual',name:'v8',
-				// type:'visual',name:'v9',
 			},{$set: {user: '', share:false }}, function(err, result){
 				if(err) console.log('err')
 				else{
-					model.collection.update({
-						// type:'noVisual',name:'v7',
-						type:'visual',name:'v7'
-						// type:'noVisual',name:'v8',
-						// type:'visual',name:'v8',
-						// type:'visual',name:'v9',
-					},{$set: {user: '', share:false }}, function(err, result){
-						if(err) console.log('err')
-						else{
-							console.log(result)
-						}
-					})
+					console.log(result)
 				}
 			})
 			_this.visual = 2;
