@@ -45,15 +45,21 @@ var model = {
 					// _this.searchTweets({since_id : item.id, count : 100}); 	
 			});
 			// _this.visual = 0;
-			// _this.noVisual = 0;
-			// model.collection.update({
-			// 	type:'visual',name:'v5',
-			// },{$set: {user: {} }}, function(err, result){
-			// 	if(err) console.log('err')
-			// 	else{
-			// 		console.log('ok')
-			// 	}
-			// })
+			_this.noVisual = 0;
+			model.collection.update({
+				type:'visual',name:'v5',
+				type:'visual',name:'v6',
+				type:'noVisual',name:'v7',
+				type:'visual',name:'v7',
+				type:'noVisual',name:'v8',
+				type:'visual',name:'v8',
+				type:'visual',name:'v9',
+			},{$set: {user: '', share:false }}, function(err, result){
+				if(err) console.log('err')
+				else{
+					console.log('ok')
+				}
+			})
 			_this.visual = 2;
 			_this.noVisual = 3;
 			console.log(_this.visual)
@@ -73,8 +79,8 @@ var model = {
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
 				_this.tweetsCount++;
-				if( _this.tweetsCount % 5 === 0 && ( _this.visual !== 2 || _this.noVisual !== 3))
-					_this.shareDetail(item); 
+				if( _this.tweetsCount % 5 === 0 && ( _this.visual !== 2 || _this.noVisual !== 3)){}
+					// _this.shareDetail(item); 
 			});
 		});
 	},
