@@ -429,7 +429,6 @@ var canvas = {
 	},
 	renderNoVisual : function(data){
 		var _this = this;
-		console.log( data.name );
 		$('.'+data.name).addClass('active')
 			.on({
 				mouseenter : function(e){
