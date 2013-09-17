@@ -65,7 +65,7 @@ var model = {
 			console.log(_this.visual)
 			console.log(_this.noVisual)
 			// run server
-			startServer();
+			// startServer();
 		});
 	},
 	// search latest tweets
