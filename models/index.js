@@ -57,7 +57,7 @@ var model = {
 			},{$set: {user: '', share:false }}, function(err, result){
 				if(err) console.log('err')
 				else{
-					console.log('ok')
+					console.log(result)
 				}
 			})
 			_this.visual = 2;
@@ -128,6 +128,7 @@ var model = {
 		var n = 'v' + (category === 'visual' ? this.shareVisual : this.shareNoVisual);
 		var query = {share:false, type:category, name : n};
 		var set = {id:tweet.tweet_id, date:this.today, user:tweet, share:true}
+		console.log(update);
 		this.collection.update(query, {$set : set},function(err, object){
 			if( err ) console.warn(err.message);
 			else if( object ){
