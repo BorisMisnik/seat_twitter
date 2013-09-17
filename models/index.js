@@ -58,7 +58,7 @@ var model = {
 			data.statuses.forEach(function(item, index){
 				if( !item.user ) return;
 				_this.tweetsCount++;
-				if( _this.tweetsCount % 20 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
+				if( _this.tweetsCount % 10 === 0 && ( _this.visual < 3 || _this.noVisual < 4))
 					_this.shareDetail(item); 
 			});
 		});
@@ -131,7 +131,7 @@ var model = {
 		var _this = this; 
 		if( !item.user ) return;
 		this.tweetsCount++;
-		if( this.tweetsCount % 20 === 0 ){
+		if( this.tweetsCount % 10 === 0 ){
 			console.log(this.tweetsCount)
 			// search this user in seat group
 			_this.findUser(item.user.id_str, function(){
