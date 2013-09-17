@@ -44,6 +44,8 @@ var model = {
 				if( result.length - 1 === index && item.id !== '' ) 
 					_this.searchTweets({since_id : item.id, count : 100}); 	
 			});
+			model.visual();
+			model.noVisual();
 			// run server
 			startServer();
 		});
@@ -195,6 +197,7 @@ new cronJob('0 0 0 * * *', function(){
 		model.noVisual = 0;
 	}
 }, null, true);
+
 // Connect to db
 exports.connect = function(callback){
 	var host = process.env['MONGO_NODE_DRIVER_HOST'] != null ? 
