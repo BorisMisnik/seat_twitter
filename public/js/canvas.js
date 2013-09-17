@@ -265,7 +265,7 @@ var canvas = {
 	},
 	// find hashtag in tweуt
 	formatText : function(text){
-		var result = VerEx().find( '#seatnewleon' ).replace(text, '<span>#seatnewleon</span> ');
+		var result = VerEx().find( '#newseatleon' ).replace(text, '<span>#newseatleon</span> ');
 		return result;
 	},
 	// displaying news
