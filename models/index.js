@@ -173,8 +173,8 @@ new cronJob('0 0 0 * * *', function(){
 				twit.search('#NewSeatLeon',{max_id:tweet_id,count:amount},function(data){
 					if( !data.statuses ){
 						console.log('reset amount detail');
-						model.visual = 0;
-						model.noVisual = 0;
+						// model.visual = 0;
+						// model.noVisual = 0;
 						return;
 					};
 					// share detail
@@ -183,8 +183,8 @@ new cronJob('0 0 0 * * *', function(){
 						if( index === data.statuses.length - 1){
 							// reset
 							console.log('reset amount detail');
-							model.visual = 0;
-							model.noVisual = 0;
+							// model.visual = 0;
+							// model.noVisual = 0;
 						}
 					});
 				});
@@ -194,8 +194,8 @@ new cronJob('0 0 0 * * *', function(){
 	else{
 		//Reset 
 		console.log('reset amount detail');
-		model.visual = 0;
-		model.noVisual = 0;
+		// model.visual = 0;
+		// model.noVisual = 0;
 	}
 }, null, true);
 
