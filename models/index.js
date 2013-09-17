@@ -44,8 +44,8 @@ var model = {
 				if( result.length - 1 === index && item.id !== '' ) 
 					_this.searchTweets({since_id : item.id, count : 100}); 	
 			});
-			model.visual();
-			model.noVisual();
+			// model.visual();
+			// model.noVisual();
 			// run server
 			startServer();
 		});
