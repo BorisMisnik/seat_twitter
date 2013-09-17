@@ -123,6 +123,9 @@ var canvas = {
 		this.car.animate({'opacity':1}, showDetails) // show stage
 
 		function showDetails(){
+			_this.stage.clear();
+			_this.stage.removeAllChildren();
+			
 			_this.visualDetails.forEach(function(item, index){
 				// add visual detail on canvas
 				setTimeout(function(){
