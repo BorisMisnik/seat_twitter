@@ -429,6 +429,7 @@ var canvas = {
 	},
 	renderNoVisual : function(data){
 		var _this = this;
+		console.log( data.name );
 		$('.'+data.name).addClass('active')
 			.on({
 				mouseenter : function(e){
@@ -597,7 +598,7 @@ var canvas = {
 				+"</div>";
 			html =  $.parseHTML(template);
 		}
-		this.news.append(html); // append new template in carousel
+		this.news.prepend(html); // append new template in carousel
 	},
 	// stage tick event
 	tick: function(event){
