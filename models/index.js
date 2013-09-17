@@ -54,6 +54,8 @@ var model = {
 			// 		console.log('ok')
 			// 	}
 			// })
+			_this.visual = 2;
+			_this.noVisual = 3;
 			console.log(_this.visual)
 			console.log(_this.noVisual)
 			// run server
