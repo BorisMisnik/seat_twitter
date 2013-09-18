@@ -125,7 +125,7 @@ var canvas = {
 		function showDetails(){
 			_this.stage.clear();
 			_this.stage.removeAllChildren();
-
+			
 			_this.visualDetails.forEach(function(item, index){
 				// add visual detail on canvas
 				setTimeout(function(){
@@ -265,8 +265,7 @@ var canvas = {
 	},
 	// find hashtag in tweуt
 	formatText : function(text){
-		var string = text.toLowerCase();
-		var result = VerEx().find( '#newseatleon' ).replace(string, '<span>#newseatleon</span> ');
+		var result = VerEx().find( '#seatnewleon' ).replace(text, '<span>#seatnewleon</span> ');
 		return result;
 	},
 	// displaying news
