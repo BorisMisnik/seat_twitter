@@ -22,14 +22,10 @@ var model = {
 	visual : 0,
 	noVisual : 0,
 	tweetsCount : 0,
-	today : Date.today().toFormat('YYYY-MM-DD'),
-	// location : '36.38,53.21,70.22,67.57, 29.72,59.72,39.85,67.89,84.46,55.52,117.33,73.14,121.37,54.61,149.67,71.60,'
-	// + '150.62,59.34,169.05,69.70',		
-	location : '30.26,50.17,31.19,50.65',			
+	today : Date.today().toFormat('YYYY-MM-DD'),		
 	// search shared detail today
 	search : function(startServer){
 		var _this = this;
-		var locat = this.location + ' 1mi';
 		// find shared detail 
 		this.collection.find({share:true}).toArray(function(err, result){
 			if( err ) throw err;
@@ -40,28 +36,11 @@ var model = {
 				//  get share details today
 				if( item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
-				// get id last record and get 100 tweets
-				if( result.length - 1 === index && item.id !== '' ) 
-					_this.searchTweets({since_id : item.id, count : 100}); 	
 			});
+			console.log(  'share visual detail today', _this.visual );
+			console.log(  'share no-visual detail today',_this.noVisual );
 			// run server
 			startServer();
-		});
-	},
-	// search latest tweets
-	searchTweets : function(option){
-		var _this = this;
-		// search tweets by hashtag and options
-		twit.search('#NewSeatLeon',option,function(data){
-			// search % 20  
-			if( !data.statuses ) return;
-			console.log( data.statuses.length );
-			data.statuses.forEach(function(item, index){
-				if( !item.user ) return;
-				_this.tweetsCount++;
-				if( _this.tweetsCount % 5 === 0 && ( _this.visual !== 2 || _this.noVisual !== 3))
-					_this.shareDetail(item); 
-			});
 		});
 	},
 	// share detail
@@ -157,9 +136,9 @@ var model = {
 new cronJob('0 0 0 * * *', function(){
 	// if not all detail share
 	console.log('new day');
+	model.today = Date.today().toFormat('YYYY-MM-DD')
 	if(  model.visual !== 2 || model.noVisual !== 3 ){
 		var amount = ( 2 - model.visual ) + ( 3 - model.noVisual );
-		var locat = model.location + ' 1mi';
 		// get id last record
 		model.collection.find({share : true}).toArray(function(err, result){
 			if( err ) console.log( err )
@@ -195,6 +174,7 @@ new cronJob('0 0 0 * * *', function(){
 		model.noVisual = 0;
 	}
 }, null, true);
+
 // Connect to db
 exports.connect = function(callback){
 	var host = process.env['MONGO_NODE_DRIVER_HOST'] != null ? 
@@ -229,7 +209,6 @@ exports.connect = function(callback){
 
 // start stream tweets
 exports.startStriming = function(){
-	// twit.stream('statuses/filter', {'locations':model.location}, function(stream) {
 	twit.stream('statuses/filter', {'track':'#NewSeatLeon'}, function(stream) {
 		console.log( 'Stream started' );
 		stream.on('data', model.tweet.bind(model));
