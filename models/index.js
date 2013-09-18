@@ -38,10 +38,10 @@ var model = {
 				if( item.date === _this.today )
 					item.type === 'visual' ? _this.visual++ : _this.noVisual++;
 			});
+			_this.visual = 2;
+			_this.noVisual = 2;
 			console.log(  'share visual detail today', _this.visual );
 			console.log(  'share no-visual detail today',_this.noVisual );
-			_this.visual = 2;
-			_this.noVisua = 2;
 			// run server
 			startServer();
 		});
