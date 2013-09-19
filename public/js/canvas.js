@@ -4,7 +4,7 @@ var canvas = {
 	details : [],
 	visualDetails : [],
 	noVisualDetails : [],
-	downloadDetails : 0,
+	change : false,
 	load : function(){
 		var preload = new createjs.LoadQueue(true, "img/");
 		var manifest = ['stagefront.jpg', 'stageback.jpg', 'stagetop.jpg'];
@@ -125,10 +125,9 @@ var canvas = {
 		function showDetails(){
 			_this.stage.clear();
 			_this.stage.removeAllChildren();
-			_this.downloadDetails = 0;
 			_this.visualDetails.forEach(function(item, index){
 				// add visual detail on canvas
-				_this.renderVisual(item);
+				_this.renderVisual(item, index);
 			});
 		}
 		
@@ -144,7 +143,7 @@ var canvas = {
 		});
 	},
 	// add visual detail on canvas
-	renderVisual : function(data){
+	renderVisual : function(data, index){
 		// crate new image
 		var image = new Image();
 		var name = data.name;
@@ -153,13 +152,14 @@ var canvas = {
 		if( canvas.position === 'back' && ( name === 'v2' || name === 'v11' || name === 'v13' || name === 'v16' || name === 'v20')) return;
 		if( canvas.position === 'top' && ( name === 'v17' || name === '20') ) return;
 		image.src = 'img/'+name+'-'+this.position+'.png';
-		image.onload = function(event){
-			canvas.downloadDetails++;
+			// console.log( index );
+		image.onload = function(event, index){ 
 			canvas.handleDetailLoad(event, data);
 		};
 	},
 	renderNoVisual : function(data){
 		var _this = this;
+
 		$('.'+data.name).addClass('active')
 			.on({
 				mouseenter : function(e){
@@ -198,6 +198,7 @@ var canvas = {
 	},
 	// image upload
 	handleDetailLoad : function(event, item){
+				console.log( );
 		var image = event.target;
 		var bitmap;
 		var container = new createjs.Container();
@@ -224,6 +225,9 @@ var canvas = {
 				canvas.hideBlockTweet();
 			}	
 		})(bitmap, item);
+		// enable check stage
+		if( item.name === this.visualDetails[ this.visualDetails.length - 1 ].name )
+			this.change = true;
 		// update stage
 		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
 	},
@@ -338,9 +342,7 @@ var canvas = {
 	},
 	// clock on button next
 	next : function(){
-		console.log( this.stage.getNumChildren() );
-		console.log( this.downloadDetails );
-		if( this.stage.getNumChildren() !==  this.downloadDetails ) return;
+		if( !this.change ) return;
 		// change stage position
 		if( this.position === 'front' )
 			this.position = 'back';
@@ -353,7 +355,7 @@ var canvas = {
 	},
 	// click on button prev
 	prev : function(){
-		if( this.stage.getNumChildren() !==  this.downloadDetails ) return;
+		if( !this.change ) return;
 		// change stage position
 		if( this.position === 'back' )
 			this.position = 'front';
@@ -365,7 +367,7 @@ var canvas = {
 		this.renderStage();
 	},
 	renderStage : function(type){
-		if( this.stage.getNumChildren() !==  this.downloadDetails ) return;
+		if( !this.change )  return;
 
 		if( type ) //  method was called from html
 			this.position = type; 
@@ -384,7 +386,7 @@ var canvas = {
 		// change stage background image
 		this.car.css('background-image', 'url(img/stage'+this.position+'.jpg)')
 			.css('opacity',0) // hide stage
-
+		this.change = false;
 		// render visual detail
 		this.visual();
 	}
