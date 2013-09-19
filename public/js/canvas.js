@@ -152,9 +152,9 @@ var canvas = {
 		if( canvas.position === 'front' && ( name === 'v18' || name === 'v17' || name === 'v19' || name === 'v20')) return;
 		if( canvas.position === 'back' && ( name === 'v2' || name === 'v11' || name === 'v13' || name === 'v16' || name === 'v20')) return;
 		if( canvas.position === 'top' && ( name === 'v17' || name === '20') ) return;
-		this.downloadDetails++;
 		image.src = 'img/'+name+'-'+this.position+'.png';
 		image.onload = function(event){
+			canvas.downloadDetails++;
 			canvas.handleDetailLoad(event, data);
 		};
 	},
@@ -338,6 +338,8 @@ var canvas = {
 	},
 	// clock on button next
 	next : function(){
+		console.log( this.stage.getNumChildren() );
+		console.log( this.downloadDetails );
 		if( this.stage.getNumChildren() !==  this.downloadDetails ) return;
 		// change stage position
 		if( this.position === 'front' )
