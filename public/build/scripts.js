@@ -273,6 +273,7 @@ var canvas = {
 	details : [],
 	visualDetails : [],
 	noVisualDetails : [],
+	downloadDetails : 0,
 	load : function(){
 		var preload = new createjs.LoadQueue(true, "img/");
 		var manifest = ['stagefront.jpg', 'stageback.jpg', 'stagetop.jpg'];
@@ -385,7 +386,6 @@ var canvas = {
 	// processing of all visual detail
 	visual : function(){
 		var _this = this;
-		var time = 0;
 		// clear stage
 		this.stage.removeAllChildren();
 		// change stage background image
@@ -394,13 +394,10 @@ var canvas = {
 		function showDetails(){
 			_this.stage.clear();
 			_this.stage.removeAllChildren();
-			
+			_this.downloadDetails = 0;
 			_this.visualDetails.forEach(function(item, index){
 				// add visual detail on canvas
-				setTimeout(function(){
-					_this.renderVisual(item);
-				}, time);
-				time += 100
+				_this.renderVisual(item);
 			});
 		}
 		
@@ -424,7 +421,7 @@ var canvas = {
 		if( canvas.position === 'front' && ( name === 'v18' || name === 'v17' || name === 'v19' || name === 'v20')) return;
 		if( canvas.position === 'back' && ( name === 'v2' || name === 'v11' || name === 'v13' || name === 'v16' || name === 'v20')) return;
 		if( canvas.position === 'top' && ( name === 'v17' || name === '20') ) return;
-
+		this.downloadDetails++;
 		image.src = 'img/'+name+'-'+this.position+'.png';
 		image.onload = function(event){
 			canvas.handleDetailLoad(event, data);
@@ -610,6 +607,7 @@ var canvas = {
 	},
 	// clock on button next
 	next : function(){
+		if( this.stage.getNumChildren() !==  this.downloadDetails ) return;
 		// change stage position
 		if( this.position === 'front' )
 			this.position = 'back';
@@ -622,6 +620,7 @@ var canvas = {
 	},
 	// click on button prev
 	prev : function(){
+		if( this.stage.getNumChildren() !==  this.downloadDetails ) return;
 		// change stage position
 		if( this.position === 'back' )
 			this.position = 'front';
@@ -633,6 +632,7 @@ var canvas = {
 		this.renderStage();
 	},
 	renderStage : function(type){
+		if( this.stage.getNumChildren() !==  this.downloadDetails ) return;
 
 		if( type ) //  method was called from html
 			this.position = type; 
