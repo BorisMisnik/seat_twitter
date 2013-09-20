@@ -467,7 +467,6 @@ var canvas = {
 	},
 	// image upload
 	handleDetailLoad : function(event, item){
-				console.log( );
 		var image = event.target;
 		var bitmap;
 		var container = new createjs.Container();
