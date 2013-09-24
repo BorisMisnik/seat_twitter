@@ -547,6 +547,21 @@ var canvas = {
 		else
 			noVisual();
 
+		var detail = '';
+		switch (data.text){
+			case 'Передний дворник дворник' :
+				detail = 'Щетки стеклоочистителя для лобового стекла'
+				break;
+			case 'Задний дворник' :
+				detail = 'Щетка стеклоочистителя для заднего стекла';
+				break;
+			case 'Заднюю дверь багажника' :
+				detail = 'Задние двери';
+				break;
+			default : 
+				detail = data.text;
+		}
+
 		function visual(){  // add news about visual detail
 			textNews = '';
 			if( index % 2 === 0 ){

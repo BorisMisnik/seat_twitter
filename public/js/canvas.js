@@ -278,16 +278,31 @@ var canvas = {
 		else
 			noVisual();
 
+		var detail = '';
+		switch (data.text){
+			case 'Передний дворник дворник' :
+				detail = 'Щетки стеклоочистителя для лобового стекла'
+				break;
+			case 'Задний дворник' :
+				detail = 'Щетка стеклоочистителя для заднего стекла';
+				break;
+			case 'Заднюю дверь багажника' :
+				detail = 'Задние двери';
+				break;
+			default : 
+				detail = data.text;
+		}
+
 		function visual(){  // add news about visual detail
 			textNews = '';
 			if( index % 2 === 0 ){
 				textNews ='Пользователь <span>@' + data.user.screen_name+ '</span> получает деталь ' 
-				+ data.text + ' и награждается мини-призом! Поздравляем! Участвуйте в конкурсе '
+				+ detail + ' и награждается мини-призом! Поздравляем! Участвуйте в конкурсе '
 				+ 'и у Вас есть возможность получить главный приз!';
 			}
 			else{
 				textNews ='Пользователь <span>@' + data.user.screen_name+ '</span> получает деталь ' 
-				+ data.text + ' и награждается мини-призом! Поздравляем! До сборки Нового Леона осталось ' 
+				+ detail + ' и награждается мини-призом! Поздравляем! До сборки Нового Леона осталось ' 
 				+ 'деталей <b>'+(20-_this.visualDetails.length)+'</b>. Спешите поучаствовать!';
 			}
 			text = _this.formatText(data.user.text);
@@ -313,7 +328,7 @@ var canvas = {
 		function noVisual(){ // add news about no-visual detail
 			textNews = '';
 			textNews ='Пользователь <span>@' + data.user.screen_name+ '</span> получает деталь '
-				+ data.text + '! Поздравляем! Осталось деталей <b>'+(30 - _this.noVisualDetails.length)+'</b>.';
+				+ detail + '! Поздравляем! Осталось деталей <b>'+(30 - _this.noVisualDetails.length)+'</b>.';
 			text = _this.formatText(data.user.text);
 			template =  " <div class='item n'>"
 				+ "<p id='text-news'>"+textNews+"</p>"
