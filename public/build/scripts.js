@@ -541,15 +541,8 @@ var canvas = {
 	// displaying news
 	renderNews : function(data, index){
 		var _this = this;
-		var textNews, text, template, html;
+		var textNews, text, template, html, detail;
 		
-		// visual template
-		if( data.type === 'visual')
-			visual();
-		else
-			noVisual();
-
-		var detail = '';
 		switch (data.text){
 			case 'Передний дворник дворник' :
 				detail = 'Щетки стеклоочистителя для лобового стекла'
@@ -562,9 +555,17 @@ var canvas = {
 				break;
 			default : 
 				detail = data.text;
+				break;
 		}
+		// visual template
+		if( data.type === 'visual')
+			visual();
+		else
+			noVisual();
+
 
 		function visual(){  // add news about visual detail
+			// console.log(detail);
 			textNews = '';
 			if( index % 2 === 0 ){
 				textNews ='Пользователь <span>@' + data.user.screen_name+ '</span> получает деталь ' 
