@@ -5,6 +5,8 @@ var canvas = {
 	visualDetails : [],
 	noVisualDetails : [],
 	change : false,
+	upload : 0,
+	count : 0,
 	load : function(){
 		var preload = new createjs.LoadQueue(true, "img/");
 		var manifest = ['stagefront.jpg', 'stageback.jpg', 'stagetop.jpg'];
@@ -151,6 +153,7 @@ var canvas = {
 		if( canvas.position === 'front' && ( name === 'v18' || name === 'v17' || name === 'v19' || name === 'v20')) return;
 		if( canvas.position === 'back' && ( name === 'v2' || name === 'v11' || name === 'v13' || name === 'v16' || name === 'v20')) return;
 		if( canvas.position === 'top' && ( name === 'v17' || name === '20') ) return;
+		this.count++;
 		image.src = 'img/'+name+'-'+this.position+'.png';
 			// console.log( index );
 		image.onload = function(event, index){ 
@@ -225,8 +228,7 @@ var canvas = {
 			}	
 		})(bitmap, item);
 		// enable check stage
-		if( item.name === this.visualDetails[ this.visualDetails.length - 1 ].name )
-			this.change = true;
+		this.upload++;
 		// update stage
 		createjs.Ticker.addEventListener("tick", canvas.tick.bind(canvas));
 	},
@@ -356,7 +358,7 @@ var canvas = {
 	},
 	// clock on button next
 	next : function(){
-		if( !this.change ) return;
+		if( this.count !== this.upload ) return;
 		// change stage position
 		if( this.position === 'front' )
 			this.position = 'back';
@@ -369,7 +371,7 @@ var canvas = {
 	},
 	// click on button prev
 	prev : function(){
-		if( !this.change ) return;
+		if( this.count !== this.upload ) return;
 		// change stage position
 		if( this.position === 'back' )
 			this.position = 'front';
@@ -381,7 +383,7 @@ var canvas = {
 		this.renderStage();
 	},
 	renderStage : function(type){
-		if( !this.change )  return;
+		if( this.count !== this.upload )  return;
 
 		if( type ) //  method was called from html
 			this.position = type; 
@@ -400,7 +402,8 @@ var canvas = {
 		// change stage background image
 		this.car.css('background-image', 'url(img/stage'+this.position+'.jpg)')
 			.css('opacity',0) // hide stage
-		this.change = false;
+		this.count = 0;
+		this.upload = 0;
 		// render visual detail
 		this.visual();
 	}
